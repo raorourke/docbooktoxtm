@@ -14,7 +14,7 @@ from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
-from . import config
+from docbooktoxtm import config
 
 
 def get_book_info(book_info_file: str = 'Book_Info.xml'):
@@ -226,3 +226,6 @@ def get_pdfs(release):
         if asset.name in [pdf_name, role_name]:
             r = requests.get(asset.url, headers=headers, stream=True)
             open(asset.name, 'wb').write(r.content)
+
+
+print(config.headers)
