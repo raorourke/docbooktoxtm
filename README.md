@@ -1,4 +1,4 @@
-# docbooktoxtm
+# xmltoxtm
 
 This package reorganizes and subsequently restores .ZIP packages of XML files that will be published with DocBook so that XTM will parse the files in the same order as the published document, making it easier to use the reference PDF when translating the content.
 
