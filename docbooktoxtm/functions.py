@@ -197,6 +197,7 @@ def resource(source_file, target_file):
     zipf = zipfile.ZipFile(target_filename, 'w', zipfile.ZIP_DEFLATED)
     zipdir(f"./{source_dir.split('/')[1]}", zipf)
     shutil.rmtree(f"./{source_dir.split('/')[1]}")
+    return target_filename
 
 
 def get_zip(release):
