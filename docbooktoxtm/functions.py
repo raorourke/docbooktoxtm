@@ -5,16 +5,19 @@ import os
 import shlex
 import shutil
 import subprocess
-import requests
 import zipfile
 from typing import List, Tuple, Optional, Union
 
+import requests
 import xmltodict
 from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
-from docbooktoxtm import config
+base_url = 'https://api.github.com'
+token = os.environ.get('github_token')
+headers = {'Authorization': f"token {token}"}
+token_url = f"https://{token}@api.github.com"
 
 
 def get_book_info(book_info_file: str = 'Book_Info.xml'):
@@ -198,13 +201,15 @@ def resource(source_file, target_file):
 
 
 def get_latest_release(course: str, user: str = 'RedHatTraining'):
-    g = Github(config.token)
+    print(f"{course=}")
+    print(f"{user=}")
+    g = Github(token)
     repo = g.get_user(user).get_repo(course)
     return repo.get_latest_release()
 
 
 def get_zip(release):
-    zipball = requests.get(release.zipball_url, headers=config.headers, stream=True)
+    zipball = requests.get(release.zipball_url, headers=headers, stream=True)
     course = release.url.split('/', 6)[5]
     fname = course + '-' + release.tag_name + '.zip'
     open(fname, 'wb').write(zipball.content)
@@ -220,10 +225,12 @@ def get_zip(release):
 
 def get_pdfs(release):
     pdf_name, role_name = [f'{release.url.split("/", 6)[5]}-{release.tag_name}{x}' for x in ['.pdf', '-ROLE.pdf']]
-    headers = {'Accept': 'application/octet-stream'}
-    headers.update(config.headers)
+    headers_ = {'Accept': 'application/octet-stream'}
+    headers_.update(headers)
     for asset in release.get_assets():
         if asset.name in [pdf_name, role_name]:
-            r = requests.get(asset.url, headers=headers, stream=True)
+            r = requests.get(asset.url, headers=headers_, stream=True)
             open(asset.name, 'wb').write(r.content)
 
+
+print(token)
