@@ -183,10 +183,11 @@ def get_chapter_names(fname: Union[FileName, FilePath]) -> FileList:
     return FileList([
         chapter
         for child in root
-        if all([
-            (chapter := child.attrib.get('href')),
+        if (
+            (chapter := child.attrib.get('href'))
+            and
             'sg-chapters' in chapter
-        ])
+        )
     ])
 
 
