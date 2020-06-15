@@ -36,9 +36,9 @@ if __name__ == "__main__":
     g = Github(token)
     if sys.argv[1].lower() == 'resource':
         target_file = sys.argv[2]
-        return resource_cli(target_file)
+        resource_cli(target_file)
     if sys.argv[1].lower() == 'unsource':
         course = sys.argv[2]
-        return unsource_cli(course)
+        unsource_cli(course)
 
 
