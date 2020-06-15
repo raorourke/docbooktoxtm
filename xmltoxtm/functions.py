@@ -131,11 +131,11 @@ def get_intro_names(fname: Union[FileName, FilePath],
         file
         for child in root
         if (
-            (file := child.attrib.get('href'))
-            and
-            'sg-chapters' not in file
-            and
-            os.path.exists(os.path.join(source_dir, file))
+                (file := child.attrib.get('href'))
+                and
+                'sg-chapters' not in file
+                and
+                os.path.exists(os.path.join(source_dir, file))
         )
     ]
     new_remaining_files = intro_files + remaining_files
@@ -167,7 +167,7 @@ def get_intro_file_list(intro_files: FileList,
             FilePath(os.path.join(
                 target_dir,
                 '00-introduction',
-                f'{i:02d}'.join(file.split('/'))
+                *[f"{i:02d}-{part}" for part in file.split('/')]
             ))
         )
         for i, file in enumerate(intro_files, start=1)
@@ -184,9 +184,9 @@ def get_chapter_names(fname: Union[FileName, FilePath]) -> FileList:
         chapter
         for child in root
         if (
-            (chapter := child.attrib.get('href'))
-            and
-            'sg-chapters' in chapter
+                (chapter := child.attrib.get('href'))
+                and
+                'sg-chapters' in chapter
         )
     ])
 
