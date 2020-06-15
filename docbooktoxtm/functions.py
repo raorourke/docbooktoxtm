@@ -14,7 +14,7 @@ from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
-from weautomate.docbooktoxtm.docbooktoxtm import config
+from . import config
 
 
 def get_book_info(book_info_file: str = 'Book_Info.xml'):
