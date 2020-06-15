@@ -31,7 +31,7 @@ def get_book_info_from_zip(zipf: str, path: str = '00-introduction/01-Book_Info.
 
 
 def zipdir(path, ziph):
-    for root, dirs, files in os.walk(path):
+    for root, _, files in os.walk(path):
         for file in files:
             ziph.write(os.path.join(root, file))
 
@@ -44,7 +44,7 @@ def lists_to_tuple(*args):
 
 
 def ppxml(path):
-    for root, dirs, files in os.walk(path):
+    for root, _, files in os.walk(path):
         for file in files:
             subprocess.call(shlex.split(f'ppxml "./{os.path.join(root, file)}"'))
 
@@ -74,6 +74,7 @@ class BookInfo(BaseModel):
     pubsnumber: Optional[str] = None
     subtitle: Union[str, dict]
     title: str
+    target: Optional[str] = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
