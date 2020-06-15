@@ -5,8 +5,6 @@ from github import Github
 from docbooktoxtm.functions import resource, unsource, BookInfo, get_book_info_from_zip, get_zip, \
     token
 
-print(token)
-
 if __name__ == "__main__":
     g = Github(token)
     if sys.argv[1] == 'resource':
