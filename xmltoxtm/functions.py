@@ -92,7 +92,7 @@ class BookInfo(BaseModel):
         object.__setattr__(self, 'target', SUBTITLE_INDEX[self.subtitle])
 
 
-def get_intro(xml_file, source_dir=None, remaining_files=None, working_list=None):
+def get_intro(xml_file: str, source_dir: str = None, remaining_files: list = None, working_list: list = None):
     remaining_files = remaining_files or []
     working_list = working_list or []
     source_dir = source_dir or os.path.dirname(xml_file)
@@ -115,7 +115,9 @@ def get_intro(xml_file, source_dir=None, remaining_files=None, working_list=None
     return new_working_list
 
 
-def get_intro_file_list(intro_files: List[str], source_dir: str = '.', target_dir: str = '.'):
+def get_intro_file_list(intro_files: List[str], source_dir: str = None, target_dir: str = None):
+    source_dir = source_dir or '.'
+    target_dir = target_dir or '.'
     return [
         (os.path.join(source_dir, file),
          os.path.join(target_dir, f"00-introduction/{i:02d}-{f'/{i:02d}-'.join(file.split('/'))}"))
@@ -130,7 +132,9 @@ def get_chapters(xml_file):
     return [x for child in root if (x := child.attrib.get('href')) if 'sg-chapters' in x]
 
 
-def get_chapter_file_list(chapter_list: List[str], source_dir: str = '.', target_dir: str = '.'):
+def get_chapter_file_list(chapter_list: List[str], source_dir: str = None, target_dir: str = None):
+    source_dir = source_dir or '.'
+    target_dir = target_dir or '.'
     chapter_file_list = []
     for i, chapter in enumerate(chapter_list, start=1):
         chapter_dir = os.path.join(target_dir, f"{i:02d}-{os.path.basename(chapter).split('.', 1)[0]}/sg-chapters")
@@ -173,8 +177,8 @@ def unsource(source_zip):
     book = BookInfo(**get_book_info_from_zip(source_zip, 'guides/en-US/Book_Info.xml'))
     os.remove(source_zip)
     os.chdir('./en-US')
+    source_dir = None
     target_dir = './en-US'
-    source_dir = '.'
     os.mkdir(target_dir)
     toc = f"./{book.invpartnumber}-SG.xml"
     intro_file_list = get_intro_file_list(
@@ -197,20 +201,25 @@ def unsource(source_zip):
 def resource(source_file, target_file):
     with zipfile.ZipFile(source_file, 'r') as zipf:
         source_dir = os.path.join('.', zipf.namelist()[0].split('/', 1)[0], 'guides/en-US')
-        zipf.extractall()
+        for file in zipf.namelist():
+            if source_dir in file:
+                zipf.extract(file)
     with zipfile.ZipFile(target_file, 'r') as zipf:
         zipf.extractall()
-    target_dir = os.path.join('.', 'en-US')
+    target_dir = './en-US'
     ppxml(target_dir)
-    book = BookInfo(**get_book_info(os.path.join(source_dir, 'Book_Info.xml')))
-    localized_book = BookInfo(**get_book_info(os.path.join(target_dir, '00-introduction/01-Book_Info.xml')))
+    book = BookInfo(**get_book_info(os.path.join(target_dir, '00-introduction/01-Book_Info.xml')))
     toc = os.path.join(source_dir, f"{book.invpartnumber}-SG.xml")
     intro_file_list = get_intro_file_list(get_intro(toc), source_dir, target_dir)
     chapter_file_list = get_chapter_file_list(get_chapters(toc), source_dir, target_dir)
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list, reverse=True)
     shutil.rmtree(target_dir)
-    target_filename = f"{localized_book.invpartnumber}-{localized_book.pubsnumber}_{localized_book.target}.zip"
+    shutil.move(source_dir, os.path.join(source_dir.rsplit('/', 1)[0], book.target))
+    for target in SUBTITLE_INDEX.values():
+        if target != book.target and os.path.exists(os.path.join(source_dir.rsplit('/', 1)[0], target)):
+            shutil.rmtree(os.path.join(source_dir.rsplit('/', 1)[0], target))
+    target_filename = f"{book.invpartnumber}-{book.pubsnumber}_{book.target}.zip"
     zipf = zipfile.ZipFile(target_filename, 'w', zipfile.ZIP_DEFLATED)
     zipdir(f"./{source_dir.split('/')[1]}", zipf)
     shutil.rmtree(f"./{source_dir.split('/')[1]}")
