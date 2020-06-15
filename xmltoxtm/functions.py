@@ -200,12 +200,13 @@ def unsource(source_zip):
 
 def resource(source_file, target_file):
     with zipfile.ZipFile(source_file, 'r') as zipf:
-        source_dir = os.path.join(zipf.namelist()[0].split('/', 1)[0], 'guides/en-US')
+        source_dir = os.path.join(zipf.namelist()[0].split('/', 1)[0], 'guides')
         for file in zipf.namelist():
             if source_dir in file:
                 zipf.extract(file)
     with zipfile.ZipFile(target_file, 'r') as zipf:
         zipf.extractall()
+    source_dir = os.path.join(source_dir, 'en-US')
     target_dir = './en-US'
     ppxml(target_dir)
     book = BookInfo(**get_book_info(os.path.join(target_dir, '00-introduction/01-Book_Info.xml')))
