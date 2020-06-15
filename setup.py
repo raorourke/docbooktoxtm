@@ -24,6 +24,7 @@ INSTALL_REQUIRES = [
 
 setup(name=PACKAGE_NAME,
       version=VERSION,
+      python_requires='>3.8',
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       long_description_content_type=LONG_DESC_TYPE,
