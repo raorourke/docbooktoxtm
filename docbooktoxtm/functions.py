@@ -22,7 +22,7 @@ def get_book_info(book_info_file: str = 'Book_Info.xml'):
         return xmltodict.parse(xml_file.read()).get('bookinfo')
 
 
-def get_book_info_from_zip(zipf: zipfile.ZipFile, path: str = '00-introduction/01-Book_Info.xml'):
+def get_book_info_from_zip(zipf: str, path: str = '00-introduction/01-Book_Info.xml'):
     with zipfile.ZipFile(zipf, 'r') as f:
         book_info_file = f.open(os.path.join(f"{f.namelist()[0].split('/', 1)[0]}", path), 'r')
         return xmltodict.parse(book_info_file.read()).get('bookinfo')

@@ -4,13 +4,13 @@ from setuptools import setup, find_packages
 HERE = pathlib.Path(__file__).parent
 
 VERSION = '0.1.0'
-PACKAGE_NAME = 'your_package'
-AUTHOR = 'You'
-AUTHOR_EMAIL = 'you@email.com'
-URL = 'https://github.com/you/your_package'
+PACKAGE_NAME = 'docbooktoxtm'
+AUTHOR = 'Ryan O\'Rourke'
+AUTHOR_EMAIL = 'ryan.orourke@welocalize.com'
+URL = 'https://github.com/raorourke/docbooktoxtm'
 
-LICENSE = 'Apache License 2.0'
-DESCRIPTION = 'Describe your package in one sentence'
+LICENSE = 'MIT License'
+DESCRIPTION = 'Disassemble and reassemble source package structure for better use as XTM source file.'
 LONG_DESCRIPTION = (HERE / "README.md").read_text()
 LONG_DESC_TYPE = "text/markdown"
 
@@ -18,7 +18,8 @@ INSTALL_REQUIRES = [
       'xmltodict',
       'lxml',
       'pydantic',
-      'github'
+      'PyGithub',
+      'requests'
 ]
 
 setup(name=PACKAGE_NAME,

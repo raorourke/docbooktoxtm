@@ -2,7 +2,7 @@
 
 import sys
 
-from weautomate.docbooktoxtm.docbooktoxtm import functions as rhserv
+from . import functions as rhserv
 
 if __name__ == "__main__":
     try:
