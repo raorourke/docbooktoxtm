@@ -130,11 +130,13 @@ def get_intro_names(fname: Union[FileName, FilePath],
     intro_files = [
         file
         for child in root
-        if all([
-            (file := child.attrib.get('href')),
-            'sg-chapters' not in file,
+        if (
+            (file := child.attrib.get('href'))
+            and
+            'sg-chapters' not in file
+            and
             os.path.exists(os.path.join(source_dir, file))
-        ])
+        )
     ]
     new_remaining_files = intro_files + remaining_files
     new_working_list = working_list
