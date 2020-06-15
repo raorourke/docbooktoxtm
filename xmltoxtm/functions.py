@@ -2,14 +2,14 @@
 #
 
 import os
-import shlex
 import shutil
-import subprocess
 import zipfile
+from subprocess import Popen, DEVNULL
 from typing import List, Tuple, Optional, Union, Iterable
 
 import requests
 import xmltodict
+from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
@@ -46,7 +46,13 @@ def lists_to_tuple(*args):
 def ppxml(path):
     for root, _, files in os.walk(path):
         for file in files:
-            subprocess.call(shlex.split(f'ppxml "./{os.path.join(root, file)}"'))
+            file = os.path.join(root, file)
+            cmd1 = f'mv "{file}" "{file}.bak" 2>&1'
+            cmd2 = f'xmllint --format "{file}.bak" > "{file}" 2>&1'
+            cmd3 = f'rm -f "{file}.bak" 2>&1'
+            final = Popen(f"{cmd1}; {cmd2}; {cmd3}", shell=True, stdin=DEVNULL,
+                          stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
+            final.communicate()
 
 
 SUBTITLE_INDEX = {
@@ -211,10 +217,12 @@ def resource(source_file, target_file):
     return target_filename
 
 
-def get_zip(release):
+def get_zip(course: str, user: str = 'RedHatTraining', token: str = token):
+    g = Github(token)
+    release = g.get_user(user).get_repo(course).get_latest_release()
     zipball = requests.get(release.zipball_url, headers=headers, stream=True)
     course = release.url.split('/', 6)[5]
-    fname = course + '-' + release.tag_name + '.zip'
+    fname = f"{course}-{release.tag_name}.zip"
     open(fname, 'wb').write(zipball.content)
     with zipfile.ZipFile(fname, 'r') as bad_zip:
         bad_dir = bad_zip.namelist()[0].split('/')[0]
@@ -225,13 +233,3 @@ def get_zip(release):
     zipdir(fname.rsplit('.', 1)[0], zipf)
     shutil.rmtree(fname.rsplit('.', 1)[0])
     return fname
-
-
-def get_pdfs(release):
-    pdf_name, role_name = [f'{release.url.split("/", 6)[5]}-{release.tag_name}{x}' for x in ['.pdf', '-ROLE.pdf']]
-    headers_ = {'Accept': 'application/octet-stream'}
-    headers_.update(headers)
-    for asset in release.get_assets():
-        if asset.name in [pdf_name, role_name]:
-            r = requests.get(asset.url, headers=headers_, stream=True)
-            open(asset.name, 'wb').write(r.content)

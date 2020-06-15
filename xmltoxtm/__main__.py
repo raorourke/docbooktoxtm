@@ -1,9 +1,6 @@
 import sys
 
-from github import Github
-
-from xmltoxtm.functions import resource, unsource, BookInfo, get_book_info_from_zip, get_zip, \
-    token
+from xmltoxtm.functions import resource, unsource, BookInfo, get_book_info_from_zip, get_zip
 
 
 def resource_cli(target_file: str) -> str:
@@ -15,8 +12,7 @@ def resource_cli(target_file: str) -> str:
     """
     book = BookInfo(**get_book_info_from_zip(target_file))
     course = book.invpartnumber
-    release = g.get_user('RedHatTraining').get_repo(course).get_latest_release()
-    source_file = get_zip(release)
+    source_file = get_zip(course)
     return resource(source_file, target_file)
 
 
@@ -27,18 +23,14 @@ def unsource_cli(course: str) -> str:
     :param course: Course number to be prepped, e.g. RH124, CL310, DO180.
     :return zip_filename: Name of restructured .ZIP package ready to be uploaded to XTM for analysis.
     """
-    release = g.get_user('RedHatTraining').get_repo(course).get_latest_release()
-    source_file = get_zip(release)
+    source_file = get_zip(course)
     return unsource(source_file)
 
 
 if __name__ == "__main__":
-    g = Github(token)
     if sys.argv[1].lower() == 'resource':
         target_file = sys.argv[2]
         resource_cli(target_file)
     if sys.argv[1].lower() == 'unsource':
         course = sys.argv[2]
         unsource_cli(course)
-
-
