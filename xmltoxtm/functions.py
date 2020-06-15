@@ -53,6 +53,7 @@ SUBTITLE_INDEX = {
     'Teilnehmerarbeitsbuch': 'de-DE',
     'Manuel d\'exercices': 'fr-FR',
     '受講生用のワークブック': 'ja-JP',
+    '受講生用ワークブック': 'ja-JP',
     '수강생 워크북': 'ko-KR',
     'Livro do aluno': 'pt-BR',
     'Рабочая тетрадь': 'ru-RU',
