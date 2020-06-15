@@ -227,5 +227,3 @@ def get_pdfs(release):
             r = requests.get(asset.url, headers=headers, stream=True)
             open(asset.name, 'wb').write(r.content)
 
-
-print(config.headers)
