@@ -12,6 +12,7 @@ if __name__ == "__main__":
         resource(source_file, target_file)
     if sys.argv[1] == 'unsource':
         course = sys.argv[2]
+        print(course)
         release = get_latest_release(course)
         source_file = get_zip(release)
         unsource(source_file)
