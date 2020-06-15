@@ -212,6 +212,7 @@ def get_zip(release):
     zipf = zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED)
     zipdir(fname.rsplit('.', 1)[0], zipf)
     shutil.rmtree(fname.rsplit('.', 1)[0])
+    return fname
 
 
 def get_pdfs(release):
