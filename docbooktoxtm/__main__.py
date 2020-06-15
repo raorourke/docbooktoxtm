@@ -16,3 +16,5 @@ if __name__ == "__main__":
         release = get_latest_release(course)
         source_file = get_zip(release)
         unsource(source_file)
+    if sys.argv[1] == 'testing':
+        print(sys.argv)
