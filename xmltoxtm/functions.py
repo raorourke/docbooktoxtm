@@ -111,6 +111,9 @@ class BookInfo(BaseModel):
             else:
                 object.__setattr__(self, 'pubsnumber', '12345678')
         object.__setattr__(self, 'target', SUBTITLE_INDEX[self.subtitle])
+        object.__setattr__(self, 'course', self.invpartnumber)
+        if (self.productname and self.productnumber):
+            object.__setattr__(self, 'release_tag', f"{self.productname}{self.productnumber}")
 
 
 def get_intro_names(fname: Union[FileName, FilePath],
@@ -284,7 +287,7 @@ def unsource(source_fname: FileName) -> FileName:
     os.chdir('./en-US')
     target_dir = Directory('./en-US')
     os.mkdir(target_dir)
-    toc = FilePath(f"./{book.invpartnumber}-SG.xml")
+    toc = FilePath(f"./{book.course}-SG.xml")
     intro_file_list = get_intro_file_list(
         get_intro_names(toc), target_dir
     )
@@ -293,7 +296,7 @@ def unsource(source_fname: FileName) -> FileName:
     )
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list)
-    zip_fname = FileName(f"{book.invpartnumber}-{book.pubsnumber}.zip")
+    zip_fname = FileName(f"{book.course}-{book.pubsnumber}.zip")
     with zipfile.ZipFile(zip_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
         zipdir(target_dir, f_zip)
     shutil.move(zip_fname, '..')
@@ -326,7 +329,7 @@ def resource(source_fname: FileName,
     )
     toc = FilePath(os.path.join(
         source_dir,
-        f"{book.invpartnumber}-SG.xml"
+        f"{book.course}-SG.xml"
     ))
     intro_file_list = get_intro_file_list(
         get_intro_names(toc),
@@ -364,7 +367,7 @@ def resource(source_fname: FileName,
                     target
                 )
             )
-    resourced_fname = FileName(f"{book.invpartnumber}-{book.pubsnumber}_{book.target}.zip")
+    resourced_fname = FileName(f"{book.course}-{book.pubsnumber}_{book.target}.zip")
     with zipfile.ZipFile(resourced_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
         zipdir(Directory(source_dir.split('/')[0]), f_zip)
     shutil.rmtree(source_dir.split('/')[0])
@@ -372,11 +375,43 @@ def resource(source_fname: FileName,
 
 
 def get_zip(course: str,
+            release_tag: str = None,
             user: str = 'RedHatTraining',
             token: str = GITHUB_TOKEN
             ) -> FileName:
     g = Github(token)
-    release = g.get_user(user).get_repo(course).get_latest_release()
+    repo = g.get_user(user).get_repo(course)
+    releases = [
+        release
+        for release in repo.get_releases()
+        if release_tag in release.target_commitish
+    ] if release_tag else [
+        release
+        for release in repo.get_releases()
+    ]
+    if len(releases) == 1:
+        release = releases[0]
+    else:
+        release = sorted(
+            releases,
+            key=lambda x: x.published_at,
+            reverse=True
+        )[0]
+    latest_release = repo.get_latest_release()
+    if latest_release != release:
+        release_tags = {release.tag_name.split('-')[-4] for release in [release, latest_release]}
+        if len(release_tags) > 1:
+            release = sorted(
+                [release, latest_release],
+                key=lambda x: x.tag_name.split('-')[-4],
+                reverse=True
+            )[0]
+        else:
+            release = sorted(
+                [release, latest_release],
+                key=lambda x: x.published_at,
+                reverse=True
+            )[0]
     zipball = requests.get(release.zipball_url, headers=HEADERS, stream=True)
     course = release.url.split('/', 6)[5]
     fname = FileName(f"{course}-{release.tag_name}.zip")

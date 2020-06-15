@@ -12,12 +12,11 @@ def resource_cli(target_fname: FileName) -> FileName:
     :return target_file: Name of target restructured .ZIP package.
     """
     book = BookInfo(**get_book_info(target_fname))
-    course = book.invpartnumber
-    source_file = get_zip(course)
+    source_file = get_zip(book.course, book.release_tag)
     return resource(source_file, target_fname)
 
 
-def unsource_cli(course: str) -> FileName:
+def unsource_cli(course: str, release_tag: str = None) -> FileName:
     """
     This function reorganizes the XML source files so that XTM will parse them
     in the same order as they appear in the published PDF.
@@ -25,7 +24,7 @@ def unsource_cli(course: str) -> FileName:
     :return zip_filename: Name of restructured .ZIP package that is
     ready to be uploaded to XTM for analysis.
     """
-    source_file = get_zip(course)
+    source_file = get_zip(course, release_tag)
     return unsource(source_file)
 
 
@@ -35,4 +34,7 @@ if __name__ == "__main__":
         resource_cli(target_file)
     if sys.argv[1].lower() == 'unsource':
         course_name = sys.argv[2]
-        unsource_cli(course_name)
+        release_name = None
+        if len(sys.argv) == 4:
+            release_name = sys.argv[3]
+        unsource_cli(course_name, release_name)
