@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '1.0'
+VERSION = '1.1'
 PACKAGE_NAME = 'docbooktoxtm'
 AUTHOR = 'Ryan O\'Rourke'
 AUTHOR_EMAIL = 'ryan.orourke@welocalize.com'
