@@ -200,7 +200,7 @@ def unsource(source_zip):
 
 def resource(source_file, target_file):
     with zipfile.ZipFile(source_file, 'r') as zipf:
-        source_dir = os.path.join('.', zipf.namelist()[0].split('/', 1)[0], 'guides/en-US')
+        source_dir = os.path.join(zipf.namelist()[0].split('/', 1)[0], 'guides/en-US')
         for file in zipf.namelist():
             if source_dir in file:
                 zipf.extract(file)
@@ -210,8 +210,8 @@ def resource(source_file, target_file):
     ppxml(target_dir)
     book = BookInfo(**get_book_info(os.path.join(target_dir, '00-introduction/01-Book_Info.xml')))
     toc = os.path.join(source_dir, f"{book.invpartnumber}-SG.xml")
-    intro_file_list = get_intro_file_list(get_intro(toc), source_dir, target_dir)
-    chapter_file_list = get_chapter_file_list(get_chapters(toc), source_dir, target_dir)
+    intro_file_list = get_intro_file_list(get_intro(toc), os.path.join('.', source_dir), target_dir)
+    chapter_file_list = get_chapter_file_list(get_chapters(toc), os.path.join('.', source_dir), target_dir)
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list, reverse=True)
     shutil.rmtree(target_dir)
@@ -221,8 +221,8 @@ def resource(source_file, target_file):
             shutil.rmtree(os.path.join(source_dir.rsplit('/', 1)[0], target))
     target_filename = f"{book.invpartnumber}-{book.pubsnumber}_{book.target}.zip"
     zipf = zipfile.ZipFile(target_filename, 'w', zipfile.ZIP_DEFLATED)
-    zipdir(f"./{source_dir.split('/')[1]}", zipf)
-    shutil.rmtree(f"./{source_dir.split('/')[1]}")
+    zipdir(source_dir.split('/')[0], zipf)
+    shutil.rmtree(source_dir.split('/')[0])
     return target_filename
 
 
