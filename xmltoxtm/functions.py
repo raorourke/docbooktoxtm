@@ -58,7 +58,8 @@ SUBTITLE_INDEX = {
     'Рабочая тетрадь': 'ru-RU',
     '学员练习册': 'zh-CN',
     'Libro de trabajo del estudiante': 'es-ES',
-    'छात्र-छात्रा की वर्कबुक': 'hi-IN'
+    'छात्र-छात्रा की वर्कबुक': 'hi-IN',
+    'Student Workbook': 'en-US'
 }
 
 
@@ -69,10 +70,18 @@ class BookInfo(BaseModel):
     productname: str
     productnumber: str
     pubdate: Optional[str] = None
-    pubsnumber: str
+    pubsnumber: Optional[str] = None
     subtitle: Union[str, dict]
     title: str
-    subtitle_index: dict = SUBTITLE_INDEX
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.pubsnumber is None:
+            if self.pubdate is not None:
+                object.__setattr__(self, 'pubsnumber', self.pubdate)
+            else:
+                object.__setattr__(self, 'pubsnumber', '12345678')
+        object.__setattr__(self, 'target', SUBTITLE_INDEX[self.subtitle])
 
 
 def get_intro(xml_file, source_dir=None, remaining_files=None, working_list=None):
@@ -168,7 +177,7 @@ def unsource(source_zip):
     )
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list)
-    zip_filename = f"{book.invpartnumber}-{book.pubdate}.zip"
+    zip_filename = f"{book.invpartnumber}-{book.pubsnumber}.zip"
     zipf = zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED)
     zipdir(target_dir, zipf)
     shutil.move(zip_filename, '..')
@@ -193,7 +202,7 @@ def resource(source_file, target_file):
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list, reverse=True)
     shutil.rmtree(target_dir)
-    target_filename = f"{localized_book.invpartnumber}-{localized_book.pubdate}_{localized_book.subtitle_index[localized_book.subtitle]}.zip"
+    target_filename = f"{localized_book.invpartnumber}-{localized_book.pubsnumber}_{localized_book.target}.zip"
     zipf = zipfile.ZipFile(target_filename, 'w', zipfile.ZIP_DEFLATED)
     zipdir(f"./{source_dir.split('/')[1]}", zipf)
     shutil.rmtree(f"./{source_dir.split('/')[1]}")
