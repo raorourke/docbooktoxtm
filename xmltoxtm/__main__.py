@@ -2,7 +2,7 @@ import sys
 
 from github import Github
 
-from docbooktoxtm.functions import resource, unsource, BookInfo, get_book_info_from_zip, get_zip, \
+from xmltoxtm.functions import resource, unsource, BookInfo, get_book_info_from_zip, get_zip, \
     token
 
 
