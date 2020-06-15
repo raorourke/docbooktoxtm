@@ -153,12 +153,12 @@ def unsource(source_zip):
                 zipf.extract(file)
         shutil.move(zip_dir, '.')
         shutil.rmtree(zipf.namelist()[0].split('/', 1)[0])
+    book = BookInfo(**get_book_info_from_zip(source_zip, 'guides/en-US/Book_Info.xml'))
     os.remove(source_zip)
     os.chdir('./en-US')
     target_dir = './en-US'
     source_dir = '.'
     os.mkdir(target_dir)
-    book = BookInfo(**get_book_info())
     toc = f"./{book.invpartnumber}-SG.xml"
     intro_file_list = get_intro_file_list(
         get_intro(toc), source_dir, target_dir
@@ -168,7 +168,7 @@ def unsource(source_zip):
     )
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list)
-    zip_filename = book.invpartnumber + '-' + book.pubdate + '.zip'
+    zip_filename = f"{book.invpartnumber}-{book.pubdate}.zip"
     zipf = zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED)
     zipdir(target_dir, zipf)
     shutil.move(zip_filename, '..')
