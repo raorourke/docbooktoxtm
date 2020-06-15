@@ -6,11 +6,10 @@ import shlex
 import shutil
 import subprocess
 import zipfile
-from typing import List, Tuple, Optional, Union
+from typing import List, Tuple, Optional, Union, Iterable
 
 import requests
 import xmltodict
-from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
@@ -131,7 +130,7 @@ def get_chapter_file_list(chapter_list: List[str], source_dir: str = '.', target
     return chapter_file_list
 
 
-def copy_and_rename(file_list: List[Tuple[str, str]], reverse: bool = False):
+def copy_and_rename(file_list: Iterable[Tuple[str, str]], reverse: bool = False):
     if reverse:
         new_dirs = {os.path.dirname(old) for old, new in file_list}
     else:
@@ -200,14 +199,6 @@ def resource(source_file, target_file):
     shutil.rmtree(f"./{source_dir.split('/')[1]}")
 
 
-def get_latest_release(course: str, user: str = 'RedHatTraining'):
-    print(f"{course=}")
-    print(f"{user=}")
-    g = Github(token)
-    repo = g.get_user(user).get_repo(course)
-    return repo.get_latest_release()
-
-
 def get_zip(release):
     zipball = requests.get(release.zipball_url, headers=headers, stream=True)
     course = release.url.split('/', 6)[5]
@@ -231,6 +222,3 @@ def get_pdfs(release):
         if asset.name in [pdf_name, role_name]:
             r = requests.get(asset.url, headers=headers_, stream=True)
             open(asset.name, 'wb').write(r.content)
-
-
-print(token)
