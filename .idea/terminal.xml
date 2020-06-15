@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TerminalProjectOptionsProvider">
+    <envs>
+      <env key="github_token" value="59c19efd88ba711e74287a273749e8d8cebf3951" />
+    </envs>
+  </component>
+</project>
