@@ -8,22 +8,48 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Install docbooktoxtm with ```pip```.
+Install xmltoxtm with ```pip```.
 
 ```
-pip install docbooktoxtm
+$ pip install xmltoxtm
 ```
 or
 
 ```
-python3 -m pip install docbooktoxtm
+$ python3 -m pip install xmltoxtm
 ```
+
+## Usage
+
+To restructure a source package for XTM, use the following command, where ```course``` signifies the course number being prepped for translation. The command will target the latest release of the highest version number by default, but it is also possible to indicate a specific release tag following the course argument.
+
+```
+$ python3 -m xmltoxtm unsource <course> [release]
+```
+
+For example:
+
+```
+$ python3 -m xmltoxtm unsource BH124 SWEL8
+```
+
+When you want to restore the source package to its original format, you can call the following command, where ```target_fname``` indicates the file name of the target package generated from XTM. (NB: The target package should be generated at the locale level and not at the all-locales level.)
+
+```
+$ python3 -m xmltoxtm resource <target_fname>
+```
+
+For example:
+
+```
+$ python3 -m xmltoxtm resource fr-FR.zip
+```
+
+Note also that there is no option to indicate the release tag when calling the resource command. The script will extract the release information directly from the target files to make sure that it is rebuilt with the correct release.
 
 ## Authors
 
 * **Ryan O'Rourke**
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
