@@ -14,8 +14,11 @@ from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
-GITHUB_TOKEN = os.environ.get('github_token')
-HEADERS = {'Authorization': f"token {GITHUB_TOKEN}"}
+GITHUB_TOKEN: str = os.environ.get('github_token')
+HEADERS: dict = {'Authorization': f"token {GITHUB_TOKEN}"}
+
+DEFAULT_TARGET = 'en-US'
+DEFAULT_TARGET_DIR = os.path.join('.', DEFAULT_TARGET)
 
 BookStr = NewType('BookStr', Optional[Union[str, dict]])
 BookInt = NewType('BookInt', Optional[Union[int, dict]])
@@ -110,10 +113,11 @@ class BookInfo(BaseModel):
                 object.__setattr__(self, 'pubsnumber', self.pubdate)
             else:
                 object.__setattr__(self, 'pubsnumber', '12345678')
-        object.__setattr__(self, 'target', SUBTITLE_INDEX[self.subtitle])
-        object.__setattr__(self, 'course', self.invpartnumber)
-        if (self.productname and self.productnumber):
-            object.__setattr__(self, 'release_tag', f"{self.productname}{self.productnumber}")
+        self.target = SUBTITLE_INDEX[self.subtitle]
+        self.course = self.invpartnumber
+        self.release_tag = f"{self.productname}{self.productnumber}" if (
+            self.productname and self.productnumber
+        ) else None
 
 
 def get_intro_names(fname: Union[FileName, FilePath],
@@ -284,8 +288,8 @@ def unsource(source_fname: FileName) -> FileName:
         )
     )
     os.remove(source_fname)
-    os.chdir('./en-US')
-    target_dir = Directory('./en-US')
+    os.chdir(DEFAULT_TARGET_DIR)
+    target_dir = Directory(DEFAULT_TARGET_DIR)
     os.mkdir(target_dir)
     toc = FilePath(f"./{book.course}-SG.xml")
     intro_file_list = get_intro_file_list(
@@ -318,8 +322,8 @@ def resource(source_fname: FileName,
                 f_zip.extract(file)
     with zipfile.ZipFile(target_fname, 'r') as f_zip:
         f_zip.extractall()
-    source_dir = os.path.join(source_dir, 'en-US')
-    target_dir = Directory('./en-US')
+    source_dir = os.path.join(source_dir, DEFAULT_TARGET)
+    target_dir = Directory(DEFAULT_TARGET_DIR)
     ppxml(target_dir)
     book = BookInfo(
         **get_book_info(
@@ -371,6 +375,8 @@ def resource(source_fname: FileName,
     with zipfile.ZipFile(resourced_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
         zipdir(Directory(source_dir.split('/')[0]), f_zip)
     shutil.rmtree(source_dir.split('/')[0])
+    os.remove(source_fname)
+    os.remove(target_fname)
     return resourced_fname
 
 

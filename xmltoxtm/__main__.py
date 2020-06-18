@@ -21,6 +21,8 @@ def unsource_cli(course: str, release_tag: str = None) -> FileName:
     This function reorganizes the XML source files so that XTM will parse them
     in the same order as they appear in the published PDF.
     :param course: Course number to be prepped, e.g. RH124, CL310, DO180.
+    :param release_tag: Indicates a specific release to download. Default is
+    None and will result in the most recent release of the highest version number.
     :return zip_filename: Name of restructured .ZIP package that is
     ready to be uploaded to XTM for analysis.
     """
