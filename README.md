@@ -8,15 +8,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Install xmltoxtm with ```pip```.
+Install docbooktoxtm with ```pip```.
 
 ```
-$ pip install xmltoxtm
+$ pip install docbooktoxtm
 ```
 or
 
 ```
-$ python3 -m pip install xmltoxtm
+$ python3 -m pip install docbooktoxtm
 ```
 The script also requires a GitHub API token be exported as an environment variable named ```github_token```. The script will automatically pick up the token if correctly configured and will route things properly. For information on creating a personal access token, [visit GitHub's help article on the subject for more information.](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 
@@ -26,25 +26,25 @@ The script also requires a GitHub API token be exported as an environment variab
 To restructure a source package for XTM, use the following command, where ```course``` signifies the course number being prepped for translation. The command will target the latest release of the highest version number by default, but it is also possible to indicate a specific release tag following the course argument.
 
 ```
-$ python3 -m xmltoxtm unsource <course> [release]
+$ python3 -m docbooktoxtm unsource <course> [release]
 ```
 
 For example:
 
 ```
-$ python3 -m xmltoxtm unsource BH124 SWEL8
+$ python3 -m docbooktoxtm unsource BH124 SWEL8
 ```
 
 When you want to restore the source package to its original format, you can call the following command, where ```target_fname``` indicates the file name of the target package generated from XTM. (NB: The target package should be generated at the locale level and not at the all-locales level.)
 
 ```
-$ python3 -m xmltoxtm resource <target_fname>
+$ python3 -m docbooktoxtm resource <target_fname>
 ```
 
 For example:
 
 ```
-$ python3 -m xmltoxtm resource fr-FR.zip
+$ python3 -m docbooktoxtm resource fr-FR.zip
 ```
 
 Note also that there is no option to indicate the release tag when calling the resource command. The script will extract the release information directly from the target files to make sure that it is rebuilt with the correct release.
