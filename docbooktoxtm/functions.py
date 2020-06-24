@@ -6,7 +6,9 @@ import shutil
 import zipfile
 from collections import OrderedDict
 from subprocess import Popen, DEVNULL
+from fuzzywuzzy import process, fuzz
 from typing import List, Tuple, Optional, Union, Iterable, Any, NewType
+from docbooktoxtm.config import GITHUB_TOKEN
 
 import requests
 import xmltodict
@@ -14,9 +16,8 @@ from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
-GITHUB_TOKEN: str = os.environ.get('github_token')
-HEADERS: dict = {'Authorization': f"token {GITHUB_TOKEN}"}
 
+HEADERS: dict = {'Authorization': f"token {GITHUB_TOKEN}"}
 DEFAULT_TARGET = 'en-US'
 DEFAULT_TARGET_DIR = os.path.join('.', DEFAULT_TARGET)
 
@@ -37,6 +38,19 @@ FileList = NewType(
     ]
 )
 
+SUBTITLE_INDEX = {
+        'Teilnehmerarbeitsbuch': 'de-DE',
+        'Manuel d\'exercices': 'fr-FR',
+        '受講生用のワークブック': 'ja-JP',
+        '受講生用ワークブック': 'ja-JP',
+        '수강생 워크북': 'ko-KR',
+        'Livro do aluno': 'pt-BR',
+        'Рабочая тетрадь': 'ru-RU',
+        '学员练习册': 'zh-CN',
+        'Libro de trabajo del estudiante': 'es-ES',
+        'छात्र-छात्रा की वर्कबुक': 'hi-IN',
+        'Student Workbook': 'en-US'
+    }
 
 def get_book_info(zip_fname: FileName,
                   path: str = '00-introduction/01-Book_Info.xml'
@@ -48,7 +62,8 @@ def get_book_info(zip_fname: FileName,
                 path
             ), 'r'
         )
-        return xmltodict.parse(book_info_file.read()).get('bookinfo')
+        book = xmltodict.parse(book_info_file.read()).get('bookinfo')
+        return {attr: value.get('#text') if '#text' in value else value for attr, value in book.items()}
 
 
 def zipdir(path: Directory,
@@ -79,20 +94,9 @@ def ppxml(path: Directory) -> None:
                           stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
             final.communicate()
 
-
-SUBTITLE_INDEX = {
-    'Teilnehmerarbeitsbuch': 'de-DE',
-    'Manuel d\'exercices': 'fr-FR',
-    '受講生用のワークブック': 'ja-JP',
-    '受講生用ワークブック': 'ja-JP',
-    '수강생 워크북': 'ko-KR',
-    'Livro do aluno': 'pt-BR',
-    'Рабочая тетрадь': 'ru-RU',
-    '学员练习册': 'zh-CN',
-    'Libro de trabajo del estudiante': 'es-ES',
-    'छात्र-छात्रा की वर्कबुक': 'hi-IN',
-    'Student Workbook': 'en-US'
-}
+def get_book_language(query: str):
+    choices = [subtitle for subtitle in SUBTITLE_INDEX.keys()]
+    return SUBTITLE_INDEX.get(process.extractOne(query, choices, scorer=fuzz.ratio)[0])
 
 
 class BookInfo(BaseModel):
@@ -105,6 +109,8 @@ class BookInfo(BaseModel):
     subtitle: BookStr = None
     title: BookStr = None
     target: BookStr = None
+    course: BookStr = None
+    release_tag: BookStr = None
 
     def __init__(self, **info: Any):
         super().__init__(**info)
@@ -113,7 +119,7 @@ class BookInfo(BaseModel):
                 object.__setattr__(self, 'pubsnumber', self.pubdate)
             else:
                 object.__setattr__(self, 'pubsnumber', '12345678')
-        self.target = SUBTITLE_INDEX[self.subtitle]
+        self.target = get_book_language(self.subtitle)
         self.course = self.invpartnumber
         self.release_tag = f"{self.productname}{self.productnumber}" if (
             self.productname and self.productnumber

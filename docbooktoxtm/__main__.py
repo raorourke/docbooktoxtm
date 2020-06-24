@@ -1,6 +1,6 @@
 import sys
 
-from xmltoxtm.functions import resource, unsource, BookInfo, get_book_info, get_zip, FileName
+from docbooktoxtm.functions import resource, unsource, BookInfo, get_book_info, get_zip, FileName
 
 
 def resource_cli(target_fname: FileName) -> FileName:
