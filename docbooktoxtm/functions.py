@@ -276,7 +276,7 @@ def copy_and_rename(file_list: FileList,
             shutil.copy(old, new)
 
 
-def unsource(source_fname: FileName) -> FileName:
+def source_to_xtm(source_fname: FileName) -> FileName:
     with zipfile.ZipFile(source_fname, 'r') as f_zip:
         zip_dir = os.path.join(
             f_zip.namelist()[0].split('/', 1)[0],
@@ -315,7 +315,7 @@ def unsource(source_fname: FileName) -> FileName:
     return zip_fname
 
 
-def resource(source_fname: FileName,
+def target_from_xtm(source_fname: FileName,
              target_fname: FileName
              ) -> FileName:
     with zipfile.ZipFile(source_fname, 'r') as f_zip:
