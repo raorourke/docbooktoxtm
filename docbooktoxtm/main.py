@@ -8,7 +8,7 @@ from docbooktoxtm.functions import target_from_xtm, source_to_xtm, BookInfo, get
 app = typer.Typer(help='Utility for prepping DocBook XML packages for use as XTM source files.')
 
 
-@app.command()
+@app.command(help='Restructures source file structure for more efficient parsing in XTM.')
 def resource(target_fname: Path = typer.Argument(...)) -> FileName:
     """
     This function restores the XML source files to their original structure, as
@@ -24,7 +24,7 @@ def resource(target_fname: Path = typer.Argument(...)) -> FileName:
     typer.echo(f"Resourced file name: {resourced_fname}")
 
 
-@app.command()
+@app.command(help='Restores target files exported from XTM to original source file structure.')
 def unsource(course: str = typer.Argument(...), release_tag: Optional[str] = typer.Option(
     None, '-r', '--release-tag', help='optional GitHub release tag'
 ),
