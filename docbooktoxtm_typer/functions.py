@@ -8,7 +8,7 @@ from collections import OrderedDict
 from subprocess import Popen, DEVNULL
 from fuzzywuzzy import process, fuzz
 from typing import List, Tuple, Optional, Union, Iterable, Any, NewType
-from docbooktoxtm.config import GITHUB_TOKEN
+from docbooktoxtm_typer.config import GITHUB_TOKEN
 
 import requests
 import xmltodict
