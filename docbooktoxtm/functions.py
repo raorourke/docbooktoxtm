@@ -1,60 +1,47 @@
 #!/usr/bin/env python3
 #
+#from __future__ import annotations
 
 import os
 import shutil
 import zipfile
-from collections import OrderedDict
+from pathlib import Path
 from subprocess import Popen, DEVNULL
-from fuzzywuzzy import process, fuzz
-from typing import List, Tuple, Optional, Union, Iterable, Any, NewType
-from docbooktoxtm_typer.config import GITHUB_TOKEN
+from typing import List, Optional, Any, TypeVar, IO
 
 import requests
 import xmltodict
+from fuzzywuzzy import process, fuzz
 from github import Github
 from lxml import etree
 from pydantic import BaseModel
 
+from docbooktoxtm.config import GITHUB_TOKEN
 
 HEADERS: dict = {'Authorization': f"token {GITHUB_TOKEN}"}
 DEFAULT_TARGET = 'en-US'
 DEFAULT_TARGET_DIR = os.path.join('.', DEFAULT_TARGET)
 
-BookStr = NewType('BookStr', Optional[Union[str, dict]])
-BookInt = NewType('BookInt', Optional[Union[int, dict]])
-FileName = NewType('FileName', str)
-FilePath = NewType('FilePath', str)
-Directory = NewType('Directory', str)
-FileList = NewType(
-    'FileList',
-    Iterable[
-        Union[
-            Tuple[FileName, FileName],
-            Tuple[FilePath, FilePath],
-            FileName,
-            FilePath
-        ]
-    ]
-)
+FileName = TypeVar('FileName', IO, Path)
 
 SUBTITLE_INDEX = {
-        'Teilnehmerarbeitsbuch': 'de-DE',
-        'Manuel d\'exercices': 'fr-FR',
-        '受講生用のワークブック': 'ja-JP',
-        '受講生用ワークブック': 'ja-JP',
-        '수강생 워크북': 'ko-KR',
-        'Livro do aluno': 'pt-BR',
-        'Рабочая тетрадь': 'ru-RU',
-        '学员练习册': 'zh-CN',
-        'Libro de trabajo del estudiante': 'es-ES',
-        'छात्र-छात्रा की वर्कबुक': 'hi-IN',
-        'Student Workbook': 'en-US'
-    }
+    'Teilnehmerarbeitsbuch': 'de-DE',
+    'Manuel d\'exercices': 'fr-FR',
+    '受講生用のワークブック': 'ja-JP',
+    '受講生用ワークブック': 'ja-JP',
+    '수강생 워크북': 'ko-KR',
+    'Livro do aluno': 'pt-BR',
+    'Рабочая тетрадь': 'ru-RU',
+    '学员练习册': 'zh-CN',
+    'Libro de trabajo del estudiante': 'es-ES',
+    'छात्र-छात्रा की वर्कबुक': 'hi-IN',
+    'Student Workbook': 'en-US'
+}
 
-def get_book_info(zip_fname: FileName,
+
+def get_book_info(zip_fname: IO,
                   path: str = '00-introduction/01-Book_Info.xml'
-                  ) -> OrderedDict:
+                  ) -> dict:
     with zipfile.ZipFile(zip_fname, 'r') as f_zip:
         book_info_file = f_zip.open(
             os.path.join(
@@ -66,7 +53,7 @@ def get_book_info(zip_fname: FileName,
         return {attr: value.get('#text') if '#text' in value else value for attr, value in book.items()}
 
 
-def zipdir(path: Directory,
+def zipdir(path: Path,
            f_zip: zipfile.ZipFile
            ) -> None:
     for root, _, files in os.walk(path):
@@ -74,14 +61,14 @@ def zipdir(path: Directory,
             f_zip.write(os.path.join(root, file))
 
 
-def lists_to_tuple(*args: Union[list, FileList]) -> tuple:
+def lists_to_tuple(*args: list) -> tuple:
     new_list = []
     for arg in args:
         new_list = new_list + arg
     return tuple(new_list)
 
 
-def ppxml(path: Directory) -> None:
+def ppxml(path: Path) -> None:
     for root, _, files in os.walk(path):
         for file in files:
             file = os.path.join(root, file)
@@ -94,23 +81,23 @@ def ppxml(path: Directory) -> None:
                           stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
             final.communicate()
 
+
 def get_book_language(query: str):
-    choices = [subtitle for subtitle in SUBTITLE_INDEX.keys()]
-    return SUBTITLE_INDEX.get(process.extractOne(query, choices, scorer=fuzz.ratio)[0])
+    return SUBTITLE_INDEX.get(process.extractOne(query, list(SUBTITLE_INDEX.keys()), scorer=fuzz.ratio)[0])
 
 
 class BookInfo(BaseModel):
-    productname: BookStr = None
-    edition: BookInt = None
-    invpartnumber: BookStr = None
-    productnumber: BookStr = None
-    pubdate: BookStr = None
-    pubsnumber: BookStr = None
-    subtitle: BookStr = None
-    title: BookStr = None
-    target: BookStr = None
-    course: BookStr = None
-    release_tag: BookStr = None
+    productname: Optional[str] = None
+    edition: Optional[int] = None
+    invpartnumber: Optional[str] = None
+    productnumber: Optional[str] = None
+    pubdate: Optional[str] = None
+    pubsnumber: Optional[str] = None
+    subtitle: Optional[str] = None
+    title: Optional[str] = None
+    target: Optional[str] = None
+    course: Optional[str] = None
+    release_tag: Optional[str] = None
 
     def __init__(self, **info: Any):
         super().__init__(**info)
@@ -122,15 +109,15 @@ class BookInfo(BaseModel):
         self.target = get_book_language(self.subtitle)
         self.course = self.invpartnumber
         self.release_tag = f"{self.productname}{self.productnumber}" if (
-            self.productname and self.productnumber
+                self.productname and self.productnumber
         ) else None
 
 
-def get_intro_names(fname: Union[FileName, FilePath],
-                    source_dir: Directory = None,
+def get_intro_names(fname: FileName,
+                    source_dir: Path = None,
                     remaining_files: List[FileName] = None,
                     working_list: List[FileName] = None
-                    ) -> FileList:
+                    ) -> list:
     remaining_files = remaining_files or []
     working_list = working_list or []
     source_dir = source_dir or os.path.dirname(fname)
@@ -162,38 +149,38 @@ def get_intro_names(fname: Union[FileName, FilePath],
     if new_remaining_files:
         file, *remaining_files = new_remaining_files
         return get_intro_names(file, source_dir, remaining_files, new_working_list)
-    return FileList(new_working_list)
+    return new_working_list
 
 
-def get_intro_file_list(intro_files: FileList,
-                        target_dir: Directory = None,
-                        source_dir: Directory = None
-                        ) -> FileList:
+def get_intro_file_list(intro_files: list,
+                        target_dir: Path = None,
+                        source_dir: Path = None
+                        ) -> list:
     target_dir = target_dir or '.'
     source_dir = source_dir or '.'
-    return FileList([
+    return [
         (
-            FilePath(os.path.join(
+            os.path.join(
                 source_dir,
                 file
-            )),
-            FilePath(os.path.join(
+            ),
+            os.path.join(
                 target_dir,
                 '00-introduction',
                 *[f"{i:02d}-{part}" for part in file.split('/')]
-            ))
+            )
         )
         for i, file in enumerate(intro_files, start=1)
-    ])
+    ]
 
 
-def get_chapter_names(fname: Union[FileName, FilePath]) -> FileList:
+def get_chapter_names(fname: FileName) -> list:
     parser = etree.XMLParser(recover=True)
     root = etree.parse(
         fname,
         parser=parser
     ).getroot()
-    return FileList([
+    return [
         chapter
         for child in root
         if (
@@ -201,13 +188,13 @@ def get_chapter_names(fname: Union[FileName, FilePath]) -> FileList:
                 and
                 'sg-chapters' in chapter
         )
-    ])
+    ]
 
 
-def get_chapter_file_list(chapter_list: FileList,
-                          target_dir: Directory = None,
-                          source_dir: Directory = None
-                          ) -> FileList:
+def get_chapter_file_list(chapter_list: list,
+                          target_dir: Path = None,
+                          source_dir: Path = None
+                          ) -> list:
     target_dir = target_dir or '.'
     source_dir = source_dir or '.'
     chapter_file_list = []
@@ -244,22 +231,22 @@ def get_chapter_file_list(chapter_list: FileList,
         for j, section in enumerate(sections, start=1):
             chapter_file_list.append(
                 (
-                    FilePath(os.path.join(
+                    os.path.join(
                         source_dir,
                         'sg-chapters',
                         section
-                    )),
-                    FilePath(os.path.join(
+                    ),
+                    os.path.join(
                         chapter_dir,
                         os.path.dirname(section),
                         f"{j:02d}-{os.path.basename(section)}"
-                    ))
+                    )
                 )
             )
-    return FileList(chapter_file_list)
+    return chapter_file_list
 
 
-def copy_and_rename(file_list: FileList,
+def copy_and_rename(file_list: tuple,
                     reverse: bool = False
                     ) -> None:
     if reverse:
@@ -295,9 +282,9 @@ def source_to_xtm(source_fname: FileName) -> FileName:
     )
     os.remove(source_fname)
     os.chdir(DEFAULT_TARGET_DIR)
-    target_dir = Directory(DEFAULT_TARGET_DIR)
+    target_dir = DEFAULT_TARGET_DIR
     os.mkdir(target_dir)
-    toc = FilePath(f"./{book.course}-SG.xml")
+    toc = f"./{book.course}-SG.xml"
     intro_file_list = get_intro_file_list(
         get_intro_names(toc), target_dir
     )
@@ -306,7 +293,7 @@ def source_to_xtm(source_fname: FileName) -> FileName:
     )
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list)
-    zip_fname = FileName(f"{book.course}-{book.pubsnumber}.zip")
+    zip_fname = f"{book.course}-{book.pubsnumber}.zip"
     with zipfile.ZipFile(zip_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
         zipdir(target_dir, f_zip)
     shutil.move(zip_fname, '..')
@@ -316,8 +303,8 @@ def source_to_xtm(source_fname: FileName) -> FileName:
 
 
 def target_from_xtm(source_fname: FileName,
-             target_fname: FileName
-             ) -> FileName:
+                    target_fname: FileName
+                    ) -> FileName:
     with zipfile.ZipFile(source_fname, 'r') as f_zip:
         source_dir = os.path.join(
             f_zip.namelist()[0].split('/', 1)[0],
@@ -329,7 +316,7 @@ def target_from_xtm(source_fname: FileName,
     with zipfile.ZipFile(target_fname, 'r') as f_zip:
         f_zip.extractall()
     source_dir = os.path.join(source_dir, DEFAULT_TARGET)
-    target_dir = Directory(DEFAULT_TARGET_DIR)
+    target_dir = DEFAULT_TARGET_DIR
     ppxml(target_dir)
     book = BookInfo(
         **get_book_info(
@@ -337,19 +324,19 @@ def target_from_xtm(source_fname: FileName,
             '00-introduction/01-Book_Info.xml'
         )
     )
-    toc = FilePath(os.path.join(
+    toc = os.path.join(
         source_dir,
         f"{book.course}-SG.xml"
-    ))
+    )
     intro_file_list = get_intro_file_list(
         get_intro_names(toc),
         target_dir,
-        Directory(os.path.join('.', source_dir))
+        os.path.join('.', source_dir)
     )
     chapter_file_list = get_chapter_file_list(
         get_chapter_names(toc),
         target_dir,
-        Directory(os.path.join('.', source_dir))
+        os.path.join('.', source_dir)
     )
     file_list = lists_to_tuple(intro_file_list, chapter_file_list)
     copy_and_rename(file_list, reverse=True)
@@ -377,9 +364,9 @@ def target_from_xtm(source_fname: FileName,
                     target
                 )
             )
-    resourced_fname = FileName(f"{book.course}-{book.pubsnumber}_{book.target}.zip")
+    resourced_fname = f"{book.course}-{book.pubsnumber}_{book.target}.zip"
     with zipfile.ZipFile(resourced_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
-        zipdir(Directory(source_dir.split('/')[0]), f_zip)
+        zipdir(source_dir.split('/')[0], f_zip)
     shutil.rmtree(source_dir.split('/')[0])
     os.remove(source_fname)
     os.remove(target_fname)
@@ -397,10 +384,7 @@ def get_zip(course: str,
         release
         for release in repo.get_releases()
         if release_tag in release.target_commitish
-    ] if release_tag else [
-        release
-        for release in repo.get_releases()
-    ]
+    ] if release_tag else list(repo.get_releases())
     if len(releases) == 1:
         release = releases[0]
     else:
@@ -426,7 +410,7 @@ def get_zip(course: str,
             )[0]
     zipball = requests.get(release.zipball_url, headers=HEADERS, stream=True)
     course = release.url.split('/', 6)[5]
-    fname = FileName(f"{course}-{release.tag_name}.zip")
+    fname = f"{course}-{release.tag_name}.zip"
     with open(fname, 'wb') as f_zip:
         f_zip.write(zipball.content)
     with zipfile.ZipFile(fname, 'r') as bad_zip:
@@ -435,6 +419,6 @@ def get_zip(course: str,
     os.remove(fname)
     shutil.move(bad_dir, fname.rsplit('.', 1)[0])
     with zipfile.ZipFile(fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
-        zipdir(Directory(fname.rsplit('.', 1)[0]), f_zip)
+        zipdir(fname.rsplit('.', 1)[0], f_zip)
     shutil.rmtree(fname.rsplit('.', 1)[0])
     return fname

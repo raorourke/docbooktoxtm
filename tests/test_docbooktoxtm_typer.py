@@ -1,4 +1,4 @@
-from docbooktoxtm_typer import __version__
+from docbooktoxtm import __version__
 
 
 def test_version():
