@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "docbooktoxtm-typer"
-version = "0.1.0"
+version = "0.1.dev2"
 description = ""
 authors = ["Ryan O'Rourke <ryan.orourke@welocalize.com>"]
 readme = 'README.md'
