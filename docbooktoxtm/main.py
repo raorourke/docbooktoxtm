@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 import typer
+from os.path import isfile
 
 from docbooktoxtm.functions import target_from_xtm, source_to_xtm, BookInfo, get_book_info, get_zip, FileName
 
@@ -39,7 +40,7 @@ def unsource(course: str = typer.Argument(...),
     :return zip_filename: Name of restructured .ZIP package that is
     ready to be uploaded to XTM for analysis.
     """
-    source_file = course if isinstance(course, Path) else get_zip(course, release_tag)
+    source_file = course if isfile(course) else get_zip(course, release_tag)
     unsourced_fname = source_to_xtm(source_file)
     typer.echo("Source file structure restructured successfully!")
     typer.echo(f"Unsourced file name: {unsourced_fname}")
