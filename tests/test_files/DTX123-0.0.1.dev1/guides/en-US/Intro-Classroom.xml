@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "common.ent">
+]>
+<section id="classroom_orientation">
+  <title>title</title>
+  <!-- REPLACE THIS GRAPHIC WITH ONE APPROPRIATE FOR THIS COURSE -->
+  <mediaobject id="classroom_diagram">
+    <imageobject>
+      <imagedata fileref="images/classroom/DO180-Classroom-Architecture-1.png" scalefit="1" width="100%" align="center"/>
+    </imageobject>
+    <caption>Classroom environment</caption>
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <table frame="all">
+    <title>title</title>
+    <tgroup cols="3">
+      <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="0.6*"/>
+      <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+      <thead>
+        <row>
+          <entry>Machine name</entry>
+          <entry>IP addresses</entry>
+          <entry>Role</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            content.example.com, materials.example.com, classroom.example.com
+          </entry>
+          <entry>
+            172.25.252.254, 172.25.253.254, 172.25.254.254
+          </entry>
+          <entry>
+            Classroom utility server
+          </entry>
+        </row>
+        <row>
+          <entry>
+            workstation.lab.example.com
+          </entry>
+          <entry>
+            172.25.250.254, 172.25.252.1
+          </entry>
+          <entry>
+            Student graphical workstation
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <!-- "Controlling Your Systems" include.
+
+  The following include inserts the instructions on how to operate the classroom ("Controlling Your Systems") as a subsection of the Orientation to the Classroom section.
+  It will appear to start with a bridgehead.
+  The Common/Control-Classroom.xml file should be freshly copied from the skeleton to get the most up-to-date copy in the course.
+  Normally, it should not be edited by course developers.
+  If there is a need to customize the standard operating instructions, discuss with your architect and content services. -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Common/Control-Classroom.xml"/>
+</section>

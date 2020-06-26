@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <important>
+    <para>para</para>
+  </important>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <mediaobject id="github-signup">
+        <imageobject>
+          <imagedata align="center" width="100%" fileref="images/appendix/github-signup.png"/>
+        </imageobject>
+        <caption>Creating a GitHub account</caption>
+      </mediaobject>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <mediaobject id="github-new-repo">
+        <imageobject>
+          <imagedata align="center" width="50%" fileref="images/appendix/github-newrepo.png"/>
+        </imageobject>
+        <caption>Creating a new Git repository</caption>
+      </mediaobject>
+      <!-- TechEditor:  [standards] Don't use 'width="50%"' to manipulate images. All images should be at 100%. Talk to Sajith if you need more info. NOFIX. This is news to me. 100% is too big and takes up too much space in PDF and print. I do not see any blurriness in the image?-->
+      <para>para</para>
+      <mediaobject id="github-new-repo2">
+        <imageobject>
+          <imagedata align="center" width="50%" fileref="images/appendix/github-newrepo2.png"/>
+        </imageobject>
+        <caption>Creating new Git repository</caption>
+      </mediaobject>
+      <!-- TechEditor: See above re width="50%" NOFIX. See previous comment.-->
+    </listitem>
+  </orderedlist>
+  <note role="References">
+    <para>para</para>
+  </note>
+</section>

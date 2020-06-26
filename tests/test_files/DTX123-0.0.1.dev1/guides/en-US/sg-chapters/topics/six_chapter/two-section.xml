@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="two-section">
+  <title>title</title>
+  <!-- Multiple-choice items allow valid, reliable, and economical measurement of a wide range of content in a relatively short testing time.
+Multiple-choice questions, while harder to write, tend to be more effective than matching questions when you need to test a student's ability to
+interpret facts, evaluate situations, explain cause and effect, make inferences, and predict results.
+For a deeper explanation, review the standards for writing quizzes in the Content Services guide:
+"Write a Quiz": https://mojo.redhat.com/groups/gls-content-services/content?filterID=contentstatus[published]~category[1-design-a-course-guidelines-for-planning-designing-and-writing-a-course] -->
+  <task role="MultChoice" id="openshift-arch-quiz-multchoice">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+      <!--  <para condition="role"> When you have completed the quiz, click <guibutton>check</guibutton>.
+          If you wish to try again, click <guibutton>reset</guibutton>. Click
+          <guibutton>show solution</guibutton> to see all of the correct answers. </para>-->
+    </tasksummary>
+    <procedure>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="openshift-arch-quiz-kubernetes">
+            <!-- Question should have id that is short version of topic -->
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="openshift-arch-quiz-resources">
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="openshift-arch-quiz-networking">
+            <question>
+              <para>para</para>
+            </question>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="openshift-arch-quiz-persistence">
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="openshift-arch-quiz-openshift">
+            <question>
+              <para>para</para>
+            </question>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+    </procedure>
+  </task>
+</section>

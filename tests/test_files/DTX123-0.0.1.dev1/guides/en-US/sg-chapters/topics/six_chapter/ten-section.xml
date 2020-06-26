@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="ten-section">
+  <title>title</title>
+  <task role="Checklist" id="openshift-webconsole-practice-checklist">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+    </tasksummary>
+    <taskprerequisites>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+    </taskprerequisites>
+    <procedure>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <!--ID Reviewer: Are ALL the images that follow critical to the understanding of the steps/sub-steps?
+                             If not, I would delete them here and rely on text.-->
+            <!--AuthorNote (dkolepp): I thought so at the time (that all images are needed).
+                            First time writing a UI section.
+                            Defer this fix to next update because:
+                            1.) Time - not sure what to cut.
+                            2.) No negative feedback during EA about length of content.
+            NOT FIXED right now...
+            -->
+            <mediaobject id="openshift-webconsole-ge-new-project1-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-project-list.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Create a new project - step 1</caption>
+            </mediaobject>
+            <mediaobject id="openshift-webconsole-ge-new-project2-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-new-project.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Create a new project - step 2</caption>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-project-status-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-project-status.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Project Status page</caption>
+            </mediaobject>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-dev-perspective-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-developer-perspective.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Developer perspective drop-down</caption>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-select-template-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-developer-catalog.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Developer Catalog page</caption>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-filter-php-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-php-filter.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Finding PHP-related templates</caption>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-s2i-php-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-s2i-php.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Configuring Source-to-Image for a PHP application</caption>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-advanced-git-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-advanced-git.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Setting Advanced Git Options for the application</caption>
+            </mediaobject>
+            <para>para</para>
+            <para>para</para>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-post-creaton-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-topology.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Topology page</caption>
+            </mediaobject>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-admin-perspective-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-admin-perspective.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Administrator perspective drop-down</caption>
+            </mediaobject>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+        </itemizedlist>
+        <substeps>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-dc-overview-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-dc-overview.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Application deployment configuration overview page</caption>
+            </mediaobject>
+            <para>para</para>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-bc-overview-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-bc-overview.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Application build configuration overview page</caption>
+            </mediaobject>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-build-logs-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-build-logs-overview.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>An application build overview page</caption>
+            </mediaobject>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-build-logs-terminal-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-build-logs-terminal.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Logs for an application build</caption>
+            </mediaobject>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-services-overview-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-services-overview.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Service overview page</caption>
+            </mediaobject>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-routes-overview-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-routes-overview.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Route overview page</caption>
+            </mediaobject>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-app-v1-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-app-v1.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Initial PHP application results</caption>
+            </mediaobject>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-start-build-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-bc-start-build.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Start an application build</caption>
+            </mediaobject>
+            <para>para</para>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="openshift-webconsole-ge-updated-app-graphic">
+              <imageobject>
+                <imagedata fileref="images/console-app-update.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+              <caption>Updated web application output</caption>
+            </mediaobject>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <mediaobject id="openshift-webconsole-ge-delete-project-graphic">
+          <imageobject>
+            <imagedata fileref="images/console-project-delete.png" width="100%" scalefit="1" align="center"/>
+          </imageobject>
+          <caption>Delete a project</caption>
+        </mediaobject>
+        <para>para</para>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+      <para>para</para>
+    </taskrelated>
+  </task>
+</section>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="two-section">
+  <title>title</title>
+  <task role="Checklist" id="deploying-manage-cli-ge-practice">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+    </tasksummary>
+    <taskprerequisites>
+      <para>para</para>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <!--Note: these are standard images from Red Hat, no need to check them on the start verb in the shared instance classroom -->
+        <!--Note: omitting the image names on purpose, because when DO288 is released these may change from RHEL7 to RHEL8 or UBI-based images -->
+        <!--XXX not not try to update to MySQL 8.0 because the MySQL client on PHP 7.2 cannot talk to it -->
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+      <para>para</para>
+      <screen>screen</screen>
+    </taskprerequisites>
+    <procedure>
+      <step>
+        <para>para</para>
+        <substeps>
+          <!-- Note: this GE does not change any source code, so there is no need to create a new branch -->
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+            <para>para</para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <calloutlist>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-1">
+                <para>para</para>
+              </callout>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-2">
+                <para>para</para>
+              </callout>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-3">
+                <para>para</para>
+              </callout>
+            </calloutlist>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <calloutlist>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-4">
+                <para>para</para>
+              </callout>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-5">
+                <para>para</para>
+              </callout>
+            </calloutlist>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <calloutlist>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-6">
+                <para>para</para>
+              </callout>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-7">
+                <para>para</para>
+              </callout>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-8">
+                <para>para</para>
+              </callout>
+            </calloutlist>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <calloutlist>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-9">
+                <para>para</para>
+              </callout>
+              <callout arearefs="deploying-manage-cli-ge-practice-template-10">
+                <para>para</para>
+              </callout>
+            </calloutlist>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <!-- TechEditor: Why is the line starting with -n indented so much?
+FL: NOCHANGE: the team agreed to a standard of indenting four spaces continuation lines, for readability.
+This will make more sense when you see some oc new-app commands where a single argument is too large for the paper width
+and we need to add a line break and shell continuation line (\) in the middle of the value of an argument.
+That argument value will not ne indentedm visually distinct from other arguments that fit the paper width. -->
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step id="deploying-manage-cli-ge-3-6">
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+          </step>
+          <step id="deploying-manage-cli-ge-3-7">
+            <para>para</para>
+            <screen>screen</screen>
+            <!-- TechEditor: What does ... mean at the ends of some of these lines?
+FL: NOCHANGE: this tells that we are omitting columns from the output.
+We think that adding ...output ommit... to each line is ugly -->
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <para>para</para>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+            <itemizedlist>
+              <!-- TechEditor: [xml] Be consistent with DocBook elements. Use <varname> for variables and <literal> for the *values* of variables.
+                FL: DONE: I see no reason to have <varname> as a special case, I'd have <code> instead -->
+              <listitem>
+                <para>para</para>
+              </listitem>
+              <listitem>
+                <para>para</para>
+              </listitem>
+              <listitem>
+                <para>para</para>
+              </listitem>
+              <listitem>
+                <para>para</para>
+              </listitem>
+            </itemizedlist>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+            <para>para</para>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+    </taskrelated>
+  </task>
+  <para>para</para>
+</section>

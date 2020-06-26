@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="twelve-section">
+  <title>title</title>
+  <task role="Checklist" id="migrating-external-ge-practice">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+    </tasksummary>
+    <taskprerequisites>
+      <para>para</para>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+    </taskprerequisites>
+    <procedure>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps>
+          <!--XXX
+          OpenShift fails to resolve the database hostname because it is a CNAME to another CNAME;
+          if I fetch the final A record or its IP address, it works.
+          I can use the host command to find the real A record and its IP address.
+          Using the IP address does *not* work. it needs to be a resolvable FQDN.
+
+          <step>
+            <para>
+              Use the <command>host</command> command to get the real host name behind the MariaDB server host name.
+              The output shows that it is actually an alias.
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>host mysql.<replaceable>cluster.domain.example.com</replaceable></userinput>
+mysql.dev-us.us.dev.nextcle.com is an alias for mysql-dev-us-services.c8f2h5upalhx.us-east-1.rds.amazonaws.com.
+mysql-dev-us-services.c8f2h5upalhx.us-east-1.rds.amazonaws.com is an alias for ec2-3-218-13-61.compute-1.amazonaws.com.
+<code>ec2-3-218-13-61.compute-1.amazonaws.com</code> has address 3.218.13.61</screen>
+          </step>
+
+          <step>
+            <para>
+              Use the <command>oc create svc</command> command to create a service based on an external name and the database server real host name from the previous step.
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc create svc externalname tododb \</userinput>
+<prompt>&gt; </prompt><userinput>&dash;-external-name <replaceable>ec2-3-218-13-61.compute-1.amazonaws.com</replaceable></userinput>
+service "tododb" created</screen>
+          </step>
+
+          <step>
+            <para>
+              Verify that the <systemitem>tododb</systemitem> service exists and shows an external IP but no cluster IP:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc get svc</userinput>
+NAME      TYPE           CLUSTER-IP       EXTERNAL-IP                     ...
+todoapp   ClusterIP      172.30.140.201   &lt;none&gt;                       ...
+<code>tododb</code>    ExternalName   &lt;none&gt;           <code>ec2-3-218-13-61.compute-1.amazonaws.com</code>   ...</screen>
+          </step>
+          -->
+          <!--XXX steps if we find a way to work with CNAME or force an real A record for the external MariaDB
+          Jim found a configuration issue related to private vs public DNS szones.
+          Looks like fixing this allows using either CNAME or A for the external server.
+          -->
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+    </taskrelated>
+  </task>
+  <para>para</para>
+</section>

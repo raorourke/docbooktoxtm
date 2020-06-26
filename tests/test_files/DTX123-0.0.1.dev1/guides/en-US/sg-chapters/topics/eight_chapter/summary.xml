@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-summary">
+
+  <title>Summary</title>
+  <!-- TechEditor: This summary is still way too long. It doesn't fit on a slide. It needs a complete overhaul. -->
+
+  <para>
+<!--ID Reviewer 4/25/19: This list is exhaustive. You should ony list the top 5-6 most important lessons from the chapter.
+Build the slide deck and view the Summary slide.
+Note the font size; it will be way too small for class viewing.
+This same note was added in the last rev of this course and marked FIXED; but nothing was modified.
+Tech editor agreed below but nothing changed.-->
+
+    <!-- TechEditor: Agreed. Way too much info here for a summary. FIXED-->
+    In this chapter, you learned:
+  </para>
+  <itemizedlist>
+    <!-- TechEditor: This list is not written in parallel, and doesn't follow on from the stem (the intro sentence). As you read each list item, it should be a natural extension of "In this chapter, you learned". FIXED-->
+    <listitem>
+      <para>
+        RHOCP container deployment options include:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            Deploy pre-built container images directly on an OpenShift cluster.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Create a Dockerfile using a base image and customize to suit your needs.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Use a Source-to-Image (S2I) build where RHOCP combines source code with a builder image.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para>
+        Common changes to Dockerfiles required to run a container on RHOCP:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            Root group permissions on files that are read or written by processes in the container.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Files that are executable must have group execute permissions.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Processes running in the container must not listen on privileged ports (ports below 1024).
+          </para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para>
+        Use Secrets to store sensitive information and access from your pods.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Use configuration map resources to store nonsensitive environment specific data.
+      </para>
+    </listitem>
+  </itemizedlist>
+</section>

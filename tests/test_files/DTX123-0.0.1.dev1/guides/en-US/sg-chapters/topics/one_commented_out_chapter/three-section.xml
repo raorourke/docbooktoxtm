@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="three-section">
+  <title>title</title>
+  <!-- The highlights tag has been removed, please create a summary at the end of the chapter using the summary template. -->
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <!-- TechEditor: "allows to manage" is missing a word. Allows {who or what?} to manage? FIXED-->
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+        <para>para</para>
+        <para>para</para>
+        <screen>screen</screen>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+        <screen>screen</screen>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+        <screen>screen</screen>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+            <!-- TechEditor: You don't "accomplish behavior", you accomplish a task, or achieve a result. Also, the phrase "look the logs" does not make sense. This sentence needs a rewrite.  FIXED-->
+            <screen>screen</screen>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+            <!-- TechEditor: s/an/a/ (because "specific" starts with a consonant)  FIXED-->
+            <screen>screen</screen>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <!-- TechEditor: s/docker/Docker/  FIXED-->
+  <screen>screen</screen>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <!-- TechEditor: What do you mean "there are some configurations to prune builds" ? Are these presets included by default with OpenShift? best practices? popular methodologies? Explain. NO CHANGE: We don' want to provide too much detais because this topic is for administrators, not for developers. -->
+  <para>para</para>
+  <!-- TechEditor: This sentence is confusing.  Suggested: "Sometimes you may need to ask administrators to change the prune configuration so that build logs are retained longer than the default so that you can troubleshooting build issues." (or something like that)  FIXED-->
+  <note role="References">
+    <para>para</para>
+    <!-- RA: TODO update these when the documentation is available for 4.1 -->
+  </note>
+</section>

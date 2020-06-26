@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import typer
 
@@ -25,7 +25,7 @@ def resource(target_fname: Path = typer.Argument(...)) -> FileName:
 
 
 @app.command(help='Restores target files exported from XTM to original source file structure.')
-def unsource(course: str = typer.Argument(...), release_tag: Optional[str] = typer.Option(
+def unsource(course: Union[str, Path] = typer.Argument(...), release_tag: Optional[str] = typer.Option(
     None, '-r', '--release-tag', help='optional GitHub release tag'
 ),
              ) -> FileName:
@@ -38,7 +38,7 @@ def unsource(course: str = typer.Argument(...), release_tag: Optional[str] = typ
     :return zip_filename: Name of restructured .ZIP package that is
     ready to be uploaded to XTM for analysis.
     """
-    source_file = get_zip(course, release_tag)
+    source_file = course if isinstance(course, Path) else get_zip(course, release_tag)
     unsourced_fname = source_to_xtm(source_file)
     typer.echo("Source file structure restructured successfully!")
     typer.echo(f"Unsourced file name: {unsourced_fname}")

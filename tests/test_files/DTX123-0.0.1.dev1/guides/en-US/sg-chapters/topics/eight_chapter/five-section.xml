@@ -1,0 +1,454 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-configuration">
+  <title>Injecting Configuration Data into an Application</title>
+
+  <bridgehead>Objectives</bridgehead>
+  <para>
+    After completing this section, you should be able to select a method for injecting configuration data into an application and create the necessary resources to do so.
+  </para>
+
+  <bridgehead>Externalizing Application Configuration in OpenShift</bridgehead>
+  <para>
+    Typically, developers configure their applications through a combination of environment variables, command-line arguments, and configuration files.
+    When deploying applications to OpenShift, configuration management presents a challenge due to the immutable nature of containers.
+    Unlike traditional, non-containerized deployments, it is not recommended to couple the application with the configuration when running containerized applications.
+    <!-- TechEditor: [logic] Vague: You say "couple both the app and the config" but I think you mean "couple the app and|with the config." As written it means you are coupling the app and the config *to* something. Please clarify. RA: updated-->
+  </para>
+  <para>
+    The recommended approach for containerized applications is to decouple the static application binaries from the dynamic configuration data and to externalize the configuration.
+    This separation ensures the portability of applications across many environments.
+  </para>
+  <para>
+    For example, suppose you want to promote an application that is deployed to an OpenShift cluster from a development environment to a production environment, with intermediate stages such as testing and user acceptance.
+    <!-- TechEditor: [standards] Only capitalize proper nouns. "Cluster"? RA: updated-->
+    You should use the same application container image in all stages and have the configuration details specific to each environment outside the container image.
+  </para>
+
+  <bridgehead>Using Secret and Configuration Map Resources</bridgehead>
+  <para>
+    OpenShift provides the secret and configuration map resource types to externalize and manage configuration for applications.
+    <!-- TechEditor: This para seems out of place. It talks about secret and confi map resource types, but the following title is exactly that. Shouldn't you move this para into that subsection? RA: updated-->
+  </para>
+  <para>
+    Secret resources are used to store sensitive information, such as passwords, keys, and tokens.
+    As a developer, it is important to create secrets to avoid compromising credentials and other sensitive information in your application.
+    There are different secret types which can be used to enforce usernames and keys in the secret object: <literal>service-account-token</literal>, <literal>basic-auth</literal>, <literal>ssh-auth</literal>, <literal>tls</literal> and <literal>opaque</literal>.
+    The default type is <literal>opaque</literal>.
+    The <literal>opaque</literal> type does not perform any validation, and allows unstructured key:value pairs that can contain arbitrary values.
+    <!-- TechEditor: Recommend s/this/other/ because as written it's a bit vague. RA: updated-->
+  </para>
+  <para>
+    Configuration map resources are similar to secret resources, but they store nonsensitive data.
+    A configuration map resource can be used to store fine-grained information, such as individual properties, or coarse-grained information, such as entire configuration files and JSON data.
+  </para>
+  <para>
+    You can create configuration map and secret resources using the OpenShift CLI or the web console.
+    You can then reference them in your pod specification and OpenShift automatically injects the resource data into the container as environment variables, or as files mounted through volumes inside the application container.
+  </para>
+  <para>
+    You can also change the deployment configuration for a running application to reference configuration map and secret resources.
+    OpenShift then automatically redeploys the application and makes the data available to the container.
+  </para>
+  <para>
+    Data is stored inside a secret resource using base64 encoding.
+    When data from a secret is injected into a container, the data is decoded and either mounted as a file, or injected as environment variables inside the container.
+  </para>
+  <formalpara>
+    <title>Features of Secrets and Configuration Maps</title>
+    <para>
+      Notice the following with respect to secrets and configuration maps:
+    </para>
+  </formalpara>
+  <itemizedlist>
+    <listitem>
+      <para>
+        They can be referenced independently of their definition.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        For security reasons, mounted volumes for these resources are backed by temporary file storage facilities (tmpfs) and never stored on a node.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        They are scoped to a namespace.
+      </para>
+    </listitem>
+  </itemizedlist>
+  <!-- <note>
+        <para>
+          Data from secrets is encoded at rest, and encrypted at transit, when sent from the master to the nodes.
+          The data is not encrypted when saved in the etcd storage.
+          Red&nbsp;Hat is committed to updating OpenShift Container Platform to ensure secret data is encrypted at rest during the 3.6 release stream.
+          For more details, see <ulink url="https://blog.openshift.com/encrypting-secret-data-rest/">Encrypting secret data
+                at rest</ulink>
+    </para>
+  </note> -->
+  <bridgehead>Creating and Managing Secrets and Configuration Maps</bridgehead>
+  <para>
+    Secrets and configuration maps must be created before creating the pods that depend on them.
+    You can use the CLI or the Web Console to create these resources.
+    <!-- TechEditor: afaict there are two ways: CLI and Web Console. If that is true then I would write that, or something like it: "You can use the CLI or the Web Console to create these resources." As written, it seems like there are several ways to create the resources. RA: updated -->
+  </para>
+  <formalpara>
+    <title>Using the Command Line</title>
+    <para>
+      Use the <command>oc create</command> command to create secrets and configuration map resources.
+    </para>
+  </formalpara>
+  <para>
+    To create a new configuration map that stores string literals:
+    <!-- TechEditor: Nit-pick: Is there such a thing as a string that is not simple? s/simple// ? Minimalism: If you can remove a word and not change the meaning or reduce clarity, then remove it. RA: updated-->
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create configmap <replaceable>config_map_name</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-literal <replaceable>key1=value1</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-literal <replaceable>key2=value2</replaceable></userinput></screen>
+  <para>
+    To create a new secret that stores string literals:
+    <!-- TechEditor: Same comment as above RA: updated-->
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create secret generic <replaceable>secret_name</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-literal <replaceable>username=user1</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-literal <replaceable>password=mypa55w0rd</replaceable></userinput></screen>
+  <para>
+    To create a new configuration map that stores the contents of a file or a directory containing a set of files:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create configmap <replaceable>config_map_name</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-file <replaceable>/home/demo/conf.txt</replaceable></userinput></screen>
+  <para>
+    When you create a configuration map from a file, the key name will be the name of the file by default and the value will be the contents of the file.
+  </para>
+  <para>
+    When you create a configuration map resource based on a directory, each file whose name is a valid key in the directory is stored in the configuration map.
+    Subdirectories, symbolic links, device files, and pipes are ignored.
+  </para>
+  <para>
+    Run the <command>oc create configmap --help</command> command for more information.
+  </para>
+  <note>
+    <para>
+      You can also abbreviate the <option>configmap</option> resource type argument as <option>cm</option> in the <command>oc</command> command-line interface.
+      For example:
+    </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create cm <replaceable>myconf</replaceable> --from-literal <replaceable>key1</replaceable>=<replaceable>value1</replaceable></userinput>
+<prompt>[user@host ~]$ </prompt><userinput>oc get cm <replaceable>myconf</replaceable></userinput></screen>
+  </note>
+  <para>
+    To create a new secret that stores the contents of a file or a directory containing a set of files:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create secret generic <replaceable>secret_name</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-file <replaceable>/home/demo/mysecret.txt</replaceable></userinput></screen>
+  <para>
+    When you create a secret from either a file or a directory, the key names are set the same way as for configuration maps.
+  </para>
+  <para>
+    For more details, including storing TLS certificates and keys in secrets, run the <command>oc create secret --help</command> and the <command>oc secret</command> commands.
+  </para>
+  <formalpara>
+    <title>Using the OpenShift Web Console</title>
+    <para>
+      You can also use the OpenShift web console to create configuration maps and secrets.
+      To create and manage secrets from the web console, log in to the OpenShift web console and navigate to the <menuchoice>
+        <guimenu>Workloads</guimenu>
+        <guimenuitem>Secrets</guimenuitem>
+        </menuchoice> page.
+    </para>
+  </formalpara>
+  <mediaobject id="designing-configuration-web-console-secrets">
+    <imageobject>
+      <imagedata fileref="images/designing/ocp-web-secrets.png" scalefit="1" width="100%" align="center"/>
+    </imageobject>
+    <caption>Managing secrets from the web console</caption>
+  </mediaobject>
+  <para>
+    To create and manage configuration maps from the web console, navigate to the <menuchoice>
+      <guimenu>Workloads</guimenu>
+      <guimenuitem>Config Maps</guimenuitem>
+      </menuchoice> page.
+  </para>
+  <mediaobject id="designing-configuration-web-console-cmaps">
+    <imageobject>
+      <imagedata fileref="images/designing/ocp-cmaps.png" scalefit="1" width="100%" align="center"/>
+    </imageobject>
+    <caption>Managing configuration maps from the web console</caption>
+  </mediaobject>
+  <para>
+    You can edit the value assigned to each key in a configuration map, and also the encoded value assigned to each key in a secret, using the YAML editor provided by the web console.
+    However, in the case of a secret, you need to encode your data in base64 format before inserting it into the secret resource definition.
+  </para>
+  <formalpara>
+    <title>Configuration Map and Secret Resource Definitions</title>
+    <para>
+      Because configuration maps and secrets are regular OpenShift resources, you can use either the <command>oc create</command> command or the web console to import these resource definition files in YAML or JSON format.
+    </para>
+  </formalpara>
+  <para>
+    A sample configuration map resource definition in YAML format is shown below:
+  </para>
+<screen>apiVersion: v1
+data:
+    key1:<co id="designing-configuring-cmap-1"/> value1 <co id="designing-configuring-cmap-2"/>
+    key2:<co id="designing-configuring-cmap-3"/> value2 <co id="designing-configuring-cmap-4"/>
+kind: ConfigMap <co id="designing-configuring-cmap-5"/>
+metadata:
+    name: myconf <co id="designing-configuring-cmap-6"/></screen>
+  <para>
+    <calloutlist>
+      <callout arearefs="designing-configuring-cmap-1">
+        <para>
+          The name of the first key.
+          By default, an environment variable or a file the with same name as the key is injected into the container depending on whether the configuration map resource is injected as an environment variable or a file.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-cmap-2">
+        <para>
+          The value stored for the first key of configuration map.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-cmap-3">
+        <para>
+          The name of the second key.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-cmap-4">
+        <para>
+          The value stored for the second key of the configuration map.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-cmap-5">
+        <para>
+          The OpenShift resource type; in this case, a configuration map.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-cmap-6">
+        <para>
+          A unique name for this configuration map inside a project.
+        </para>
+      </callout>
+  </calloutlist>
+  </para>
+  <para>
+    A sample secret resource in YAML format is shown below:
+  </para>
+<screen>apiVersion: v1
+data:
+    username:<co id="designing-configuring-secret-1"/> cm9vdAo= <co id="designing-configuring-secret-2"/>
+    password:<co id="designing-configuring-secret-3"/> c2VjcmV0Cg== <co id="designing-configuring-secret-4"/>
+kind: Secret <co id="designing-configuring-secret-5"/>
+metadata:
+    name: mysecret <co id="designing-configuring-secret-6"/>
+    type: Opaque</screen>
+  <para>
+    <calloutlist>
+      <callout arearefs="designing-configuring-secret-1">
+        <para>
+          The name of the first key.
+          This provides the default name for either an environment variable or a file in a pod, in the same way as key names from a configuration map.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-secret-2">
+        <para>
+          The value stored for the first key, in base64-encoded format.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-secret-3">
+        <para>
+          The name of the second key.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-secret-4">
+        <para>
+          The value stored for the second key, in base64-encoded format.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-secret-5">
+        <para>
+          The OpenShift resource type; in this case, a secret.
+        </para>
+      </callout>
+      <callout arearefs="designing-configuring-secret-6">
+        <para>
+          A unique name for this secret resource inside a project.
+        </para>
+      </callout>
+  </calloutlist>
+  </para>
+  <formalpara>
+    <title>Alternative Syntax for Secret Resource Definitions</title>
+    <para>
+      A template cannot define secrets using the standard syntax, because all key values are encoded.
+      OpenShift provides an alternative syntax for this scenario, where the <code>stringData</code> attribute replaces the <code>data</code> attribute, and the key values are not encoded.
+    </para>
+  </formalpara>
+  <para>
+    Using the alternative syntax, the previous example becomes:
+  </para>
+<screen>apiVersion: v1
+<code>stringData</code>:
+    username: <code>user1</code>
+    password: <code>pass1</code>
+kind: Secret
+metadata:
+    name: mysecret
+    type: Opaque</screen>
+  <para>
+    The alternative syntax is never saved in the OpenShift master etcd database.
+    <!-- TechEditor: etcd or Etcd? I seem to recall both being used. RA: should be lower case-->
+    OpenShift converts secret resources defined using the alternative syntax into the standard representation for storage.
+    If you run either <command>oc export</command>
+    or <command>oc get</command> with a secret that was created using the alternative syntax, you get a resource using the standard syntax.
+  </para>
+  <formalpara>
+    <title>Commands to Manipulate Configuration Maps</title>
+    <para>
+      To view the details of a configuration map in JSON format, or to export a configuration map resource definition to a JSON file for offline creation:
+    </para>
+  </formalpara>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc get configmap/<replaceable>myconf</replaceable> -o json</userinput></screen>
+  <para>
+    To delete a configuration map:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc delete configmap/<replaceable>myconf</replaceable></userinput></screen>
+  <para>
+    To edit a configuration map, use the <command>oc edit</command> command.
+    This command opens a Vim-like buffer by default, with the configuration map resource definition in YAML format:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc edit configmap/<replaceable>myconf</replaceable></userinput></screen>
+  <para>
+    Use the <command>oc patch</command> command to edit a configuration map resource.
+    This approach is noninteractive and is useful when you need to script the changes to a resource:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc patch configmap/<replaceable>myconf</replaceable> --patch '{"data":{"<replaceable>key1</replaceable>":"<replaceable>newvalue1</replaceable>"}}'</userinput></screen>
+  <formalpara>
+    <title>Commands to Manipulate Secrets</title>
+    <para>
+      The commands to manipulate secret resources are similar to those used for configuration map resources.
+    </para>
+  </formalpara>
+  <para>
+    To view or export the details of a secret:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc get secret/<replaceable>mysecret</replaceable> -o json</userinput></screen>
+  <para>
+    To delete a secret:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc delete secret/<replaceable>mysecret</replaceable></userinput></screen>
+  <para>
+    To edit a secret, first encode your data in base64 format, for example:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>echo '<replaceable>newpassword</replaceable>' | base64</userinput>
+<replaceable>bmV3cGFzc3dvcmQK</replaceable></screen>
+  <para>
+    Use the encoded value to update the secret resource using the <command>oc edit</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc edit secret/<replaceable>mysecret</replaceable></userinput></screen>
+  <para>
+    You can also edit a secret resource using the <command>oc patch</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc patch secret/<replaceable>mysecret</replaceable> --patch \</userinput>
+<prompt>&gt; </prompt><userinput>'{"data":{"<replaceable>password</replaceable>":"<replaceable>bmV3cGFzc3dvcmQK</replaceable>"}}'</userinput></screen>
+  <para>
+    Configuration maps and secrets can also be changed and deleted using the OpenShift web console.
+  </para>
+  <bridgehead>Injecting Data from Secrets and Configuration Maps into Applications</bridgehead>
+  <para>
+    Configuration maps and secrets can be mounted as data volumes, or exposed as environment variables, inside an application container.
+  </para>
+  <para>
+    To inject all values stored in a configuration map into environment variables for pods created from a deployment configuration, use the <command>oc set env</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set env dc/<replaceable>mydcname</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from configmap/<replaceable>myconf</replaceable></userinput></screen>
+  <para>
+    To mount all keys from a configuration map as files from a volume inside pods created from a deployment configuration, use the <command>oc set volume</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set volume dc/<replaceable>mydcname</replaceable> --add \</userinput>
+<prompt>&gt; </prompt><userinput>-t configmap -m <replaceable>/path/to/mount/volume</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--name <replaceable>myvol</replaceable> --configmap-name <replaceable>myconf</replaceable></userinput></screen>
+  <para>
+    To inject data inside a secret into pods created from a deployment configuration, use the <command>oc set env</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set env dc/<replaceable>mydcname</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--from secret/<replaceable>mysecret</replaceable></userinput></screen>
+
+  <para>
+    To mount data from a secret resource as a volume inside pods created from a deployment configuration, use the <command>oc set volume</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set volume dc/<replaceable>mydcname</replaceable> --add \</userinput>
+<prompt>&gt; </prompt><userinput>-t secret -m <replaceable>/path/to/mount/volume</replaceable> \</userinput>
+<prompt>&gt; </prompt><userinput>--name <replaceable>myvol</replaceable> --secret-name <replaceable>mysecret</replaceable></userinput></screen>
+
+  <formalpara>
+    <title>Changing Configuration Maps and Secrets</title>
+    <para>
+      Each time you change a deployment configuration, using commands such as <command>oc set env</command> and <command>oc set volume</command>, a new deployment is triggered by default.
+    </para>
+  </formalpara>
+  <para>
+    If you make multiple changes to the same deployment configuration, it might be advisable to disable configuration change triggers using the <command>oc set triggers</command> command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set triggers dc/<replaceable>mydcname</replaceable> --from-config --remove</userinput></screen>
+  <para>
+    After making all of the changes to your config maps or secrets, use the <command>oc rollout latest</command> command to trigger a new deployment of the application:
+  </para>
+
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc rollout latest <replaceable>mydcname</replaceable></userinput></screen>
+
+  <para>
+    Use the <command>oc set triggers</command> command to re-enable the triggers:
+  </para>
+
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set triggers dc/<replaceable>mydcname</replaceable> --from-config</userinput></screen>
+  <bridgehead>Application Configuration Options</bridgehead>
+  <para>
+    Use configuration maps to store configuration data in plain text and if the information is not sensitive.
+    Use secrets if the information you are storing is sensitive.
+  </para>
+  <para>
+    If your application only has a few simple configuration variables that can be read from environment variables or passed on the command line, use environment variables to inject data from configuration maps and secrets.
+    Environment variables are the preferred approach over mounting volumes inside the container.
+  </para>
+
+  <para>
+    On the other hand, if your application has a large number of configuration variables, or if you are migrating a legacy application that makes extensive use of configuration files, use the volume mount approach instead of creating an environment variable for each of the configuration variables.
+    For example, if your application expects one or more configuration files from a specific location on your file system, you should create secrets or configuration maps from the configuration files and mount them inside the container ephemeral file system at the location that the application expects.
+  </para>
+  <para>
+    To accomplish that goal, with secrets pointing to <filename>/home/student/configuration.properties</filename> file, use the following command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create secret generic security \</userinput>
+<prompt>&gt; </prompt><userinput>--from-file /home/student/configuration.properties</userinput></screen>
+  <para>
+    To inject the secret into the application, configure a volume that refers to the secrets created in the previous command.
+    The volume must point to an actual directory inside the application where the secrets file is stored.
+  </para>
+  <para>
+    In the following example, the <filename>configuration.properties</filename> file is stored in the <filename>/opt/app-root/secure</filename> directory.
+    To bind the file to the application, configure the deployment configuration from the application (<systemitem>dc/application</systemitem>):
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set volume <code>dc/application</code> --add \</userinput>
+<prompt>&gt; </prompt><userinput>-t secret -m /opt/app-root/secure \</userinput>
+<prompt>&gt; </prompt><userinput>--name myappsec-vol --secret-name <code>security</code></userinput></screen>
+  <para>
+    To create a configuration map, use the following command:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create configmap <code>properties</code> \</userinput>
+<prompt>&gt; </prompt><userinput>--from-file /home/student/configuration.properties</userinput></screen>
+  <para>
+    To bind the application to the configuration map, update the deployment configuration from that application to use the configuration map:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc set env dc/application \</userinput>
+<prompt>&gt; </prompt><userinput>--from configmap/<code>properties</code></userinput></screen>
+
+  <!-- Template for a reference that does link to Red Hat Documentation. -->
+  <note role="References">
+    <para>
+      Further information about secrets is available in the <citetitle>Providing Sensitive Data to Pods</citetitle> chapter of the <emphasis>Nodes</emphasis> guide for Red&nbsp;Hat OpenShift Container Platform&nbsp;4.2; at <ulink url="https://docs.openshift.com/container-platform/4.2/nodes/pods/nodes-pods-secrets.html"/>
+    </para>
+  </note>
+</section>

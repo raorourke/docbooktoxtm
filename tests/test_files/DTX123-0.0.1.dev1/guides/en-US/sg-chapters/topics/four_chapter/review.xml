@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section role="Test" id="review">
+  <title>title</title>
+  <task role="Lab" id="image-review-checklist">
+    <title>title</title>
+    <tasksummary>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+    </tasksummary>
+    <taskprerequisites>
+      <para>para</para>
+      <screen>screen</screen>
+    </taskprerequisites>
+    <procedure>
+      <step id="image-review-lab-search">
+        <para>para</para>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-run-official">
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+        </itemizedlist>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-update-dev">
+        <para>para</para>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-commit-dev">
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+        </itemizedlist>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-run-dev">
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+        </itemizedlist>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-update-final">
+        <para>para</para>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-commit-final">
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+        </itemizedlist>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-rmi-dev">
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step id="image-review-lab-run-final">
+        <para>para</para>
+        <itemizedlist>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+          <listitem>
+            <para>para</para>
+          </listitem>
+        </itemizedlist>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+      <para>para</para>
+    </taskrelated>
+  </task>
+</section>

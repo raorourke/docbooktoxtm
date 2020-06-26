@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <!-- Template Revision History: 2-5-15 added version date, removed empty spaces  -->
+  <title>title</title>
+  <!-- The highlights tag has been removed, please create a summary at the end of the chapter using the summary template. -->
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <!-- If there is only one objective, use a sentence in a single para, not an itemized list. Also, change the bridgehead to Objective. -->
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <!--ID Reviewer: Searching Images Using Quay.io works better here.   FIXED -->
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <!--ID Reviewer: Describing How to use the OpenShift Source-to-image Tool, works better here. FIXED -->
+  <para>para</para>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </orderedlist>
+  <para>para</para>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

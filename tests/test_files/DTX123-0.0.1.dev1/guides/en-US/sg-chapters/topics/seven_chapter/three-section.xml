@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="three-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/troubleshoot-s2i-build-links.png" width="100%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>Build instances of a project</caption>
+  </mediaobject>
+  <para>para</para>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/troubleshoot-s2i-build-detail.png" width="100%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>Detailed view of a build instance</caption>
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <screen>screen</screen>
+  <calloutlist>
+    <callout arearefs="s2i-lecture-co-cm1">
+      <para>para</para>
+    </callout>
+    <callout arearefs="s2i-lecture-co-cm2">
+      <para>para</para>
+    </callout>
+  </calloutlist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

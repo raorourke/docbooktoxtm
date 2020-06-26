@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-commented-out-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject>
+    <imageobject>
+      <imagedata align="center" width="100%" scalefit="1" fileref="images/publishing/rhcc.png"/>
+    </imageobject>
+    <caption>
+        Red&nbsp;Hat Container Catalog
+    </caption>
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject>
+    <imageobject>
+      <imagedata scalefit="1" width="100%" align="center" fileref="images/publishing/searchQuay.png"/>
+    </imageobject>
+    <caption>Quay.io web page</caption>
+  </mediaobject>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <!--XXX FL: I can't see why having this sectoin about buildah. AFAIK we never use buildah in DO288
+  <formalpara>
+    <title>Building Container Images with Buildah</title>
+
+    </!/-/- TechEditor: I ignored this section because it looks like it's not being used. \-\-\>
+    <para>
+      Buildah builds OCI-compliant container images.
+      Buildah can process standard Dockerfiles and also provides its own set of image building subcommands.
+      Buildah instructions allow building smaller images and operating system base images because it can leverage host tools, while Dockerfiles are restricted to the tools provided by a base image.
+    </para>
+  </formalpara>
+
+  <para>
+    The <command>build</command> subcommand from Podman actually runs Buildah to process a Dockerfile.
+  </para>
+  <para>
+    To create a container image using Buildah, you must use the <command>from</command> subcommand and identify which container base image you want to customize:
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>ctr1=$(buildah from rhel7:latest")</userinput></screen>
+  <para>
+    The <varname>ctrl1</varname> variable stores a reference to the custom container image.
+  </para>
+  <para>
+    To execute shell commands on a container image, use the <command>run</command> subcommand.
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>buildah run "$ctr1" \-\- yum update -y</userinput></screen>
+  <para>
+    To commit the resulting image and save your new container image, use the <command>commit</command> subcommand.
+  </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>buildah commit "$ctr1" "rhel7:updated"</userinput></screen>
+RA: commented out in final chapter review -->
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <itemizedlist>
+    <title>title</title>
+    <!-- TechEditor: [Consistency] Why use an itemizedlist here but a variablelist list for options? I would have used variablelist for both, and used a sentence syntax such as "Copies images..." and "Deletes images..." and similarly for the options. -->
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <variablelist>
+    <title>title</title>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>para</para>
+  <screen>screen</screen>
+  <warning>
+    <para>para</para>
+    <screen>screen</screen>
+  </warning>
+  <!-- TechEditor: Should we be recommending or suggesting this? Doesn't it then become part of the command history? We should tell students about consequences and dangers of this. -->
+  <!-- DKolepp: FIXED -->
+  <para>para</para>
+  <!-- TechEditor: I'd use a variable list below. And, is the colon part of the schema name? "oci:" and "docker:" I thought that was just part of the overall syntax, like https://example.com -->
+  <!-- Dkolepp: FIXED -->
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <!-- TechEditor: I don't think this example is as clear as it could be. How about this:
+<screen><prompt>[user@host ~]$ </prompt><userinput>skopeo copy oci:myimage docker://registry.example.com/</userinput></screen>
+  Having that comment at the end just made it confusing (to me).
+  -->
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <!--XXX the product docs from OCP 3.11 that talk about secrets for pulling and pushing images are not yet poted to OCP 4
+      https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/html/developer_guide/dev-guide-managing-images#using-image-pull-secrets
+    -->
+  </note>
+</section>

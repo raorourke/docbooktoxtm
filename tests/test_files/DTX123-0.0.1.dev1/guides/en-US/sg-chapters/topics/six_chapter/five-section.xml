@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="five-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <mediaobject id="openshift-routes-networking-1">
+    <imageobject>
+      <imagedata fileref="images/openshift-networking-1.png" align="center" scalefit="1" width="75%"/>
+    </imageobject>
+    <caption>OpenShift routes and Kubernetes services</caption>
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <note>
+    <para>para</para>
+  </note>
+  <important>
+    <para>para</para>
+  </important>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <note role="Insight">
+    <para>para</para>
+  </note>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <note role="References">
+    <para>para</para>
+  </note>
+</section>

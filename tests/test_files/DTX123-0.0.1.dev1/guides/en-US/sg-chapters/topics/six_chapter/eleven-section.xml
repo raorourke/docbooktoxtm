@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="eleven-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <!-- TechEditor: general remark - see preceding comments about using "OpenShift" without "Red&nbsp;Hat" -->
+  <!--ZG: Nowhere in this section do we ever give an example for why you would do this! Need to have an example here to give context for why we are talking about this!-->
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <!-- Template for a reference that does link to Red Hat Documentation. -->
+  <note role="References">
+    <!-- AuthorNote:  I realize these links "seem" old, and do not point to version 4.1 of OCP.
+                      I believe this is a problem with converting documentation from OCP3.11 to OCP4.x, and these documents do not exist yet.
+                      There information here is pertinent, and I can not find the equivalent information for OCP4.11.
+                      Should a sentence be included here to help students understand this?
+                      So, I have updated to the latest version of OCP 3, OCP3.11. -->
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

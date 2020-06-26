@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="three-section">
+  <!-- Template Revision History: 2-5-15 added version date, removed empty spaces  -->
+  <title>title</title>
+  <!-- The highlights tag has been removed, please create a summary at the end of the chapter using the summary template. -->
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </orderedlist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <calloutlist>
+    <callout arearefs="dockerfile-comment">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-from">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-label">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-maint">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-run">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-expose">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-env">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-add">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-copy">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-user">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-entry">
+      <para>para</para>
+    </callout>
+    <callout arearefs="dockerfile-cmd">
+      <para>para</para>
+    </callout>
+  </calloutlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <warning>
+    <para>para</para>
+  </warning>
+  <bridgehead>bridgehead</bridgehead>
+  <!--ID Reviewer Laering Images?  FIXED -->
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

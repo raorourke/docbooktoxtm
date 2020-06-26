@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <!-- TechEditor: This section seems to discuss the various chx of registries themselves. I didn't see much related to actually exposing the internal registry. Are you using "accessing" and "exposing" interchangeably? Based on the content of this section I think you need to rethink this heading. -->
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <!-- TechEditor: Strongly recommend changing to "The Image Registry Operator" -->
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <screen>screen</screen>
+  <!-- TechEditor: [xml] Missing prompt. Use [user@host ~] as the default prompt for example commands in <screen> elements. NB: Inline command examples do  not require prompts. Please fix everywhere.
+     DKolepp: FIXED -->
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>para</para>
+  <para>para</para>
+  <!--
+    XXX actually the registry-* roles are a left over from the deprecated OpenShift Containter Registry SKU and its specialized Registry Console
+    We do not want to comment about those nasty details in the offical curriculum, but the product docs still mention them so
+    We want to provide sufficient information so students know they can ignore these roles
+  -->
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

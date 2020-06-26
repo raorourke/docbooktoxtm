@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="six_chapter">
+  <!-- Chapters should have an id that is a short version of the title. -->
+  <title>title</title>
+  <abstract>
+    <para>para</para>
+  </abstract>
+  <!-- Include section content from the topics directory. -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/one-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/two-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/three-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/four-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/five-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/six-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/seven-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/eight-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/nine-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/ten-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/eleven-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/twelve-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/review.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/six_chapter/summary.xml"/>
+</chapter>

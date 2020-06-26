@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+    <itemizedlist>
+      <listitem>
+        <para>para</para>
+      </listitem>
+      <listitem>
+        <para>para</para>
+      </listitem>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </itemizedlist>
+    <para>para</para>
+  </note>
+  <!--I think it is also helpful to explain that you are entering into the running container and can execute commands:
+    TODO: Can you elaborate? That's what the following example is showing. -->
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject id="using-rhcc-screen1">
+    <imageobject>
+      <imagedata fileref="images/screen-rhcc-home-1.png" align="center" scalefit="1" width="100%"/>
+    </imageobject>
+    <caption>Red&nbsp;Hat Container Catalog home page</caption>
+  </mediaobject>
+  <para>para</para>
+  <mediaobject id="using-rhcc-screen2">
+    <imageobject>
+      <imagedata fileref="images/screen-rhcc-home-2.png" align="center" scalefit="1" width="100%"/>
+    </imageobject>
+    <caption>Apache httpd 2.4 (rhscl/httpd-24-rhel7) overview image page</caption>
+  </mediaobject>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <mediaobject id="using-rhcc-screen3">
+    <imageobject>
+      <imagedata fileref="images/screen-rhcc-home-3.png" align="center" scalefit="1" width="100%"/>
+    </imageobject>
+    <caption>Apache httpd 2.4 (rhscl/httpd-24-rhel7) latest image page</caption>
+  </mediaobject>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

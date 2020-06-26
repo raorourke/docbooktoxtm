@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="two-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <important>
+    <para>para</para>
+  </important>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <mediaobject id="quay-google-github-signup">
+        <imageobject>
+          <imagedata align="center" width="50%" fileref="images/appendix/quay-google-github-signup.png"/>
+        </imageobject>
+        <caption>Sign in using Google or GitHub credentials.</caption>
+      </mediaobject>
+      <!-- TechEditor:  [standards] Don't use 'width="50%"' to manipulate images. All images should be at 100%. Talk to Sajith if you need more info. -->
+      <para>para</para>
+      <mediaobject id="quay-create-account">
+        <imageobject>
+          <imagedata align="center" width="50%" fileref="images/appendix/quay-create-account.png"/>
+        </imageobject>
+        <caption>Creating a new account</caption>
+      </mediaobject>
+      <!-- TechEditor:  [standards] Don't use 'width="50%"' to manipulate images. All images should be at 100%. Talk to Sajith if you need more info. -->
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <mediaobject id="quay-new-repo">
+        <imageobject>
+          <imagedata align="center" width="50%" fileref="images/appendix/quay-newrepo.png"/>
+        </imageobject>
+        <caption>Creating a new image repository</caption>
+      </mediaobject>
+      <!-- TechEditor:  [standards] Don't use 'width="50%"' to manipulate images. All images should be at 100%. Talk to Sajith if you need more info. -->
+      <para>para</para>
+      <mediaobject id="quay-new-repo2">
+        <imageobject>
+          <imagedata align="center" width="50%" fileref="images/appendix/quay-newrepo2.png"/>
+        </imageobject>
+        <caption>Creating a new image repository</caption>
+      </mediaobject>
+      <!-- TechEditor:  [standards] Don't use 'width="50%"' to manipulate images. All images should be at 100%. Talk to Sajith if you need more info. -->
+    </listitem>
+  </orderedlist>
+  <note role="References">
+    <para>para</para>
+  </note>
+</section>

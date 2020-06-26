@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <!-- The highlights tag has been removed, please create a summary at the end of the chapter using the summary template. -->
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <!--ID Reviewer: The lead-in sentence for all section objective statements should say, "After completing this section, you should be able to..."
+I will change this when I see it but keep your eyes open for any that I may miss.-->
+  <!-- After the section title, headers alternate between Header 2 and Header 3 -->
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <!-- TechEditor: '...are available [...] available...' is redundant. FIXED-->
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <formalpara>
+    <!-- TechEditor: 'images' is plural, so use 'implement', or s/that implements/implementing/  FIXED -->
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <!-- TechEditor: use Oxford comma: "monitored," FIXED-->
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+    <!-- TechEditor:  s/run/runs  FIXED-->
+  </formalpara>
+  <para>para</para>
+  <!-- TechEditor: s/docker/Docker/  -->
+  <!-- TechEditor: Suggested, to avoid the "his" pronoun (suggesting that the developer is male): "A Docker environment is not required on the developer's workstation." or s/developer/developers and s/his/their/ and s/workstation/workstations/  FIXED-->
+  <note>
+    <para>para</para>
+  </note>
+  <!-- TechEditor: s/docker/Docker/  It should only be lower case when talking about the command  FIXED-->
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <!-- TechEditor: What does 'via' really mean here? replace with 'as', 'from', 'through', or whatever the appropriate meaningful preposition is. FIXED-->
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <!-- TechEditor: "It is also possible to generate" lacks a direct object. Generate what? Suggested: "It can also be generated using the..." ("It" becomes the subject, referring back to the previous sentence) or "It is also possible to generate one using the..." ("one" being the direct object, referring back to previous sentence)  FIXED-->
+  <para>para</para>
+  <screen>screen</screen>
+  <calloutlist>
+    <callout arearefs="bc-name">
+      <para>para</para>
+    </callout>
+    <callout arearefs="bc-triggers">
+      <para>para</para>
+    </callout>
+    <!-- TechEditor: 'triggers' is plural, so use 'start' FIXED-->
+    <callout arearefs="bc-secret">
+      <para>para</para>
+    </callout>
+    <callout arearefs="bc-serial">
+      <para>para</para>
+    </callout>
+    <callout arearefs="bc-source">
+      <para>para</para>
+    </callout>
+    <callout arearefs="bc-strategy">
+      <para>para</para>
+    </callout>
+    <callout arearefs="bc-output">
+      <para>para</para>
+    </callout>
+  </calloutlist>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

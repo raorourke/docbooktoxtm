@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject id="manage-lifecycle-actions">
+    <imageobject>
+      <imagedata fileref="images/lifecycle-actions.png" align="center" scalefit="1" width="95%"/>
+    </imageobject>
+    <caption>Podman managing subcommands</caption>
+  </mediaobject>
+  <para>para</para>
+  <mediaobject id="manage-lifecycle-queries">
+    <imageobject>
+      <imagedata fileref="images/lifecycle-queries.png" align="center" scalefit="1" width="95%"/>
+    </imageobject>
+    <caption>Podman query subcommands</caption>
+  </mediaobject>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <screen>screen</screen>
+  <!-- TechEditor: I'm not sure about this bit, but if the process is running in the foreground why would you see a command prompt?
+JS: Agree. The prompt should not be there, or at least not before the ^C. Removing.-->
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <note role="important">
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <para>para</para>
+      <screen>screen</screen>
+      <note>
+        <para>para</para>
+      </note>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <informaltable frame="all">
+        <tgroup cols="4">
+          <colspec colname="c1" colnum="1" colwidth="8.0*"/>
+          <colspec colname="c2" colnum="2" colwidth="8.0*"/>
+          <colspec colname="c3" colnum="3" colwidth="14.0*"/>
+          <colspec colname="c4" colnum="4" colwidth="30.0*"/>
+          <thead>
+            <row>
+              <entry>Signal</entry>
+              <entry>Value</entry>
+              <entry>Default Action</entry>
+              <entry>Comment</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <literal>SIGHUP</literal>
+              </entry>
+              <entry>1</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>Hangup detected on controlling terminal or death of controlling process</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGINT</literal>
+              </entry>
+              <entry>2</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>Interrupt from keyboard</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGQUIT</literal>
+              </entry>
+              <entry>3</entry>
+              <entry>
+                <literal>Core</literal>
+              </entry>
+              <entry>Quit from keyboard</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGILL</literal>
+              </entry>
+              <entry>4</entry>
+              <entry>
+                <literal>Core</literal>
+              </entry>
+              <entry>Illegal Instruction</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGABRT</literal>
+              </entry>
+              <entry>6</entry>
+              <entry>
+                <literal>Core</literal>
+              </entry>
+              <entry>Abort signal from abort(3)</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGFPE</literal>
+              </entry>
+              <entry>8</entry>
+              <entry>
+                <literal>Core</literal>
+              </entry>
+              <entry>Floating point exception</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGKILL</literal>
+              </entry>
+              <entry>9</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>Kill signal</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGSEGV</literal>
+              </entry>
+              <entry>11</entry>
+              <entry>
+                <literal>Core</literal>
+              </entry>
+              <entry>Invalid memory reference</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGPIPE</literal>
+              </entry>
+              <entry>13</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>Broken pipe: write to pipe with no readers</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGALRM</literal>
+              </entry>
+              <entry>14</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>Timer signal from alarm(2)</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGTERM</literal>
+              </entry>
+              <entry>15</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>Termination signal</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGUSR1</literal>
+              </entry>
+              <entry>30,10,16</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>User-defined signal 1</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGUSR2</literal>
+              </entry>
+              <entry>31,12,17</entry>
+              <entry>
+                <literal>Term</literal>
+              </entry>
+              <entry>User-defined signal 2</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGCHLD</literal>
+              </entry>
+              <entry>20,17,18</entry>
+              <entry>
+                <literal>Ign</literal>
+              </entry>
+              <entry>Child stopped or terminated</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGCONT</literal>
+              </entry>
+              <entry>19,18,25</entry>
+              <entry>
+                <literal>Cont</literal>
+              </entry>
+              <entry>Continue if stopped</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGSTOP</literal>
+              </entry>
+              <entry>17,19,23</entry>
+              <entry>
+                <literal>Stop</literal>
+              </entry>
+              <entry>Stop process</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGTSTP</literal>
+              </entry>
+              <entry>18,20,24</entry>
+              <entry>
+                <literal>Stop</literal>
+              </entry>
+              <entry>Stop typed at tty</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGTTIN</literal>
+              </entry>
+              <entry>21,21,26</entry>
+              <entry>
+                <literal>Stop</literal>
+              </entry>
+              <entry>tty input for background process</entry>
+            </row>
+            <row>
+              <entry>
+                <literal>SIGTTOU</literal>
+              </entry>
+              <entry>22,22,27</entry>
+              <entry>
+                <literal>Stop</literal>
+              </entry>
+              <entry>tty output for background process</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+      <note>
+        <para>para</para>
+      </note>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+  </itemizedlist>
+  <note>
+    <para>para</para>
+  </note>
+  <note role="References">
+    <para>para</para>
+  </note>
+</section>

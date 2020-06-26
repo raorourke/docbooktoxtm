@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="two-section">
+  <title>title</title>
+  <task role="MultChoice" id="container-images-registry-quiz-multiple-choice">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+      <table frame="all">
+        <title>title</title>
+        <tgroup cols="2">
+          <colspec colname="c1" colnum="1"/>
+          <colspec colname="c2" colnum="2"/>
+          <thead>
+            <row>
+              <entry>Regisitry</entry>
+              <entry>Image</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>registry.redhat.io</entry>
+              <entry>
+                <itemizedlist>
+                  <listitem>
+                    <para>para</para>
+                  </listitem>
+                  <listitem>
+                    <para>para</para>
+                  </listitem>
+                  <listitem>
+                    <para>para</para>
+                  </listitem>
+                </itemizedlist>
+              </entry>
+            </row>
+            <row>
+              <entry>quay.io</entry>
+              <entry>
+                <itemizedlist>
+                  <listitem>
+                    <para>para</para>
+                  </listitem>
+                  <listitem>
+                    <para>para</para>
+                  </listitem>
+                </itemizedlist>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>para</para>
+    </tasksummary>
+    <procedure>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="container-images-registry-quiz-question1">
+            <question>
+              <para>para</para>
+            </question>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="container-images-registry-quiz-question2">
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="container-images-registry-quiz-question3">
+            <question>
+              <para>para</para>
+            </question>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="container-images-registry-quiz-question4">
+            <question>
+              <para>para</para>
+              <!--ID Reviewer: This question is slightly awkward in its wording.
+I was initially confused by it.
+You may want to reword to, What is the correct output after running the following commands.-->
+              <!-- TechEditor: I think this entire question needs revisiting. I've never seen anything like it. There are no prompts for the commands, we've never used "Option x" before, etc. Recommend you discuss with the arch.
+              JS: Reworded and reformatted to simplify. Still pending to review by arch. -->
+              <screen>screen</screen>
+            </question>
+            <answer>
+              <para>para</para>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+    </procedure>
+  </task>
+</section>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="summary">
+  <title>title</title>
+  <!--ID Reviewer: This is a very long list.
+                   Remember that you only want to offer the top 5 or 6 most impactful items from the chapter.-->
+  <!-- AuthorNote: Not fixed.  This is the longest chapter of the book, with the most important details.
+                   Without specific feedback, this is not particularly actionable...
+  -->
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+</section>

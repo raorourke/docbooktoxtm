@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<appendix>
+  <title>title</title>
+  <simpara>
+    <revhistory>
+      <revision>
+        <revnumber>0.0.1-dev0</revnumber>
+        <date>Thurs Jun 25 20020</date>
+        <author>
+          <firstname>Ryan</firstname>
+          <surname>O'Rourke</surname>
+          <email>ryan.orourke@welocalize.com</email>
+        </author>
+        <revdescription>
+          <itemizedlist>
+            <listitem>
+              <para>para</para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+    </revhistory>
+  </simpara>
+</appendix>

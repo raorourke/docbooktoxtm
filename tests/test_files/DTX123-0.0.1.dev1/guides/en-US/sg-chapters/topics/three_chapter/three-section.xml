@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="three-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/persistent-layer.png" scalefit="1" width="90%" align="center"/>
+    </imageobject>
+    <caption>Container layers</caption>
+  </mediaobject>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <!-- TechEditor: Same comment as above re prompt. There are quite a lot of these. Please review and fix everywhere.
+JS: Fix proposed-->
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <!-- TechEditor: [standards] Non-standard prompt. Refer to the DocBook Guide.
+JS: Fix proposed-->
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+  </orderedlist>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <screen>screen</screen>
+  <!-- TechEditor: "# image options omitted"? Does this mean you haven't included the entire command?
+JS: I guess the intention here was to indicate the command may not work due missing parameters.
+ Just removed for the sake of simplicity and formatting -->
+  <para>para</para>
+</section>

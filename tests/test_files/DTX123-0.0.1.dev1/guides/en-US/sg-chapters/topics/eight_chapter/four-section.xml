@@ -1,0 +1,513 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-dockerfile-ge">
+  <title>Building Container Images with Advanced Dockerfile Instructions</title>
+  <!-- TechEditor: [Consistency] Be consistent with "instructions" and "directives."
+  FL: DONE: from https://docs.docker.com/engine/reference/builder 'instructions' is the correct term
+  FL: NOCHANGE I see no 'directive' anywhere. If you fixed, thanks a lot. -->
+  <task role="Checklist" id="designing-dockerfile-ge-practice">
+    <title>Can't be empty, won't be used</title>
+    <tasksummary>
+      <para>
+        In this exercise, you will use Red&nbsp;Hat OpenShift to build and deploy an Apache HTTP Server container from a Dockerfile.
+      </para>
+      <formalpara>
+        <title>Outcomes</title>
+        <para>
+          You should be able to:
+        </para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>
+            Create an Apache HTTP Server container image using a Dockerfile and deploy it to an OpenShift cluster.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Create a child container image by extending the parent Apache HTTP Server image.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Change the Dockerfile for the child container image so that it runs on an OpenShift cluster with a random user id.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </tasksummary>
+    <taskprerequisites>
+      <para>
+        To perform this exercise, you need access to:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            A running OpenShift cluster.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The parent image for the Apache HTTP Server (<systemitem>quay.io/redhattraining/httpd-parent</systemitem>).
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The Dockerfile for the child container image in the Git repository (<uri>container-build</uri>).
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Run the following command on the <systemitem>workstation</systemitem> VM to validate the prerequisites and to download the solution files:
+      </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>lab container-build start</userinput></screen>
+    </taskprerequisites>
+    <procedure>
+      <step>
+        <para>
+          Review the Apache HTTP Server parent Dockerfile.
+        </para>
+        <para>
+          A prebuilt Apache HTTP Server parent container image is provided in the Quay.io public registry at <uri>quay.io/redhattraining/httpd-parent</uri>.
+          Briefly review the Dockerfile for this parent image located at <filename>~/DO288/labs/container-build/httpd-parent/Dockerfile</filename>:
+        </para>
+<screen>FROM registry.access.redhat.com/ubi8/ubi:8.0 <co id="designing-build-container-ge-dockerfile-1"/>
+
+MAINTAINER Red Hat Training &lt;training@redhat.com&gt;
+
+# DocumentRoot for Apache
+ENV DOCROOT=/var/www/html <co id="designing-build-container-ge-dockerfile-2"/>
+
+RUN   yum install -y --no-docs --disableplugin=subscription-manager httpd &amp;&amp; \ <co id="designing-build-container-ge-dockerfile-3"/>
+      yum clean all --disableplugin=subscription-manager -y &amp;&amp; \
+      echo "Hello from the httpd-parent container!" &gt; ${DOCROOT}/index.html
+
+# Allows child images to inject their own content into DocumentRoot
+ONBUILD COPY src/ ${DOCROOT}/ <co id="designing-build-container-ge-dockerfile-4"/>
+
+EXPOSE 80
+
+# This stuff is needed to ensure a clean start
+RUN rm -rf /run/httpd &amp;&amp; mkdir /run/httpd
+
+# Run as the root user
+USER root <co id="designing-build-container-ge-dockerfile-5"/>
+
+# Launch httpd
+CMD /usr/sbin/httpd -DFOREGROUND</screen>
+<!-- TechEditor: A couple of comments about this screen block:
+Do we need to include *all* the white space? e.g., two blank lines after ENV DOCROOT
+FL: NO, removed second blank line
+The second and third lines of the RUN instruction contain a lot of indentation. Is that intentional?
+FL: YES
+There are three spaces after the RUN instruction. All required?
+FL: It was tab-intended -->
+        <calloutlist>
+          <callout arearefs="designing-build-container-ge-dockerfile-1">
+            <para>
+              The base image is the Universal Base Image (UBI) for Red&nbsp;Hat Enterprise&nbsp;Linux&nbsp;8.0 from the Red&nbsp;Hat Container Catalog.
+            </para>
+          </callout>
+          <callout arearefs="designing-build-container-ge-dockerfile-2">
+            <para>
+              Environment variables for this container image.
+            </para>
+          </callout>
+          <callout arearefs="designing-build-container-ge-dockerfile-3">
+            <para>
+              The <code>RUN</code> instruction contains several commands that install the Apache HTTP Server and create a default home page for the web server.
+            </para>
+          </callout>
+          <callout arearefs="designing-build-container-ge-dockerfile-4">
+            <para>
+              The <code>ONBUILD</code> instruction allows child images to provide their own customized web server content when building an image that extends from this parent image.
+            </para>
+          </callout>
+          <callout arearefs="designing-build-container-ge-dockerfile-5">
+            <para>
+              The <code>USER</code> instruction runs the Apache HTTP Server process as the <systemitem>root</systemitem> user.
+            </para>
+          </callout>
+        </calloutlist>
+        <note>
+          <para>
+            Notice how the <code>RUN</code> lines combine several commands into a single instruction wherever possible to reduce the number of layers in the image.
+            This results in smaller images, which are faster to deploy.
+          </para>
+        </note>
+      </step>
+      <step>
+        <para>
+          Review the Apache HTTP Server child Dockerfile.
+        </para>
+        <para>
+          Use the parent Apache HTTP Server container image (<systemitem>redhattraining/httpd-parent</systemitem>) as a base to extend and customize the image to suit your application.
+          <!-- TechEditor: [Consistency] Earlier you used <code> for an image. I believe <systemitem> is correct. Try to be consistent.
+            FL: changed all image names to <systemitem> -->
+          The Dockerfile for the child container image is stored in the classroom Git repository server.
+          To view the Dockerfile, perform the following steps:
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Load your classroom environment configuration.
+              <!-- TechEditor: [logic] Suggested rephrase: "Load your classroom environment configuration."
+              FL: DONE -->
+            </para>
+            <para>
+              Run the following command to load the environment variables created in the first guided exercise:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>source /usr/local/etc/ocp4.config</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Enter your local clone of the <systemitem>DO288-apps</systemitem> Git repository and checkout the <systemitem>master</systemitem> branch of the course's repository to ensure you start this exercise from a known good state:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>cd DO288-apps</userinput>
+<prompt>[student@workstation DO288-apps]$ </prompt><userinput>git checkout master</userinput>
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+
+          <step>
+            <para>
+              Create a new branch where you can save any changes you make during this exercise:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>git checkout -b container-build</userinput>
+Switched to a new branch 'container-build'
+<prompt>[student@workstation DO288-apps]$ </prompt><userinput>git push -u origin container-build</userinput>
+<emphasis>...output omitted...</emphasis>
+ * [new branch]      container-build -> container-build
+Branch container-build set up to track remote branch container-build from origin.</screen>
+          </step>
+          <step>
+            <para>
+              Inspect the <filename>~/DO288-apps/container-build/Dockerfile</filename> file.
+              The Dockerfile has a single instruction, <code>FROM</code>, which uses the <systemitem>redhattraining/httpd-parent</systemitem> image:
+            </para>
+<screen>FROM quay.io/redhattraining/http-parent</screen>
+          </step>
+          <step>
+            <para>
+              The child container provides its own <filename>index.html</filename> file in the <filename>~/DO288-apps/container-build/src</filename> folder, which overwrites the parent's <filename>index.html</filename> file.
+              The contents of the child container image's <filename>index.html</filename> file is shown below:
+            </para>
+<screen>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  Hello from the Apache child container!
+&lt;/body&gt;
+&lt;/html&gt;</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Build and deploy a container to an OpenShift cluster using the Apache HTTP Server child Dockerfile.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Log in to OpenShift using your developer username:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc login -u ${RHT_OCP4_DEV_USER} \</userinput>
+<prompt>&gt; </prompt><userinput>-p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}</userinput>
+Login successful.
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+          <step>
+            <para>
+              Create a new project for the application.
+              Prefix the project name with your developer username.
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc new-project \</userinput>
+<prompt>&gt; </prompt><userinput>${RHT_OCP4_DEV_USER}-container-build</userinput>
+Now using project "youruser-container-build" on server "https://api.cluster.domain.example.com:6443".</screen>
+          </step>
+          <step>
+            <para>
+              Build and deploy the Apache HTTP Server child image:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc new-app --name hola \</userinput>
+<prompt>&gt; </prompt><userinput>https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#container-build \</userinput>
+<prompt>&gt; </prompt><userinput>--context-dir container-build</userinput>
+--&gt; Found Docker image 1d6f8d3 (11 minutes old) from quay.io for "quay.io/redhattraining/httpd-parent"
+
+     Red Hat Universal Base Image 8
+    ------------------------------
+    The Universal Base Image is designed and engineered to be the base layer for all of your containerized applications, middleware and utilities. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly.
+
+    Tags: base rhel8
+
+<emphasis>...output omitted...</emphasis>
+--&gt; Success
+    Build scheduled, use 'oc logs -f bc/hola' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/hola'
+    Run 'oc status' to view your app.
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          View the build logs.
+        </para>
+        <important>
+          <para>
+            The build process may take some time to start.
+            If you see the following output, run the command again.
+          </para>
+<screen>Error from server (BadRequest): unable to wait for build hola-1 to run: timed out waiting for the condition</screen>
+        </important>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc logs -f bc/hola</userinput>
+Cloning "https://github.com/youruser/DO288-apps" ... <co id="designing-build-container-ge-bc-1"/>
+	Commit:	823cd7a7476b5664cb267e5d0ac611de35df9f07 (Initial commit)
+	Author:	Your Name &lt;youremail@example.com&gt;
+	Date:	Sun Jun 9 20:45:53 2019 -0400
+Replaced Dockerfile FROM image quay.io/redhattraining/httpd-parent
+Caching blobs under "/var/cache/blobs".
+
+Pulling image quay.io/redhattraining/httpd-parent@sha256:3e454fdac5 <co id="designing-build-container-ge-bc-2"/>
+<emphasis>...output omitted...</emphasis>
+Getting image source signatures
+Copying blob sha256:d02c3bd
+<emphasis>...output omitted...</emphasis>
+Writing manifest to image destination
+Storing signatures
+STEP 1: FROM quay.io/redhattraining/httpd-parent@sha256:2833...86ff
+<code>STEP 2: COPY src/ ${DOCROOT}/</code><co id="designing-build-container-ge-bc-3"/>
+<emphasis>...output omitted...</emphasis>
+Successfully pushed //image-registry.openshift-image-registry.svc:5000/... <co id="designing-build-container-ge-bc-4"/>
+Push successful</screen>
+        <para>
+          <calloutlist>
+            <callout arearefs="designing-build-container-ge-bc-1">
+                <para>
+                  OpenShift clones the Git repository from the URL provided by the <command>oc new-app</command> command.
+                </para>
+            </callout>
+            <callout arearefs="designing-build-container-ge-bc-2">
+                <para>
+                  The Dockerfile at the root of the Git repository is automatically identified and a Docker build process is kicked off.
+                </para>
+            </callout>
+            <callout arearefs="designing-build-container-ge-bc-3">
+                <para>
+                  The <code>ONBUILD</code> instruction in the parent Dockerfile triggers the copying of the child's <filename>index.html</filename> file, which overwrites the parent index file.
+                  <!-- TechEditor: [Consistency] What's the difference between ONBUILD here and RUN and EXPOSE described elsewhere? You use <code> for some and <command> for others. Need to be consistent. I'm not sure that they're actually commands. Feel free to query or suggest in https://mojo.redhat.com/docs/DOC-1175925
+                    FL: DONE: <code> is correct, no difference between ONBUILD, RUN, etc -->
+                </para>
+            </callout>
+            <callout arearefs="designing-build-container-ge-bc-4">
+                <para>
+                  Finally, the built image is pushed to the OpenShift internal registry.
+                </para>
+            </callout>
+          </calloutlist>
+        </para>
+      </step>
+      <step>
+        <para>
+          Verify that the application pod fails to start.
+          The pod will be in the <code>Error</code> state, but if you wait too long, the pod will move to the <code>CrashLoopBackOff</code> state.
+        </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get pods</userinput>
+NAME             READY     STATUS      RESTARTS   AGE
+hola-1-build    0/1       Completed   0          22s
+hola-1-deploy   1/1       Running     0          14s
+<code>hola-1-p75f5</code>    0/1       Error       0          12s</screen>
+      </step>
+      <step>
+        <para>
+          Inspect the container's logs to see why the pod failed to start:
+        </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc logs <replaceable>hola-1-p75f5</replaceable></userinput>
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name...
+(13)Permission denied: AH00072: make_sock: could not bind to address [::]:80 <co id="designing-build-container-ge-log-1"/>
+(13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:80 <co id="designing-build-container-ge-log-2"/>
+no listening sockets available, shutting down
+AH00015: Unable to open logs <co id="designing-build-container-ge-log-3"/></screen>
+        <para>
+          <calloutlist>
+            <callout arearefs="designing-build-container-ge-log-1 designing-build-container-ge-log-2">
+              <para>
+                Because OpenShift runs containers using a random userid, ports below 1024 are privileged and can only be run as <systemitem>root</systemitem>.
+              </para>
+            </callout>
+            <callout arearefs="designing-build-container-ge-log-3">
+              <para>
+                The random userid used by OpenShift to run the container does not have permissions to read and write log files in <filename>/var/log/httpd</filename> (the default log file location for the Apache HTTP Server on RHEL&nbsp;7).
+              </para>
+            </callout>
+          </calloutlist>
+        </para>
+        <warning>
+          <para>
+            The failed application pod is deleted after a short while.
+            Make sure you inspect the application pod log files before the pod is deleted.
+          </para>
+        </warning>
+      </step>
+
+      <step>
+        <para>
+          Delete all resources from the OpenShift project.
+          The next step changes the Dockerfile to follow Red&nbsp;Hat recommendations for OpenShift.
+        </para>
+        <para>
+          Before updating the child Apache HTTP Server Dockerfile, delete all the resources in the project that have been created so far:
+        </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc delete all -l app=hola</userinput>
+pod "hola-2-gbx6f" deleted
+replicationcontroller "hola-1" deleted
+service "hola" deleted
+deploymentconfig.apps.openshift.io "hola" deleted
+buildconfig.build.openshift.io "hola" deleted
+build.build.openshift.io "hola-1" deleted
+imagestream.image.openshift.io "httpd-parent" deleted
+imagestream.image.openshift.io "hola" deleted
+route.route.openshift.io "hola" deleted</screen>
+      </step>
+      <step>
+        <para>
+          Change the Dockerfile for the child container to run on an OpenShift cluster by updating the Apache HTTP Server process to run as a random, unprivileged user.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Edit the <filename>~/DO288-apps/container-build/Dockerfile</filename> file and perform the following steps.
+              You can also copy these instructions from the provided <filename>~/DO288/solutions/container-build/Dockerfile</filename> file.
+            </para>
+          </step>
+          <step>
+            <para>
+              Override the <code>EXPOSE</code> instruction from the parent image and change the port to 8080.
+            </para>
+<screen><userinput>EXPOSE 8080</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Include the <code>io.openshift.expose-service</code> label to indicate the changed port that the web server runs on:
+            </para>
+<screen><userinput>LABEL io.openshift.expose-services="8080:http"</userinput></screen>
+            <para>
+              Update the list of labels to include the <code>io.k8s.description</code>, <code>io.k8s.display-name</code>, and <code>io.openshift.tags</code> labels that OpenShift consumes to provide helpful metadata about the container image:
+            </para>
+<screen><userinput>LABEL io.k8s.description="A basic Apache HTTP Server child image, uses ONBUILD" \</userinput>
+<userinput>      io.k8s.display-name="Apache HTTP Server" \</userinput>
+<userinput>      io.openshift.expose-services="8080:http" \</userinput>
+<userinput>      io.openshift.tags="apache, httpd"</userinput></screen>
+          </step>
+          <step>
+            <para>
+              You need to run the web server on an unprivileged port (that is, greater than 1024).
+              Use a <code>RUN</code> instruction to change the port number in the Apache HTTP Server configuration file from the default port 80 to 8080:
+            </para>
+<screen><userinput>RUN sed -i "s/Listen 80/Listen 8080/g" /etc/httpd/conf/httpd.conf</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Change the group ID and permissions of the folders where the web server process reads and writes files:
+            </para>
+<screen><userinput>RUN chgrp -R 0 /var/log/httpd /var/run/httpd &amp;&amp; \</userinput>
+<userinput>    chmod -R g=u /var/log/httpd /var/run/httpd</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Add a <code>USER</code> instruction for an unprivileged user.
+              The Red&nbsp;Hat convention is to use userid 1001:
+            </para>
+<screen><userinput>USER 1001</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Save the Dockerfile and commit the changes to the Git repository from the <filename>~/DO288-apps/container-build</filename> folder:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>cd container-build</userinput>
+<prompt>[student@workstation container-build]$ </prompt><userinput>git commit -a -m \</userinput>
+<prompt>&gt; </prompt><userinput>"Changed Dockerfile to enable running as a random uid on OpenShift"</userinput>
+<emphasis>...output omitted...</emphasis>
+<prompt>[student@workstation container-build]$ </prompt><userinput>git push</userinput>
+<emphasis>...output omitted...</emphasis>
+<prompt>[student@workstation container-build]$ </prompt><userinput>cd ~</userinput></screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Rebuild and redeploy the Apache HTTP Server child container image.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Re-create the application using the new Dockerfile:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc new-app --name hola \</userinput>
+<prompt>&gt; </prompt><userinput>https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#container-build \</userinput>
+<prompt>&gt; </prompt><userinput>--context-dir container-build</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Wait until the build finishes and the pod is ready and running.
+              View the status of the application pod:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc get pods</userinput>
+NAME            READY     STATUS      RESTARTS   AGE
+<code>hola-1-75gkw   1/1       Running</code>     0          5s
+hola-1-build   0/1       Completed   0          15s</screen>
+            <para>
+              The application pod will now start successfully and be in a <code>Running</code> state.
+            </para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Create an OpenShift route to expose the application to external access:
+        </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc expose svc/hola</userinput>
+route.route.openshift.io/hola exposed</screen>
+      </step>
+      <step>
+        <para>
+          Obtain the route URL using the <command>oc get route</command> command:
+        </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc get route</userinput>
+NAME   HOST/PORT                                                 PATH   SERVICES   PORT       TERMINATION   WILDCARD
+hola   <code>hola-youruser-container-build.cluster.domain.example.com</code>          hola       8080-tcp                 None</screen>
+      </step>
+      <step>
+        <para>
+          Test the application using the route URL you obtained in the previous step:
+        </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>curl \</userinput>
+<prompt>&gt; </prompt><userinput>http://hola-${RHT_OCP4_DEV_USER}-container-build.${RHT_OCP4_WILDCARD_DOMAIN}</userinput>
+<emphasis>...output omitted...</emphasis>
+  Hello from the Apache child container!
+<emphasis>...output omitted...</emphasis></screen>
+      </step>
+      <step>
+        <para>
+          Clean up.
+          Delete the project:
+        </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc delete project ${RHT_OCP4_DEV_USER}-container-build</userinput></screen>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>Finish</title>
+        <para>
+          On <systemitem>workstation</systemitem>, run the <command>lab container-build finish</command> command to complete this exercise.
+          This is important to ensure that resources from previous exercises do not impact upcoming exercises.
+        </para>
+      </formalpara>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>lab container-build finish</userinput></screen>
+    </taskrelated>
+  </task>
+  <para>
+    This concludes the guided exercise.
+  </para>
+</section>

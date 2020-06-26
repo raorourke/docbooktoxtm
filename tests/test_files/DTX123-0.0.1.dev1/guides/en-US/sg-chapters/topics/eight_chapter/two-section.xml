@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-approach-quiz">
+  <title>Selecting a Containerization Approach</title>
+  <task role="MultChoice" id="designing-approach-quiz-multiple-choice">
+    <title>won't show</title>
+    <tasksummary>
+      <para>
+        Choose the correct answers to the following questions:
+      </para>
+      <para condition="role">
+        When you have completed the quiz, click <guibutton>CHECK</guibutton>.
+        If you want to try again, click <guibutton>RESET</guibutton>.
+        Click <guibutton>SHOW SOLUTION</guibutton> to see all of the correct answers.
+      </para>
+    </tasksummary>
+    <procedure>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="designing-approach-quiz-question1">
+            <question>
+              <para>
+                You have been asked to deploy a commercial, third-party, .NET-based application to an OpenShift cluster, which is packaged by the vendor as a container image.
+                Which of the following options would you use to deploy the application?
+              </para>
+            </question>
+            <answer>
+              <para>
+                A Source-to-Image build.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                A custom Source-to-Image builder.
+              </para>
+            </answer>
+            <answer role="solution">
+              <para>
+                Stage the container image in a private container registry, and then deploy the container image to an OpenShift cluster using the OpenShift <command>oc</command> command-line tool.
+                <!-- TechEditor: [terminology] Refer to https://mojo.redhat.com/docs/DOC-1015564 for the correct use of Docker terms. This should probably be "Docker."
+                FL: DONE, see https://developers.redhat.com/blog/2018/02/22/container-terminology-practical-introduction/
+                Sometimes content developers confuse the now-deprecated 'docker-registry' package with the 'container registry' server and concept -->
+              </para>
+            </answer>
+            <answer>
+              <para>
+                None of these.
+                You cannot deploy .NET-based applications on an OpenShift cluster.
+              </para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="designing-approach-quiz-question2">
+            <question>
+              <para>
+                You are tasked with deploying a RHEL&nbsp;7-based, custom, in-house-developed C+&#xFEFF;+ application to an OpenShift cluster.
+                You will be given the full source code of the application.
+                Which two of the following options, based on best practices, can be used to build a container image to deploy to an OpenShift cluster? (Choose two.)
+              </para>
+            </question>
+            <answer role="solution">
+              <para>
+                Create a Dockerfile using the <systemitem>rhel7</systemitem> container image from the Red&nbsp;Hat Container Catalog as the base for the application and provide it to OpenShift using a Git repository.
+                OpenShift can create a container image from the provided Dockerfile.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                Download a CentOS&nbsp;7/C++ based container image from a public registry such as docker.io and create a Dockerfile that compiles and packages the application.
+                Because CentOS&nbsp;7-based binaries are binary-compatible with RHEL&nbsp;7, the application will work correctly when deployed to an OpenShift cluster.
+              </para>
+            </answer>
+            <answer role="solution">
+              <para>
+                Create a Dockerfile using the RHEL&nbsp;7 container image from the Red&nbsp;Hat Container Catalog as the base and then build a container image based on the Dockerfile.
+                Deploy the container image to an OpenShift cluster using the OpenShift <command>oc</command> command-line tool.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                Create a Dockerfile using any Linux-based container image from a public registry as a base, and then build a container image based on the Dockerfile.
+                Deploy the container image to an OpenShift cluster using the OpenShift <command>oc</command> command-line tool.
+              </para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="designing-approach-quiz-question3">
+            <question>
+              <para>
+                You have been asked to migrate and deploy two applications to an OpenShift cluster, based on Ruby on Rails and Node.js, respectively.
+                These applications were previously running in an environment using virtual machines.
+                You have been provided with the location of the Git repositories where the application source code is located for both applications.
+                Which of the following options is recommended to deploy the applications to an OpenShift cluster, keeping in mind that you have been asked to further enhance these applications with more features and to continue development in an OpenShift environment?
+              </para>
+            </question>
+            <answer>
+              <para>
+                Use the Ruby on Rails and Node.js container images from docker.io as a base.
+                Create custom Dockerfiles for each of these two applications and build container images from them.
+                Deploy the images to an OpenShift cluster using the standard binary deployment process.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                Create custom S2I-based builder images, because there are no builder images available for Ruby on Rails and Node.js in OpenShift.
+              </para>
+            </answer>
+            <answer role="solution">
+              <para>
+                Use the Ruby on Rails and Node.js S2I builder images from the Red&nbsp;Hat Container Catalog, and deploy the applications to an OpenShift cluster using a standard S2I build process.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                Use the plain Ruby and Node.js-based container images from the Red&nbsp;Hat Container Catalog and create custom Dockerfiles for each of them.
+                Build and deploy the resulting container images to an OpenShift cluster.
+              </para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="designing-approach-quiz-question4">
+            <question>
+              <para>
+                You have been asked to deploy a web application written in the Go programming language to an OpenShift cluster.
+                Your organization's security team has mandated that all applications be run through a static source code analysis system and a suite of automated unit and integration tests before deploying to production environments.
+              </para>
+              <para>
+                The security team has also provided a custom Dockerfile that ensures that all applications are deployed on a RHEL&nbsp;7-based operating system, based on the standard RHEL&nbsp;7 image from the Red&nbsp;Hat Container Catalog.
+                Their environment includes a curated list of packages, users, and customized configuration for the core services in the operating system.
+              </para>
+              <para>
+                Furthermore, the application architect has insisted that there be clear separation between source-code level changes and infrastructure changes (operating system, Go compiler, and Go tools).
+                Changes and patches to the operating system or the Go runtime layers should automatically trigger a rebuild and redeployment of the application.
+              </para>
+              <para>
+                Which of the following options would you use to achieve this objective?
+              </para>
+            </question>
+            <answer>
+              <para>
+                Create a custom Dockerfile that builds an application container image consisting of the RHEL&nbsp;7 operating system base, the Go runtime, and the analysis tool.
+                Deploy the resulting image to an OpenShift cluster using the binary deployment process.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                Create separate Dockerfiles for the RHEL&nbsp;7 operating system base, the Go runtime, and the analysis tool.
+                OpenShift can automatically merge the Dockerfiles to produce a single runnable application container image.
+              </para>
+            </answer>
+            <answer role="solution">
+              <para>
+                Create a custom S2I builder image for this application that embeds the static analysis tool, the Go compiler and runtime, and the RHEL&nbsp;7 operating system image based on the Dockerfile.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                Create separate container images for the RHEL&nbsp;7 operating system base, the Go runtime, and the analysis tool.
+                After these images have been staged in a private or public container image registry, OpenShift can automatically concatenate the layers from each individual image to create the final runnable application container image.
+              </para>
+            </answer>
+            <answer>
+              <para>
+                None of these.
+                This requirement cannot be met and the application cannot be deployed on an OpenShift cluster.
+              </para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+    </procedure>
+  </task>
+</section>

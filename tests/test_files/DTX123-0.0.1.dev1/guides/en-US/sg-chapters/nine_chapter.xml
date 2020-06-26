@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="nine_chapter">
+  <!-- Chapters should have an id that is a short version of the title. -->
+  <title>title</title>
+  <abstract>
+    <para>para</para>
+  </abstract>
+  <!--
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/one-commented-out-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/two-commented-out-section.xml"/>
+  -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/one-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/two-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/three-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/four-section.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/review.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="topics/nine_chapter/summary.xml"/>
+</chapter>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../common.ent">
+]>
+<!-- STANDARD INSTRUCTIONS FOR CONTROLLING ILT AND RAVELLO -->
+<!-- INSTRUCTIONS:
+-->
+<section>
+  <title>title</title>
+  <!-- ILT INSTRUCTIONS BEGIN HERE -->
+  <para condition="ilt">para</para>
+  <para condition="ilt">para</para>
+  <table frame="all" condition="ilt">
+    <title>title</title>
+    <tgroup cols="2">
+      <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+      <thead>
+        <row>
+          <entry>Action</entry>
+          <entry>Command</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>Start <systemitem>server</systemitem> machine</entry>
+          <entry>
+            <command>rht-vmctl start server</command>
+          </entry>
+        </row>
+        <row>
+          <entry>View "physical console" to log in and work with the <systemitem>server</systemitem> machine</entry>
+          <entry>
+            <command>rht-vmview view server</command>
+          </entry>
+        </row>
+        <row>
+          <entry>Reset <systemitem>server</systemitem> machine to its previous state and restart the virtual machine</entry>
+          <entry>
+            <command>rht-vmctl reset server</command>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para condition="ilt">para</para>
+  <para condition="role">para</para>
+  <formalpara condition="role">
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <table frame="all" condition="role">
+    <title>title</title>
+    <tgroup cols="2">
+      <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="3.0*"/>
+      <thead>
+        <row>
+          <entry>Virtual Machine State</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>STARTING</entry>
+          <entry>
+            The virtual machine is in the process of booting.
+          </entry>
+        </row>
+        <row>
+          <entry>STARTED</entry>
+          <entry>
+            The virtual machine is running and available (or, when booting, soon will be).
+          </entry>
+        </row>
+        <row>
+          <entry>STOPPING</entry>
+          <entry>
+            The virtual machine is in the process of shutting down.
+          </entry>
+        </row>
+        <row>
+          <entry>STOPPED</entry>
+          <entry>
+            The virtual machine is completely shut down.
+            Upon starting, the virtual machine boots into the same state as when it was shut down (the disk will have been preserved).
+          </entry>
+        </row>
+        <row>
+          <entry>PUBLISHING</entry>
+          <entry>
+            The initial creation of the virtual machine is being performed.
+          </entry>
+        </row>
+        <row>
+          <entry>WAITING_TO_START</entry>
+          <entry>
+            The virtual machine is waiting for other virtual machines to start.
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para condition="role">para</para>
+  <table frame="all" condition="role">
+    <title>title</title>
+    <tgroup cols="2">
+      <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="3.0*"/>
+      <thead>
+        <row>
+          <entry>Button or Action</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            <guibutton>PROVISION LAB</guibutton>
+          </entry>
+          <entry>
+            Create the ROL classroom.
+            Creates all of the virtual machines needed for the classroom and starts them.
+            Can take several minutes to complete.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <guibutton>DELETE LAB</guibutton>
+          </entry>
+          <entry>
+            Delete the ROL classroom.
+            Destroys all virtual machines in the classroom.
+            <emphasis role="bold">Caution: Any work generated on the disks is lost.</emphasis>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <guibutton>START LAB</guibutton>
+          </entry>
+          <entry>
+            Start all virtual machines in the classroom.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <guibutton>SHUTDOWN LAB</guibutton>
+          </entry>
+          <entry>
+            Stop all virtual machines in the classroom.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <guibutton>OPEN CONSOLE</guibutton>
+          </entry>
+          <entry>
+            Open a new tab in the browser and connect to the console of the virtual machine.
+            Students can log in directly to the virtual machine and run commands.
+            In most cases, students should log in to the <systemitem>workstation</systemitem> virtual machine and use <command>ssh</command> to connect to the other virtual machines.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <menuchoice>
+              <guimenu>ACTION</guimenu>
+              <guimenuitem>Start</guimenuitem>
+            </menuchoice>
+          </entry>
+          <entry>
+            Start (power on) the virtual machine.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <menuchoice>
+              <guimenu>ACTION</guimenu>
+              <guimenuitem>Shutdown</guimenuitem>
+            </menuchoice>
+          </entry>
+          <entry>
+            Gracefully shut down the virtual machine, preserving the contents of its disk.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <menuchoice>
+              <guimenu>ACTION</guimenu>
+              <guimenuitem>Power Off</guimenuitem>
+            </menuchoice>
+          </entry>
+          <entry>
+            Forcefully shut down the virtual machine, preserving the contents of its disk.
+            This is equivalent to removing the power from a physical machine.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <menuchoice>
+              <guimenu>ACTION</guimenu>
+              <guimenuitem>Reset</guimenuitem>
+            </menuchoice>
+          </entry>
+          <entry>
+            Forcefully shut down the virtual machine and reset the disk to its initial state.
+            <emphasis role="bold">Caution: Any work generated on the disk is lost.</emphasis>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para condition="role">para</para>
+  <para condition="role">para</para>
+  <para condition="role">para</para>
+  <warning condition="role">
+    <para>para</para>
+  </warning>
+  <formalpara condition="role">
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para condition="role">para</para>
+  <!-- END OF RAVELLO INSTRUCTIONS -->
+</section>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="two-section">
+  <title>title</title>
+  <task role="Checklist" id="manage-lifecycle-practice-checklist">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+    </tasksummary>
+    <taskprerequisites>
+      <para>para</para>
+      <screen>screen</screen>
+    </taskprerequisites>
+    <procedure>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+        <note>
+          <para>para</para>
+          <screen>screen</screen>
+        </note>
+      </step>
+      <step>
+        <para>para</para>
+        <note>
+          <para>para</para>
+        </note>
+        <screen>screen</screen>
+        <para>para</para>
+        <screen>screen</screen>
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+        <!--  TechReview: output needs to be 80 characters wide, but this is particularly challenging.
+              I'm going to request Content Services review for how best to shorten.
+              The "registry.lab.example.com" in the IMAGE field is not needed,
+                      the CONTAINER ID is not needed...,
+                      the COMMAND, CREATED, STATUS, and PORT fields are not needed.
+              Trying to show that a container was created from the image, with the correct name (I believe) -->
+        <!-- TechEditor: This seems to render ok in the PDF atm. -->
+      </step>
+      <step>
+        <para>para</para>
+        <!-- TechReview: 'mysql' listed twice caused IP to be output twice.  Removing one... -->
+        <screen>screen</screen>
+        <para>para</para>
+        <!-- TechReview: Suggestion addition, to make clear student's output will be different.
+             Content Services: Thoughts?? -->
+        <!-- TechEditor: The above statement is standard fare for indicating possible differences. -->
+        <note>
+          <para>para</para>
+        </note>
+      </step>
+      <step>
+        <para>para</para>
+        <para>para</para>
+        <stepalternatives>
+          <step>
+            <para>para</para>
+            <substeps>
+              <step>
+                <para>para</para>
+                <screen>screen</screen>
+                <para>para</para>
+                <screen>screen</screen>
+              </step>
+              <step>
+                <para>para</para>
+                <screen>screen</screen>
+              </step>
+              <step>
+                <para>para</para>
+                <screen>screen</screen>
+              </step>
+              <step>
+                <para>para</para>
+                <screen>screen</screen>
+              </step>
+            </substeps>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </stepalternatives>
+        <!--  TechReview to Content Services: This note describes an alternative way of doing the steps.
+              This note covers a step that hasn't been done yet.  Wondering (for next time) how best
+              to organize an "alternative" set of steps... -->
+        <!-- TechEditor: Use https://tdg.docbook.org/tdg/4.5/stepalternatives.html
+              JS: Done! -->
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+      </step>
+      <step>
+        <para>para</para>
+        <!-- TechReview: Screen elements are sensitive to space; that's why  I always "left-justify" them. -->
+        <!-- Still not right; overflow's 80 characters.  not sure how to fix...
+        JS: Not universal, but in this case, the format option can do the trick.-->
+        <screen>screen</screen>
+      </step>
+      <step>
+        <para>para</para>
+        <screen>screen</screen>
+        <para>para</para>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+      <para>para</para>
+    </taskrelated>
+  </task>
+</section>

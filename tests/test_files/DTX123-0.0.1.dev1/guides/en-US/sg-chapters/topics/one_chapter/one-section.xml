@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+  </note>
+</section>

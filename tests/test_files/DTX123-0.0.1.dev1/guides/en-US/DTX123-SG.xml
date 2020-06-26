@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Modify id using course sku. -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book id="DTX123-SG">
+  <!-- DO NOT TOUCH -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Book_Info.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Common/Conventions.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Course_Preface.xml"/>
+  <!-- Begin adding  your own chapters here -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/one_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/two_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/three_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/four_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/five_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/six_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/seven_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/eight_chapter.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/nine_chapter.xml"/>
+  <!-- This chapter should be skipped making the review chapter number 10 in the listing.
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/ten_chapter.xml"/>
+  -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/chapter-review.xml"/>
+  <!--appendices-->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/appendix-a.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/appendix-b.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="sg-chapters/appendix-c.xml"/>
+</book>

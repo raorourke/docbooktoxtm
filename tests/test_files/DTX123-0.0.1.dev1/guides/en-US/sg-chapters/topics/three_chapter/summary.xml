@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="summary">
+  <title>title</title>
+  <para>para</para>
+  <itemizedlist>
+    <!-- Slides where the primary driver for this content.
+         Very difficult to get this to look right.
+         At next update, check slides first before first set of review!
+         (dkolepp)
+    -->
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+</section>

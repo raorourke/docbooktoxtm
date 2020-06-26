@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="three-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <!-- TechEditor: This heading sounds like you are using image streams to provide auth, which is not what's happening. How about "Using Image Streams with Private Registries"? -->
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <important>
+    <para>para</para>
+  </important>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <calloutlist>
+    <callout arearefs="publishing-is-reference-policy">
+      <para>para</para>
+    </callout>
+    <callout arearefs="publishing-is-oc-policy-role">
+      <para>para</para>
+    </callout>
+    <callout arearefs="publishing-is-oc-policy-group">
+      <para>para</para>
+    </callout>
+  </calloutlist>
+  <para>para</para>
+  <para>para</para>
+  <!--
+  <formalpara>
+    <title>Insecure Image Streams</title>
+    <para>
+      If an image stream references a registry server that is not set up with a trusted TLS certificate, add the <option&gt;-&dash;insecure</option> option to the <command>oc import-image</command> command.
+    </para>
+  </formalpara>
+   -->
+  <!-- TechEditor: This subsection seems to be hanging out on its own as an afterthought. It's a single para, right at the very end of the section. Bit of an orphan... -->
+  <!-- DKolepp: FIXED.  Moved to the "Managing Streams and Tags" section as a "Note". -->
+  <note role="References">
+    <para>para</para>
+  </note>
+</section>

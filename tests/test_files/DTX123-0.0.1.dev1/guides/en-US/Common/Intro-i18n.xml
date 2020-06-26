@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../common.ent">
+]>
+<section id="e96dddab-b318-4b5d-af9c-35aba902d411">
+  <title>title</title>
+  <bridgehead>Per-user Language Selection</bridgehead>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+    <screen>i=$(grep 'Language=' /var/lib/AccountsService/users/${USER} \
+  | sed 's/Language=//')
+if [ "$i" != "" ]; then
+    export LANG=$i
+fi</screen>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>
+    <prompt>[user@host ~]$ </prompt>
+    <userinput>LANG=fr_FR.utf8 date</userinput>
+    <computeroutput>jeu. avril 25 17:55:01 CET 2019</computeroutput>
+  </screen>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <note>
+    <para>para</para>
+    <para>para</para>
+  </note>
+  <bridgehead>System-wide Default Language Settings</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>
+    <prompt>[root@host ~]# </prompt>
+    <userinput>localectl set-locale LANG=fr_FR.utf8</userinput>
+  </screen>
+  <para>para</para>
+  <important>
+    <para>para</para>
+    <para>para</para>
+  </important>
+  <bridgehead>Language Packs</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <screen><prompt>[root@host ~]# </prompt><userinput>yum list langpacks-*</userinput>
+Updating Subscription Management repositories.
+Updating Subscription Management repositories.
+Installed Packages
+langpacks-en.noarch      1.0-12.el8        @AppStream
+Available Packages
+<emphasis>...output omitted...</emphasis></screen>
+  <para>para</para>
+  <screen>
+    <prompt>[root@host ~]# </prompt>
+    <userinput>yum install langpacks-fr</userinput>
+  </screen>
+  <para>para</para>
+  <screen><prompt>[root@host ~]# </prompt><userinput>yum repoquery --whatsupplements langpacks-fr</userinput>
+Updating Subscription Management repositories.
+Updating Subscription Management repositories.
+Last metadata expiration check: 0:01:33 ago on Wed 06 Feb 2019 10:47:24 AM CST.
+glibc-langpack-fr-0:2.28-18.el8.x86_64
+gnome-getting-started-docs-fr-0:3.28.2-1.el8.noarch
+hunspell-fr-0:6.2-1.el8.noarch
+hyphen-fr-0:3.0-1.el8.noarch
+libreoffice-langpack-fr-1:6.0.6.1-9.el8.x86_64
+man-pages-fr-0:3.70-16.el8.noarch
+mythes-fr-0:2.3-10.el8.noarch</screen>
+  <important>
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+  </important>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+  <!-- bending the tagging rules slightly so this table is always all on one
+     page for ILT and is also included with the i18n content -->
+  <bridgehead>Language Codes Reference</bridgehead>
+  <note>
+    <para>para</para>
+  </note>
+  <table frame="all">
+    <title>title</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="c1" colnum="1" colwidth="2.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="3" colwidth="1.0*"/>
+      <thead>
+        <row>
+          <entry>Language</entry>
+          <entry>Langpacks Suffix</entry>
+          <entry>$LANG value</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>English (US)</entry>
+          <entry>en</entry>
+          <entry>en_US.utf8</entry>
+        </row>
+        <row>
+          <entry>Assamese</entry>
+          <entry>as</entry>
+          <entry>as_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Bengali</entry>
+          <entry>bn</entry>
+          <entry>bn_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Chinese (Simplified)</entry>
+          <entry>zh_CN</entry>
+          <entry>zh_CN.utf8</entry>
+        </row>
+        <row>
+          <entry>Chinese (Traditional)</entry>
+          <entry>zh_TW</entry>
+          <entry>zh_TW.utf8</entry>
+        </row>
+        <row>
+          <entry>French</entry>
+          <entry>fr</entry>
+          <entry>fr_FR.utf8</entry>
+        </row>
+        <row>
+          <entry>German</entry>
+          <entry>de</entry>
+          <entry>de_DE.utf8</entry>
+        </row>
+        <row>
+          <entry>Gujarati</entry>
+          <entry>gu</entry>
+          <entry>gu_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Hindi</entry>
+          <entry>hi</entry>
+          <entry>hi_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Italian</entry>
+          <entry>it</entry>
+          <entry>it_IT.utf8</entry>
+        </row>
+        <row>
+          <entry>Japanese</entry>
+          <entry>ja</entry>
+          <entry>ja_JP.utf8</entry>
+        </row>
+        <row>
+          <entry>Kannada</entry>
+          <entry>kn</entry>
+          <entry>kn_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Korean</entry>
+          <entry>ko</entry>
+          <entry>ko_KR.utf8</entry>
+        </row>
+        <row>
+          <entry>Malayalam</entry>
+          <entry>ml</entry>
+          <entry>ml_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Marathi</entry>
+          <entry>mr</entry>
+          <entry>mr_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Odia</entry>
+          <entry>or</entry>
+          <entry>or_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Portuguese (Brazilian)</entry>
+          <entry>pt_BR</entry>
+          <entry>pt_BR.utf8</entry>
+        </row>
+        <row>
+          <entry>Punjabi</entry>
+          <entry>pa</entry>
+          <entry>pa_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Russian</entry>
+          <entry>ru</entry>
+          <entry>ru_RU.utf8</entry>
+        </row>
+        <row>
+          <entry>Spanish</entry>
+          <entry>es</entry>
+          <entry>es_ES.utf8</entry>
+        </row>
+        <row>
+          <entry>Tamil</entry>
+          <entry>ta</entry>
+          <entry>ta_IN.utf8</entry>
+        </row>
+        <row>
+          <entry>Telugu</entry>
+          <entry>te</entry>
+          <entry>te_IN.utf8</entry>
+        </row>
+        <!--
+        <row><entry namest="c1" nameend="c3"><emphasis>Technology Previews</emphasis></entry></row>
+        <row><entry>Maithili</entry><entry>mai_IN.utf8</entry><entry>maithili-support</entry></row>
+        <row><entry>Nepali</entry><entry>ne_NP.utf8</entry><entry>nepali-support</entry></row>
+        <row><entry>Sinhala</entry><entry>si_LK.utf8</entry><entry>sinhala-support</entry></row>
+-->
+      </tbody>
+    </tgroup>
+  </table>
+</section>

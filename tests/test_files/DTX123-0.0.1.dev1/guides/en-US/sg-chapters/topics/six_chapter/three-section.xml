@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="three-section">
+  <title>title</title>
+  <!-- The highlights tag has been removed, please create a summary at the end of the chapter using the summary template. -->
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <calloutlist>
+    <callout arearefs="TestingContainerizedDefiningPodDefinition">
+      <para>para</para>
+    </callout>
+    <callout arearefs="TestingContainerizedDefiningPodName">
+      <para>para</para>
+    </callout>
+    <callout arearefs="TestingContainerizedDefiningLabelName">
+      <para>para</para>
+    </callout>
+    <callout arearefs="TestingContainerizedDefiningPodContainerPort">
+      <para>para</para>
+    </callout>
+    <callout arearefs="TestingContainerizedDefiningEnvVariables">
+      <para>para</para>
+    </callout>
+  </calloutlist>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <mediaobject id="openshift-resources-kubernetes-networking-1">
+    <imageobject>
+      <imagedata fileref="images/kubernetes-networking-1.png" align="center" scalefit="1" width="60%"/>
+    </imageobject>
+    <!--ID Reviewer: This image is too large.
+Have Sajith take a look.-->
+    <caption>Basic Kubernetes networking</caption>
+  </mediaobject>
+  <para>para</para>
+  <mediaobject id="openshift-resources-kubernetes-networking-2">
+    <imageobject>
+      <imagedata fileref="images/kubernetes-networking-2.png" align="center" scalefit="1" width="60%"/>
+    </imageobject>
+    <caption>Kubernetes services networking</caption>
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </orderedlist>
+  <para>para</para>
+  <mediaobject id="openshift-resources-kubernetes-nodeport-svc">
+    <imageobject>
+      <imagedata fileref="images/kubernetes-nodeport-svc.svg" align="center" scalefit="1" width="75%"/>
+    </imageobject>
+    <caption>Alternative method for external access to a Kubernetes service</caption>
+  </mediaobject>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note>
+    <para>para</para>
+  </note>
+  <bridgehead>bridgehead</bridgehead>
+  <!--ID Reviewer: Avoid using commands in titles, if possible.-->
+  <!-- Author Note: FIXED. was "oc new-app" in the title. -->
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <mediaobject id="openshift-resources-kubernetes-oc-new-app">
+    <imageobject>
+      <imagedata fileref="images/kubernetes-oc-new-app.svg" align="center" scalefit="1" width="60%"/>
+    </imageobject>
+    <caption>Resources created for a new application</caption>
+  </mediaobject>
+  <!--ID Reviewer: Image is too large.-->
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <!--oc get RESOURCE_TYPE RESOURCE_NAME -->
+  <para>para</para>
+  <!-->oc get RESOURCE_TYPE -->
+  <para>para</para>
+  <screen>screen</screen>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <screen>screen</screen>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

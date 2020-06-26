@@ -1,0 +1,499 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-configuration-ge">
+  <title>Injecting Configuration Data into an Application</title>
+  <task role="Checklist" id="designing-configuration-ge-practice">
+    <title>Can't be empty, won't be used</title>
+    <tasksummary>
+      <para>
+        In this exercise, you will use configuration maps and secrets to externalize the configuration for a containerized application.
+      </para>
+
+      <formalpara>
+        <title>Outcomes</title>
+        <para>
+          You should be able to:
+        </para>
+      </formalpara>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+            Deploy a simple Node.js-based application that prints configuration details from environment variables and files.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Inject configuration data into the container using configuration maps and secrets.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Change the data in the configuration map and verify that the application picks up the changed values.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </tasksummary>
+
+    <taskprerequisites>
+      <para>
+        To perform this exercise, ensure you have access to:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            A running OpenShift cluster.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The S2I builder image for Node.js&nbsp;10.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The sample application in the Git repository (<systemitem>app-config</systemitem>).
+            <!-- TechEditor: [xml] Be consistent with DocBook elements. Use <application> for applications, including those that students create. See 8.5. Application Names in the DocBook Guide.
+              FL: NOCHANGE. Do not agree. <application> here is nowhere in Gnome or desktop application menus.
+                In this case, the <literal> value is the name of a folder in a git repo, that we use as contextDir
+                  In ch01 it was <systemitem> and you did not complain -->
+          </para>
+        </listitem>
+      </itemizedlist>
+
+      <para>
+        Run the following command on the <systemitem>workstation</systemitem> VM to validate the exercise prerequisites and to download the lab and solution files:
+      </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>lab app-config start</userinput></screen>
+    </taskprerequisites>
+
+    <procedure>
+      <step>
+        <para>
+          Review the application source code.
+        </para>
+        <substeps>
+            <step>
+              <para>
+                Enter your local clone of the <systemitem>DO288-apps</systemitem> Git repository and check out the <systemitem>master</systemitem> branch of the course's repository to ensure you start this exercise from a known good state:
+              </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>cd DO288-apps</userinput>
+<prompt>[student@workstation DO288-apps]$ </prompt><userinput>git checkout master</userinput>
+<emphasis>...output omitted...</emphasis></screen>
+            </step>
+            <step>
+              <para>
+                Create a new branch where you can save any changes you make during this exercise:
+              </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>git checkout -b app-config</userinput>
+Switched to a new branch 'app-config'
+<prompt>[student@workstation DO288-apps]$ </prompt><userinput>git push -u origin app-config</userinput>
+<emphasis>...output omitted...</emphasis>
+* [new branch]      app-config -> app-config
+Branch app-config set up to track remote branch app-config from origin.</screen>
+            </step>
+            <step>
+            <para>
+              Inspect the <filename>/home/student/DO288-apps/app-config/app.js</filename> file.
+            </para>
+            <para>
+              The application reads the value of the <varname>APP_MSG</varname> environment variable and prints the contents of the <filename>/opt/app-root/secure/myapp.sec</filename> file:
+            </para>
+<screen>// read in the APP_MSG env var
+var msg = process.env.<code>APP_MSG</code>;
+<emphasis>...output omitted...</emphasis>
+// Read in the secret file
+fs.readFile(<code>'/opt/app-root/secure/myapp.sec'</code>, 'utf8', function (secerr,secdata) {
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Build and deploy the application.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Load your classroom environment configuration.
+              <!-- TechEditor: [logic] Suggested rephrase: "Load your classroom environment configuration."
+              FL: DONE -->
+            </para>
+            <para>
+              Run the following command to load the environment variables created in the first guided exercise:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>source /usr/local/etc/ocp4.config</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Log in to OpenShift using your developer user account:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc login -u ${RHT_OCP4_DEV_USER} \</userinput>
+<prompt>&gt; </prompt><userinput>-p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}</userinput>
+Login successful
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+          <step>
+            <para>
+              Create a new project for the application.
+              Prefix the project name with your developer username:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc new-project ${RHT_OCP4_DEV_USER}-app-config</userinput></screen>
+          </step>
+          <step>
+            <para>
+              Create a new application called <application>myapp</application> from sources in Git.
+              Use the branch you created in a previous step.
+            </para>
+            <para>
+              You can copy or execute the command from the <filename>oc-new-app.sh</filename> script in the <filename>/home/student/DO288/labs/app-config</filename> folder:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc new-app --name myapp \</userinput>
+<prompt>&gt; </prompt><userinput>--build-env npm_config_registry=\</userinput>
+<prompt>&gt; </prompt><userinput>http://${RHT_OCP4_NEXUS_SERVER}/repository/nodejs \</userinput>
+<prompt>&gt; </prompt><userinput>nodejs:10~https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#app-config \</userinput>
+<prompt>&gt; </prompt><userinput>--context-dir app-config</userinput>
+<emphasis>...output omitted...</emphasis>
+--&gt; Creating resources <emphasis>...output omitted...</emphasis>
+imagestream.image.openshift.io "myapp" created
+buildconfig.build.openshift.io "myapp" created
+deploymentconfig.apps.openshift.io "myapp" created
+service "myapp" created
+--&gt; Success
+<emphasis>...output omitted...</emphasis></screen>
+<!-- TechEditor: Is it necessary to indent the 2nd, 4rd, and 5th lines here?
+FL: NOCHANGE. We think that identation improves readability and make exceptions like the 3rd line stand out.
+We think this helps students see and type them right.
+The 3rd line is a single, long argument/options that doesn't fit the paper width. -->
+            <para>
+              Notice there is no space before or after the equal sign (=) after <code>npm_config_registry</code>.
+            </para>
+          </step>
+          <step>
+            <para>
+              View the build logs.
+              Wait until the build finishes and the application container image is pushed to the OpenShift internal registry:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc logs -f bc/myapp</userinput>
+Cloning "https:/github.com/youruser/DO288-apps#app-config" ...
+<emphasis>...output omitted...</emphasis>
+---&gt; Installing application source ...
+---&gt; Building your Node application from source
+<emphasis>...output omitted...</emphasis>
+Pushing image image-registry.openshift-image-registry.svc:5000/youruser-app-config/myapp:latest ...
+<emphasis>...output omitted...</emphasis>
+Push successful</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Test the application.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Wait until the application deploys.
+              View the status of the application pod.
+              The application pod should be in a <code>Running</code> state:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get pods</userinput>
+NAME             READY     STATUS      RESTARTS   AGE
+myapp-1-<code>2w1nc</code>    <code>1/1</code>       <code>Running</code>     0          81s
+myapp-1-deploy   0/1       Completed   0          89s
+myapp-1-build    0/1       Completed   0          3m</screen>
+          </step>
+          <step>
+            <para>
+              Use a route to expose the application to external access:
+              <!-- TechEditor: [logic] Suggested rephrase: "Use a route to expose the application to external access:"
+              FL: DONE -->
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc expose svc myapp</userinput>
+route.route.openshift.io/myapp exposed</screen>
+          </step>
+          <step>
+            <para>
+              Identify the route URL where the application API is exposed:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get route</userinput>
+NAME    HOST/PORT                                                   ...
+myapp   <code>myapp-youruser-app-config.apps.cluster.domain.example.com</code>   ...</screen>
+          </step>
+          <step>
+            <para>
+              Invoke the route URL identified from the previous step using the <command>curl</command> command:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>curl \</userinput>
+<prompt>&gt; </prompt><userinput>http://myapp-${RHT_OCP4_DEV_USER}-app-config.${RHT_OCP4_WILDCARD_DOMAIN}</userinput>
+Value in the APP_MSG env var is =&gt; undefined
+Error: ENOENT: no such file or directory, open '/opt/app-root/secure/myapp.sec'</screen>
+            <para>
+              The <literal>undefined</literal> value for the environment variable, and the <code>ENOENT: no such file or directory</code> error is shown because there is no such environment variable or file that exists in the container.
+            </para>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Create the configuration map and secret resources.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Create a configuration map resource to hold configuration variables that store plain text data.
+            </para>
+            <para>
+              Create a new configuration map resource called <systemitem>myappconf</systemitem>.
+              Store a key called <varname>APP_MSG</varname> with the value <literal>Test Message</literal> in this configuration map:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc create configmap myappconf \</userinput>
+<prompt>&gt; </prompt><userinput>--from-literal APP_MSG="Test Message"</userinput>
+configmap/myappconf created</screen>
+          </step>
+          <step>
+            <para>
+              Verify that the configuration map contains the configuration data:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc describe cm/myappconf</userinput>
+Name:		myappconf
+<emphasis>...output omitted...</emphasis>
+Data
+====
+APP_MSG:
+----
+Test Message
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+          <step>
+            <para>
+              Review the contents of the <filename>/home/student/DO288-apps/app-config/myapp.sec</filename> file:
+            </para>
+<screen>username=user1
+password=pass1
+salt=xyz123</screen>
+          </step>
+          <step>
+            <para>
+              Create a new secret to store the contents of the <filename>myapp.sec</filename> file.
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc create secret generic myappfilesec \</userinput>
+<prompt>&gt; </prompt><userinput>--from-file /home/student/DO288-apps/app-config/myapp.sec</userinput>
+secret/myappfilesec created</screen>
+<!-- TechEditor: The "from-file" line is indented. Is that intentional? Seems to happen a lot.
+FL: NOCHANGE: yes it is intentional, and should be consistent in all our commands inside <screen> -->
+          </step>
+          <step>
+            <para>
+              Verify the contents of the secret.
+              Note that the contents are stored in base64-encoded format:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get secret/myappfilesec -o json</userinput>
+{
+    "apiVersion": "v1",
+    "data": {
+        "myapp.sec": "dXNlcm5hbWU9dXNlcjEKcGFzc3dvcmQ9cGFzczEKc2...
+    },
+    "kind": "Secret",
+    "metadata": {
+        <emphasis>...output omitted...</emphasis>
+        "name": "myappfilesec",
+        <emphasis>...output omitted...</emphasis>
+    },
+    "type": "Opaque"
+}</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Inject the configuration map and the secret into the application container.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Use the <command>oc set env</command> command to add the configuration map to the deployment configuration:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc set env dc/myapp \</userinput>
+<prompt>&gt; </prompt><userinput>--from configmap/myappconf</userinput>
+deploymentconfig.apps.openshift.io/myapp updated</screen>
+          </step>
+          <step>
+            <para>
+              Use the <command>oc set volume</command> command to add the secret to the deployment configuration:
+            </para>
+            <para>
+              You can copy or execute the command from the <filename>inject-secret-file.sh</filename> script in the <filename>/home/student/DO288/labs/app-config</filename> folder:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc set volume dc/myapp --add \</userinput>
+<prompt>&gt; </prompt><userinput>-t secret -m /opt/app-root/secure \</userinput>
+<prompt>&gt; </prompt><userinput>--name myappsec-vol --secret-name myappfilesec</userinput>
+deploymentconfig.apps.openshift.io/myapp volume updated</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Verify that the application is redeployed and uses the data from the configuration map and the secret.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Verify that the application is redeployed because of the changes made to the deployment configuration in previous steps:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc status</userinput>
+In project youruser-app-config on server <emphasis>...output omitted...</emphasis>
+
+http://myapp-youruser-app-config.apps.cluster.domain.example.com to pod port 8080-tcp (svc/myapp)
+  dc/myapp deploys istag/myapp:latest &lt;-
+    bc/myapp source builds https://github.com/youruser/DO288-apps#app-config on openshift/nodejs:10
+    deployment #3 deployed 24 seconds ago - 1 pod
+    deployment #2 deployed 4 minutes ago
+    deployment #1 deployed 18 minutes ago</screen>
+            <note>
+              <para>
+                You should see the application redeployed twice, due to the two <command>oc set env</command> commands that change the deployment configuration.
+              </para>
+              <para>
+                You can also safely ignore errors messages similar to the following:
+              </para>
+<screen>deployment #2 failed 59 seconds ago: newer deployment was found running</screen>
+            </note>
+          </step>
+          <step>
+            <para>
+              Wait until the application pod is ready and in a <code>Running</code> state.
+              Get the name of the application pod using the <command>oc get pods</command> command,
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get pods</userinput>
+NAME            READY     STATUS      RESTARTS   AGE
+myapp-1-build   0/1       Completed   0          13m
+myapp-1-deploy  0/1       Completed   0          12m
+myapp-3-deploy  0/1       Completed   0          3m
+myapp-3-<code>wzdbh</code>   <code>1/1</code>       <code>Running</code>     0          2m</screen>
+          </step>
+          <step>
+            <para>
+              Use the <command>oc rsh</command> command to inspect the environment variables in the container:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc rsh myapp-3-<replaceable>wzdbh</replaceable> env | grep APP_MSG</userinput>
+APP_MSG=Test Message</screen>
+          </step>
+          <step>
+            <para>
+              Verify that the configuration map and secret were injected into the container.
+              Retest the application using the route URL:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>curl \</userinput>
+<prompt>&gt; </prompt><userinput>http://myapp-${RHT_OCP4_DEV_USER}-app-config.${RHT_OCP4_WILDCARD_DOMAIN}</userinput>
+Value in the APP_MSG env var is =&gt; <code>Test Message</code>
+The secret is =&gt; username=user1
+password=pass1
+salt=xyz123</screen>
+            <para>
+              OpenShift injects the configuration map as an environment variable and mounts the secret as a file into the container.
+              The application reads the environment variable and file and displays their data.
+            </para>
+          </step>
+
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Change the information stored in the configuration map and retest the application.
+        </para>
+        <substeps>
+          <step>
+            <para>
+              Use the <command>oc edit configmap</command> command to change the value of the <varname>APP_MSG</varname> key:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc edit cm/myappconf</userinput></screen>
+            <para>
+              The above command opens a Vim-like buffer with the configuration map attributes in YAML format.
+              Edit the value associated with the <varname>APP_MSG</varname> key under the data section and change the value as follows:
+            </para>
+<screen><emphasis>...output omitted...</emphasis>
+apiVersion: v1
+data:
+  <code>APP_MSG: Changed Test Message</code>
+kind: ConfigMap
+<emphasis>...output omitted...</emphasis></screen>
+            <para>
+              Save and close the file.
+            </para>
+          </step>
+          <step>
+            <para>
+              Verify that the value in the <varname>APP_MSG</varname> key is updated:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc describe cm/myappconf</userinput>
+Name:		myappconf
+<emphasis>...output omitted...</emphasis>
+Data
+====
+APP_MSG:
+----
+Changed Test Message
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+
+          <step>
+            <para>
+              Use the <command>oc rollout latest</command> command to trigger a new deployment.
+              This ensures that the application picks up the changed values in the configuration map:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc rollout latest dc/myapp</userinput>
+deploymentconfig.apps.openshift.io/myapp rolled out</screen>
+          </step>
+          <step>
+            <para>
+              Wait for the application pod to redeploy and appear in a <code>Running</code> state:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get pods</userinput>
+NAME            READY     STATUS      RESTARTS   AGE
+<emphasis>...output omitted...</emphasis>
+myapp-4-<code>2feqr</code>   <code>1/1</code>       <code>Running</code>     0          6s</screen>
+          </step>
+          <step>
+            <para>
+              Test the application and verify that the changed values in the configuration map display:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>curl \</userinput>
+<prompt>&gt; </prompt><userinput>http://myapp-${RHT_OCP4_DEV_USER}-app-config.${RHT_OCP4_WILDCARD_DOMAIN}</userinput>
+Value in the APP_MSG env var is =&gt; Changed Test Message
+The secret is =&gt; username=user1
+password=pass1
+salt=xyz123</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>
+          Clean up.
+          Delete the <systemitem><replaceable>youruser</replaceable>-app-config</systemitem> project in OpenShift.
+        </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc delete project \</userinput>
+<prompt>&gt; </prompt><userinput>${RHT_OCP4_DEV_USER}-app-config</userinput>
+project.project.openshift.io "youruser-app-config" deleted</screen>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>Finish</title>
+        <para>
+          On <systemitem>workstation</systemitem>, run the <command>lab app-config finish</command> command to complete this exercise.
+          This is important to ensure that resources from previous exercises do not impact upcoming exercises.
+          The finish action releases this project and its resources.
+        </para>
+      </formalpara>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>lab app-config finish</userinput></screen>
+    </taskrelated>
+  </task>
+  <para>
+    This concludes the guided exercise.
+  </para>
+</section>

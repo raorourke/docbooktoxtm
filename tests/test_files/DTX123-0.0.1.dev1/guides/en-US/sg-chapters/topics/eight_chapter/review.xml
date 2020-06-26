@@ -1,0 +1,546 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section role="Test" id="designing-review">
+  <title>Designing Containerized Applications for OpenShift</title>
+  <task role="Lab" id="designing-review-lab">
+    <title>Can't be empty, will be ignored</title>
+    <tasksummary>
+      <formalpara>
+        <title>Performance Checklist</title>
+        <para>
+          In this lab, you will fix the Dockerfile for an application based on the Thorntail framework to run on an OpenShift cluster.
+          You will also use a configuration map to configure the application.
+        </para>
+      </formalpara>
+
+      <note>
+        <para>
+          The <command>grade</command> command at the end of each chapter lab requires that you use the exact project names and other identifiers as given in the lab specification.
+        </para>
+      </note>
+
+      <formalpara>
+        <title>Outcomes</title>
+        <para>
+          You should be able to fix the Dockerfile for an application based on the Thorntail framework to run as a random user, and deploy the application to an OpenShift cluster.
+          You should also be able to use a configuration map to store a simple text string that is used to configure the application.
+        </para>
+      </formalpara>
+    </tasksummary>
+
+    <taskprerequisites>
+      <para>
+        To perform this exercise, ensure you have access to:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            A running OpenShift cluster.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The runnable fat JAR of the application.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The application Git repository.
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Run the following command on <systemitem>workstation</systemitem> to validate the prerequisites.
+        The command also downloads helper files and solution files for the lab:
+      </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>lab design-container start</userinput></screen>
+    </taskprerequisites>
+
+    <procedure>
+      <formalpara>
+        <title>Requirements</title>
+        <para>
+        The application is written in Java, using the Thorntail framework.
+        The prebuilt, runnable JAR file (fat JAR) containing the application and the Thorntail runtime is provided.
+        The application provides a simple REST API that responds to requests based on a configuration that is injected into the container as an environment variable.
+        Build and deploy the application to an OpenShift cluster according to the following requirements:
+        <!-- TechEditor: [style] Don't use "should" when you mean "must". If you have to use these exact names then use "must."\
+        FL: DONE -->
+        </para>
+      </formalpara>
+      <itemizedlist>
+        <!-- TechEditor: Just a suggestion for now: I'd be inclined to use imperative mood for these statements, such as "Name the OpenShift application <literal>elvis</literal>" and "Store the application configuration in a configuration map named <literal>appconfig</literal>."
+        This helps in a couple of ways:
+        The sentences are shorter and more direct
+        It makes it easier to determine which DocBook tag to use. Why? "elvis" is an application, yes, and should use <application> tags, but here we are telling the student exactly what to call the application. The same for the config map. The syntax is "Name this object <literal>object-name</literal>." There is very little room for ambiguity. My 2c.
+        FL: This is an interesting idea... but now I'm not in the mood for a more extensive rewrite :-(
+        And I don't think <application> applies anywhere in the course unless maybe when we refer to Firefox.
+        You made me confused about <literal> vs <systemitem> :-P -->
+        <listitem>
+          <para>
+            The application name for OpenShift is <systemitem>elvis</systemitem>.
+            The configuration for the application should be stored in a configuration map called <systemitem>appconfig</systemitem>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Deploy the application to a project named <systemitem><replaceable>youruser</replaceable>-design-container</systemitem>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The REST API for the application should be accessible at the URL:
+          </para>
+          <para>
+            <uri>elvis-<replaceable>youruser</replaceable>-design-container.<replaceable>apps.cluster.domain.example.com</replaceable>/api/hello</uri>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The Git repository and folder that contains the application sources is:
+          </para>
+          <para>
+            <uri>https://github.com/<replaceable>youruser</replaceable>/DO288-apps/hello-java</uri>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The prebuilt application JAR file is available at:
+          </para>
+          <para>
+            <uri>https://github.com/RedHatTraining/DO288-apps/releases/download/OCP-4.1-1/hello-java.jar</uri>
+          </para>
+        </listitem>
+      </itemizedlist>
+      <formalpara>
+        <title>Steps</title>
+        <!-- A hack to insert a formalpara heading before the steps... -->
+        <para>
+          &nbsp;
+        </para>
+      </formalpara>
+      <step>
+        <para>
+          Navigate to your local clone of the <systemitem>DO288-apps</systemitem> Git repository and create a new branch named <systemitem>design-container</systemitem> from the <systemitem>master</systemitem> branch.
+          Briefly review the Dockerfile for the application in the <filename>/home/student/DO288-apps/hello-java/</filename> directory.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Check out the <systemitem>master</systemitem> branch of the Git repository.
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>cd DO288-apps</userinput>
+<prompt>[student@workstation DO288-apps]$ </prompt><userinput>git checkout master</userinput>
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+
+          <step>
+            <para>
+              Create a new branch where you can save any changes you make during this exercise:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>git checkout -b design-container</userinput>
+Switched to a new branch 'design-container'
+<prompt>[student@workstation DO288-apps]$ </prompt><userinput>git push -u origin design-container</userinput>
+<emphasis>...output omitted...</emphasis>
+* [new branch]      design-container -&gt; design-container
+Branch design-container set up to track remote branch design-container from origin.</screen>
+          </step>
+
+          <step>
+            <para>
+              Inspect the <filename>/home/student/DO288-apps/hello-java/Dockerfile</filename> file.
+              Do not make any changes to it for now.
+            </para>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Deploy the application in the <filename>hello-java</filename> folder of the <systemitem>DO288-apps</systemitem> Git repository, using the <systemitem>design-container</systemitem> branch of the application.
+          Deploy the application to the <systemitem><replaceable>youruser</replaceable>-design-container</systemitem> project in OpenShift without making any changes.
+        </para>
+        <para>
+          Do not forget to source the variables in the <filename>/usr/local/etc/ocp4.config</filename> file before logging in to the OpenShift cluster.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Load your classroom environment configuration.
+            </para>
+            <para>
+              Run the following command to load the configuration variables created in the first guided exercise:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>source /usr/local/etc/ocp4.config</userinput></screen>
+          </step>
+
+          <step>
+            <para>
+              Log in to OpenShift using your developer user account:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc login -u ${RHT_OCP4_DEV_USER} \</userinput>
+<prompt>&gt; </prompt><userinput>-p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}</userinput>
+Login successful
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+
+          <step>
+            <para>
+              Create a new project for the application.
+              Prefix the project's name with your developer username:
+              <!-- TechEditor: I changed this to "username" because you are actually referring to the variable ${RHT_OCP4_DEV_USER}. -->
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc new-project \</userinput>
+<prompt>&gt; </prompt><userinput>${RHT_OCP4_DEV_USER}-design-container</userinput></screen>
+          </step>
+
+          <step>
+            <para>
+              Create a new application called <application>elvis</application> from the Dockerfile stored in the Git repository.
+              <!-- TechEditor: [xml] We're actually telling the students to use the literal string "elvis" as the name for their app so I'd be inclined to use <literal>. When referring to the application later I would use <application>: "Update the <application>elvis</application> application." -->
+            </para>
+            <para>
+              Copy or execute the command from the <filename>oc-new-app.sh</filename> script in the <filename>/home/student/DO288/labs/design-container</filename> directory.
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc new-app --name elvis \</userinput>
+<prompt>&gt; </prompt><userinput>https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#design-container \</userinput>
+<prompt>&gt; </prompt><userinput>--context-dir hello-java</userinput>
+<emphasis>...output omitted...</emphasis>
+--&gt; Creating resources ...
+imagestream.image.openshift.io "ubi" created
+imagestream.image.openshift.io "elvis" created
+buildconfig.build.openshift.io "elvis" created
+deploymentconfig.apps.openshift.io "elvis" created
+service "elvis" created
+--&gt; Success
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Follow the build logs and verify that the container image is built and pushed to the OpenShift internal registry.
+          View the deployment status of the application pod.
+          The pod will be in a <code>CrashLoopBackOff</code> or <code>Error</code> state.
+          View the application logs to see why the application is not starting correctly.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Follow the build logs:
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc logs -f bc/elvis</userinput>
+<emphasis>...output omitted...</emphasis>
+STEP 1: FROM registry.access.redhat.com/ubi8/ubi@sha256...
+<emphasis>...output omitted...</emphasis>
+Pushing image image-registry.openshift-image-registry.svc:5000/youruser-design-container/elvis:latest ...
+<emphasis>...output omitted...</emphasis>
+Push successful</screen>
+            <!-- TechEditor: Three dots on a line by themselves... is that because the preceding line is truncated? Please clarify.
+FL: the only lots by themselves are to avoid a very long sha256 hash that dont'fit the page width -->
+          </step>
+
+          <step>
+            <para>
+              Wait until the application pod is deployed.
+              The application does not reach a <code>Ready</code> status.
+              <!-- TechEditor: [logic] Suggested rephrase: "The application does not reach a <code>Ready</code> status."
+              FL: DONE -->
+              It will, after some time, stay in either a <code>CrashLoopBackOff</code>
+              or <code>Error</code> status.
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc get pods</userinput>
+NAME             READY     STATUS             RESTARTS   AGE
+<emphasis>...output omitted...</emphasis>
+elvis-1-<code>tgv5s</code>    <code>0/1</code>       <code>CrashLoopBackOff</code>   1          13s</screen>
+          </step>
+
+          <step>
+            <para>
+              View the logs for the application pod and investigate why the application pod failed to start.
+            </para>
+<screen><prompt>[student@workstation DO288-apps]$ </prompt><userinput>oc logs elvis-1-<replaceable>tgv5s</replaceable></userinput>
+/bin/sh: /opt/app-root/bin/run-app.sh: Permission denied</screen>
+            <para>
+              The application fails to start due to a "Permission denied" error in the file system, because OpenShift does not run the pod using the user specified in the Dockerfile.
+            </para>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Edit the Dockerfile for the application to ensure successful deployment to an OpenShift cluster.
+          The container should run using a random user id rather than the currently configured <systemitem>wildfly</systemitem> user.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Edit the Dockerfile at <filename>/home/student/DO288-apps/hello-java/Dockerfile</filename> with a text editor.
+              Make the changes outlined in the steps below.
+              You can also copy the instructions and commands from the solution file provided at <filename>/home/student/DO288/solutions/design-container/Dockerfile</filename>.
+            </para>
+            <para>
+              Remove the <command>useradd</command> command in the first <code>RUN</code> instruction (line 12).
+            </para>
+<screen>      useradd wildfly &amp;&amp; \</screen>
+          </step>
+
+          <step>
+            <para>
+              Locate the <command>chown</command> and <command>chmod</command> commands on lines 19 and 20:
+            </para>
+<screen>RUN   chown -R wildfly:wildfly /opt/app-root &amp;&amp; \
+      chmod -R 700 /opt/app-root</screen>
+            <para>
+              Replace them with the following:
+            </para>
+<screen>RUN   chgrp -R 0 /opt/app-root &amp;&amp; \
+      chmod -R g=u /opt/app-root</screen>
+          </step>
+
+          <step>
+            <para>
+              Replace the <systemitem>wildfly</systemitem> user in the <code>USER</code> instruction on line 24 with the generic userid of 1001 to avoid inheriting the user from the parent RHEL image.
+              This generic userid is ignored by OpenShift and follows Red&nbsp;Hat recommendations and conventions for building images:
+            </para>
+<screen>USER 1001</screen>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Commit the changes you made to the Dockerfile and push the changes to the classroom Git repository.
+        </para>
+<screen role="solution"><prompt>[student@workstation DO288-apps]$ </prompt><userinput>cd hello-java</userinput>
+<prompt>[student@workstation hello-java]$ </prompt><userinput>git commit -a -m \</userinput>
+<prompt>&gt; </prompt><userinput>"Fixed Dockerfile to run with random user id on OpenShift"</userinput>
+<prompt>[student@workstation hello-java]$ </prompt><userinput>git push</userinput>
+<prompt>[student@workstation hello-java]$ </prompt><userinput>cd ~</userinput>
+<prompt>[student@workstation ~]$</prompt></screen>
+      </step>
+
+      <step>
+        <para>
+          Start a new build of the application.
+          Follow the build log for the new build.
+          Verify that the application pod starts successfully.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Start a new build for the application:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc start-build elvis</userinput>
+build.build.openshift.io/elvis-2 started</screen>
+          </step>
+
+          <step>
+            <para>
+              Follow the build log and verify that a new container image is created and pushed to the OpenShift internal registry:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc logs -f bc/elvis</userinput>
+<emphasis>...output omitted...</emphasis>
+Pushing image image-registry.openshift-image-registry.svc:5000/youruser-design-container/elvis:latest ...
+<emphasis>...output omitted...</emphasis>
+Push successful</screen>
+            <!-- TechEditor: Same comment as above re 3 dots. FL: same answer -->
+          </step>
+
+          <step>
+            <para>
+              Wait for the application pod to be ready and running.
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc get pods</userinput>
+NAME            READY     STATUS      RESTARTS   AGE
+<emphasis>...output omitted...</emphasis>
+elvis-2-<code>9gvqr</code>   <code>1/1</code>       <code>Running</code>     0          9s</screen>
+            <!-- TechEditor: I notice you've been putting the changeable pod id in <code> tags. I know it's different for each case, but I wonder why you're highlighting it.
+  FL: Because we use the changeable pod id in the next steps and we can't use <replaceable> in ouputs -->
+          </step>
+
+          <step>
+            <para>
+              View the logs for the application pod and verify that there are no errors during startup:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc logs elvis-2-<replaceable>9gvqr</replaceable></userinput>
+Starting hello-java app...
+JVM options =&gt; -Xmx512m
+<emphasis>...output omitted...</emphasis>
+2017-10-12 13:49:20,647 INFO  [org.jboss.as] (MSC service thread 1-3) WFLYSRV0049: Thorntail 2.4.0.Final (WildFly Core 7.0.0.Final) starting
+<emphasis>...output omitted...</emphasis>
+2017-10-12 13:49:23,237 INFO  [org.wildfly.swarm] (main) THORN99999: Thorntail is Ready</screen>
+          </step>
+        </substeps>
+
+      </step>
+      <step>
+        <para>
+          Expose the service to external access and test the application.
+          Access the application's API using the <code>/api/hello</code> context path.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Expose the application for external access.
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc expose svc/elvis</userinput>
+route.route.openshift.io/elvis exposed</screen>
+          </step>
+
+          <step>
+            <para>
+              Identify the host name where the application API is exposed:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc get route</userinput>
+NAME    HOST/PORT
+elvis   elvis-<code>youruser</code>-design-container.<code>apps.cluster.domain.example.com</code></screen>
+            <!-- TechEditor: Only apps.cluster.domain.example.com is the host name, right? Do we need to highlight "youruser"? Isn't it irrelevant? Changeable, yes, but irrelevant.
+FL: We are hilighting everything the student needs to change or will see different in his output -->
+          </step>
+
+          <step>
+            <para>
+              Test the application by invoking the API URL using the host name identified from the previous step (<uri>http://elvis-<replaceable>youruser</replaceable>-design-container.<replaceable>apps.cluster.domain.example.com</replaceable>/api/hello</uri>), and verify that the application pod name appears in the response:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>curl \</userinput>
+<prompt>&gt; </prompt><userinput>http://elvis-${RHT_OCP4_DEV_USER}-design-container.${RHT_OCP4_WILDCARD_DOMAIN}\</userinput>
+<prompt>&gt; </prompt><userinput>/api/hello</userinput>
+Hello world from host elvis-2-<replaceable>9gvqr</replaceable></screen>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Create a new configuration map called <literal>appconfig</literal>.
+          Store a key called <varname>APP_MSG</varname> with the value <literal>Elvis lives</literal> in this configuration map.
+          Add that key as an environment variable to the application's deployment configuration.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Create the configuration map:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc create cm appconfig \</userinput>
+<prompt>&gt; </prompt><userinput>--from-literal APP_MSG="Elvis lives"</userinput>
+configmap/appconfig created</screen>
+          </step>
+
+          <step>
+            <para>
+              View the details of the configuration map:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc describe cm/appconfig</userinput>
+Name:		appconfig
+<emphasis>...output omitted...</emphasis>
+
+Data
+====
+APP_MSG:
+----
+Elvis lives</screen>
+          </step>
+
+          <step>
+            <para>
+              Use the <command>oc set env</command> command to add the configuration map to the deployment configuration:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc set env dc/elvis --from cm/appconfig</userinput>
+deploymentconfig.apps.openshift.io/elvis updated</screen>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Verify that a new deployment is triggered and wait for a new application pod to be ready and running.
+          Verify that the <varname>APP_MSG</varname> key is injected into the container as an environment variable.
+        </para>
+
+        <substeps role="solution">
+          <step>
+            <para>
+              Verify that a new deployment was triggered:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc status</userinput>
+<emphasis>...output omitted...</emphasis>
+  dc/elvis deploys istag/elvis:latest &lt;-
+    bc/elvis docker builds https://github.com/youruser/DO288-apps#design-container on istag/ubi:8.0
+    <code>deployment #3 deployed 3 minutes ago - 1 pod</code>
+    deployment #2 deployed 38 minutes ago
+<emphasis>...output omitted...</emphasis></screen>
+          </step>
+
+          <step>
+            <para>
+              Wait for the application pod to redeploy.
+              Verify that the new application pod is ready and running:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc get pods</userinput>
+NAME            READY     STATUS      RESTARTS   AGE
+<emphasis>...output omitted...</emphasis>
+elvis-3-<code>ks1np</code>   <code>1/1</code>       <code>Running</code>     0          3m</screen>
+          </step>
+
+          <step>
+            <para>
+              Verify that the <varname>APP_MSG</varname> key is injected into the container as an environment variable:
+            </para>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>oc rsh elvis-3-<replaceable>ks1np</replaceable> env | grep APP_MSG</userinput>
+APP_MSG=Elvis lives</screen>
+          </step>
+        </substeps>
+      </step>
+
+      <step>
+        <para>
+          Test the application by invoking its REST API URL (<uri>http://elvis-<replaceable>youruser</replaceable>-design-container.<replaceable>apps.cluster.domain.example.com</replaceable>/api/hello</uri>) and verify that the <varname>APP_MSG</varname> key value appears in the response.
+        </para>
+<screen role="solution"><prompt>[student@workstation ~]$ </prompt><userinput>curl \</userinput>
+<prompt>&gt; </prompt><userinput>http://elvis-${RHT_OCP4_DEV_USER}-design-container.${RHT_OCP4_WILDCARD_DOMAIN}\</userinput>
+<prompt>&gt; </prompt><userinput>/api/hello</userinput>
+Hello world from host [elvis-3-ks1np]. Message received = Elvis lives</screen>
+      </step>
+    </procedure>
+
+    <taskrelated>
+
+      <formalpara>
+        <title>Evaluation</title>
+        <para>
+          As the <systemitem>student</systemitem> user on the <systemitem>workstation</systemitem> machine, use the <command>lab</command> command to grade your work.
+          Correct any reported failures and rerun the command until successful.
+        </para>
+      </formalpara>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>lab design-container grade</userinput></screen>
+
+      <formalpara>
+        <title>Finish</title>
+        <para>
+          On <systemitem>workstation</systemitem>, run the <command>lab design-container finish</command> command to complete this exercise.
+          This is important to ensure that resources from previous exercises do not impact upcoming exercises.
+          The finish action releases this project and its resources.
+        </para>
+      </formalpara>
+<screen><prompt>[student@workstation ~]$ </prompt><userinput>lab design-container finish</userinput></screen>
+
+    </taskrelated>
+  </task>
+
+  <para>
+    This concludes the lab.
+  </para>
+</section>

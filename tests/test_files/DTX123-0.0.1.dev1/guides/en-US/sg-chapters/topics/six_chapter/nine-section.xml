@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="nine-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <mediaobject id="openshift-webconsole-lecture-projects-overview-graphic">
+    <imageobject>
+      <imagedata fileref="images/webconsole-projects.png" width="90%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>OpenShift web console home page</caption>
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+        <para>para</para>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <mediaobject id="deploying-webconsole-webconsole-podtabs">
+    <imageobject>
+      <imagedata align="center" width="40%" fileref="images/deploying/webconsole-podtabs.png"/>
+    </imageobject>
+    <caption>Labels at the bottom of a pod details page</caption>
+    <!-- TechEditor: This image is quite large and includes a lot of detail not at all related to the caption. afaict the "labels" only appear in the last line, right at the bottom of the image. RA: cropped out irrelevant right side-->
+  </mediaobject>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+  <mediaobject id="openshift-webconsole-lecture-new-app-graphic">
+    <imageobject>
+      <imagedata fileref="images/console-dev-catalog-mod.png" width="90%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>OpenShift Developer Catalog page</caption>
+  </mediaobject>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <mediaobject id="openshift-webconsole-lecture-bc-list-graphic">
+    <imageobject>
+      <imagedata fileref="images/console-bc-lecture-mod.png" width="90%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>OpenShift build configurations page</caption>
+  </mediaobject>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <mediaobject id="openshift-webconsole-lecture-workloads-graphic">
+    <imageobject>
+      <imagedata fileref="images/console-dc-lecture-mod.png" width="90%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>OpenShift Workloads menu</caption>
+  </mediaobject>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <para>para</para>
+</section>

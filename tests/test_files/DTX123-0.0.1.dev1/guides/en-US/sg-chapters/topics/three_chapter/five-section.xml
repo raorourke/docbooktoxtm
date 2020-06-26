@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="five-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject id="manage-networking-linux-networking-1">
+    <imageobject>
+      <imagedata fileref="images/podman-networking-1.png" align="center" scalefit="1" width="95%"/>
+    </imageobject>
+    <caption>Basic Linux container networking</caption>
+    <!-- TechEditor: Does the image need to be this big? Lots of white space. -->
+  </mediaobject>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <!-- TechEditor: [standards] Non-standard user input and use of prompts. Why use sudo with a root prompt? Please review and fix everywhere.
+JS: Removed unneeded sudo.
+For the sake of homogeneity I replaced the prompts to `[user@demo ~]$` instead of `#`.-->
+  <para>para</para>
+  <mediaobject id="manage-networking-podman-networking-2">
+    <imageobject>
+      <imagedata fileref="images/podman-networking-2.png" align="center" scalefit="1" width="95%"/>
+    </imageobject>
+    <caption>Allowing external accesses to Linux containers</caption>
+  </mediaobject>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

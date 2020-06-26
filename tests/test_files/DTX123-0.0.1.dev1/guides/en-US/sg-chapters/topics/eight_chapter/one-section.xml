@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-approach">
+  <title>Selecting a Containerization Approach</title>
+
+  <bridgehead>Objectives</bridgehead>
+  <para>
+    After completing this section, you should be able to select an appropriate application containerization method.
+  </para>
+
+  <bridgehead>Selecting a Build Method</bridgehead>
+  <para>
+    The primary deployment unit in OpenShift is a <firstterm>container image</firstterm>, also referred to as just an <firstterm>image</firstterm>.
+    A container image consists of the application and all its dependencies, such as shared libraries, runtime environments, interpreters, and so on.
+    <!-- TechEditor: [logic] Practice minimalism: "...the application and all its dependencies, such as shared libraries, runtime environments, interpreters, and so on." RA: updated  -->
+    There are several ways to create container images, depending on the type of application that you are planning to deploy and run on an OpenShift cluster:
+  </para>
+
+  <!-- TechEditor: Recommend using a definition list here <variablelist>. This also negates the need to use <emphasis> for the terms. RA: updated -->
+  <variablelist>
+    <varlistentry>
+      <term>Container images</term>
+      <listitem>
+        <para>
+          Container images built outside of OpenShift can be deployed directly on an OpenShift cluster.
+          This approach is useful in cases where you already have an application packaged as a container image.
+          You can also use this approach when you have a certified and supported container image provided by a third-party vendor.
+          You can deploy images built by a third-party vendor to an OpenShift cluster.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Dockerfiles</term>
+      <listitem>
+        <para>
+          In some instances, the Dockerfile used to build the application container image is provided to you.
+          In such scenarios, you have more options to consider:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              You can customize the Dockerfile and build new images to suit the needs of your application.
+              Use this option when the changes are small and if you do not want to add too many layers to the image.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              You can create a Dockerfile using the provided container image as a parent and customize the base image to suit the needs of your application.
+              Use this option when you want to create a new child image with more customizations, and that inherits the layers from the parent image.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Source-to-Image (S2I) builder images</term>
+      <listitem>
+        <para>
+          An S2I builder image contains base operating system libraries, compilers and interpreters, runtimes, frameworks, and Source-to-Image tooling.
+          When an application is built using this approach, OpenShift combines the application source code and the builder image to create a ready-to-run container image that OpenShift can then deploy to the cluster.
+          This approach has several advantages for developers and is the quickest way to build new applications for deployment to an OpenShift cluster.
+        </para>
+        <para>
+          Depending on the needs of your application, you have several options to use S2I builder images:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              Red&nbsp;Hat provides many supported S2I builder images for various types of applications.
+              Red&nbsp;Hat recommends that you use one of these standard S2I builder images whenever possible.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              S2I builder images are like regular container images, but with extra metadata, scripts, and tooling included in the image.
+              You can use Dockerfiles to create child images based on the parent builder images provided by Red&nbsp;Hat.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              If none of the standard Red&nbsp;Hat-provided S2I builder images suit your application needs, you can build your own customized S2I builder image.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <bridgehead>S2I Builder Images</bridgehead>
+  <para>
+    An S2I builder image is a specialized form of container image that produces application container images as output.
+    Builder images include base operating system libraries, language runtimes, frameworks, and libraries that an application depends on, and Source-to-Image tools and utilities.
+  </para>
+  <para>
+    For example, if you have an application written in PHP that you want to deploy to OpenShift, you can use a PHP builder image to produce an application container image.
+    You provide the location of the Git repository where you keep the application source code, and OpenShift combines the source code and the base builder image to produce a container image that OpenShift can deploy to the cluster.
+    The resulting application container image includes a version of Red&nbsp;Hat Enterprise&nbsp;Linux, a PHP runtime, and the application.
+    Builder images are a convenient mechanism to go from code to runnable container quickly and easily without the need to create Dockerfiles.
+  </para>
+
+  <bridgehead>Using Container Images</bridgehead>
+  <para>
+    Although Source-to-Image builds are the preferred way to build and deploy applications to OpenShift, there may be scenarios where you need to deploy applications that a third party provides to you prebuilt.
+    <!-- TechEditor: [logic] This last clause appears not to make sense. Missing words? "...that are a third party provides prebuilt"? Please review and clarify. RA: updated -->
+    For example, certain vendors provide fully certified and supported container images that are ready to run.
+    In such cases, OpenShift supports deployments of prebuilt container images.
+  </para>
+  <para>
+    The <command>oc new-app</command> command provides several flexible ways to deploy container images to an OpenShift cluster.
+    The most straightforward approach is to make the prebuilt image available via a public (such as docker.io or quay.io) or private (hosted within your organization) registry, and then provide the location of this image to the <command>oc new-app</command> command.
+    OpenShift then pulls the image and deploys it to an OpenShift cluster like any other image built within OpenShift.
+  </para>
+
+  <note>
+    <para>
+      A sample tutorial that demonstrates prebuilt container image deployments to an OpenShift cluster is available at <ulink url="https://blog.openshift.com/binary-deployments-openshift-3/">OpenShift Binary Deployments</ulink>
+      <!-- TODO Need to update this to OCP4? -->
+    </para>
+  </note>
+
+  <bridgehead>
+    &nbsp;
+  </bridgehead>
+  <para>
+    The <firstterm>Red&nbsp;Hat Container Catalog</firstterm> is a trusted source of secure, certified, and up-to-date container images.
+    It contains both plain container images as well as S2I builder images.
+    Mission-critical applications require trusted containers.
+    Red&nbsp;Hat builds the Container Catalog container images from RPM resources that have been vetted by Red&nbsp;Hat's internal security team and hardened against security flaws.
+  </para>
+  <para>
+    The Red&nbsp;Hat Container Catalog portal at <ulink url="https://registry.redhat.io"/> provides information about a number of container images that Red&nbsp;Hat builds on versions of Red&nbsp;Hat Enterprise&nbsp;Linux (RHEL) and related systems.
+    <!--ZG: Why are we referring to the old url with a note about it changing locations? Shouldnt we just refer to the new url here? FIXED. Changed URL and commented out note.-->
+    It provides a number of ready-to-use container images to start developing applications for OpenShift.
+  </para>
+  <!-- <note>
+    <para>
+      The location of the container images in the Red&nbsp;Hat Container Catalog is being transitioned to <ulink url="https://registry.redhat.io"/>.
+      It is recommended to use the new URL for new application deployments on OpenShift.
+      For more details, see <ulink url="https://www.redhat.com/en/blog/transitioning-red-hat-container-registry">Transitioning the Red&nbsp;Hat container registry</ulink>
+    </para>
+  </note> -->
+  <para>
+    Red&nbsp;Hat uses a <firstterm>Container Health Index</firstterm> for security risk assessment of container images that Red&nbsp;Hat provides through the Red&nbsp;Hat Container Catalog.
+    For more details on the grading system used by Red&nbsp;Hat in the Container Health Index, see <ulink url="https://access.redhat.com/articles/2803031"/>.
+  </para>
+  <para>
+    For more details on the Red&nbsp;Hat Container Catalog, see <ulink url="https://access.redhat.com/containers/#/faq">Frequently Asked Questions (FAQ)</ulink>
+  </para>
+
+  <bridgehead>Selecting Container Images for Applications</bridgehead>
+  <para>
+    Selecting a container image for your application depends on a number of factors.
+    If you want to build a custom container, start with a base operating system image (such as <systemitem>rhel7</systemitem>).
+    To build and run applications requiring specific development tools and runtime libraries, Red&nbsp;Hat provides container images that feature tools such as Node.js (<systemitem>rhscl/nodejs-8-rhel7</systemitem>), Ruby on Rails (<systemitem>rhscl/ror-50-rhel7</systemitem>), and Python (<systemitem>rhscl/python-36-rhel7</systemitem>).
+  </para>
+
+  <para>
+    The <firstterm>Red&nbsp;Hat Software Collections Library (RHSCL)</firstterm>, or simply <firstterm>Software Collections</firstterm>, is Red&nbsp;Hat's solution for developers who need to use the latest development tools, and which usually do not fit the standard Red&nbsp;Hat Enterprise&nbsp;Linux (RHEL) release schedule.
+    Red&nbsp;Hat maintains many container images offered through the Red&nbsp;Hat Container Catalog as part of the RHSCL.
+  </para>
+  <para>
+    Red&nbsp;Hat also provides Red&nbsp;Hat OpenShift Application Runtimes (RHOAR), which is Red&nbsp;Hat's development platform for cloud-native and microservices applications.
+    RHOAR provides a Red&nbsp;Hat optimized and supported approach for developing microservices applications that target OpenShift as the deployment platform.
+    <!-- TechEditor: What do you mean by "an opinionated approach"?  RA: updated-->
+  </para>
+
+  <para>
+    RHOAR supports multiple runtimes, languages, frameworks, and architectures.
+    It offers the choice and flexibility to pick the right frameworks and runtimes for the right job.
+    Applications developed with RHOAR can run on any infrastructure where Red&nbsp;Hat OpenShift Container Platform can run, offering freedom from vendor lock-in.
+  </para>
+
+  <para>
+    RHOAR provides:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        Access to Red&nbsp;Hat-built and supported binaries for selected microservices development frameworks and runtimes.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Access to Red&nbsp;Hat-built and supported binaries for integration modules that replace or enhance a framework's implementation of a microservices pattern to use OpenShift features.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Developer support for writing applications using selected microservice development frameworks, runtimes, integration modules, and integration with selected external services, such as database servers.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Production support for deploying applications using selected microservice development frameworks, runtimes, integration modules, and integrations on a supported OpenShift cluster.
+      </para>
+    </listitem>
+  </itemizedlist>
+  <!-- RA: this content was moved to ch9s05
+    <mediaobject id="openshift-rhoar-intro-rhoar-marketing.png">
+    <imageobject>
+      <imagedata fileref="images/designing/rhoar-marketing.png" scalefit="1" width="100%" align="center"/>
+    </imageobject>
+    <caption>Red&nbsp;Hat OpenShift Application Runtimes architecture</caption>
+  </mediaobject>
+
+  <para>
+    Red&nbsp;Hat supports the following popular development frameworks and runtimes as part of RHOAR:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>WildFly Swarm</term>
+      <listitem>
+        <para>
+          An implementation of the MicroProfile standard that builds cloud-native applications using both existing and new Java&nbsp;EE APIs.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Eclipse Vert.x</term>
+      <listitem>
+        <para>
+          A reactive, low-latency development framework based on asynchronous I/O and event streams.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Spring Boot</term>
+      <listitem>
+        <para>
+          A cloud-native development framework based on the popular Spring Framework and auto configuration.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Node.js</term>
+      <listitem>
+        <para>
+          A JavaScript runtime that provides an I/O model based on events and nonblocking operations, which enables you to write high performance applications that are both lightweight and efficient.
+        </para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <note>
+    <para>
+      For more details on RHOAR, see <ulink url="https://developers.redhat.com/products/rhoar/overview/">Red&nbsp;Hat OpenShift Application Runtimes Overview</ulink>
+    </para>
+  </note> -->
+
+  <!-- <para> Red&nbsp;Hat also provides containerized versions of JBoss middleware products as part of
+        the Red&nbsp;Hat JBoss Middleware for OpenShift offering. -->
+  <!-- </para>
+    <para>Refer to <ulink url="https://access.redhat.com/documentation/en/red-hat-jboss-middleware-for-openshift/"/> for details.
+    </para>
+    <note>
+      <para> Support for container images built from RHSCL is included in the OpenShift
+            subscription. Container images from Red&nbsp;Hat JBoss Middleware for OpenShift requires
+            a subscription to each of the middleware products concerned. </para>
+    </note> -->
+
+  <bridgehead>Creating S2I Builder Images</bridgehead>
+  <para>
+    If you want your applications to use a custom S2I builder image with your own custom set of runtimes, scripts, frameworks, and libraries, you can build your own S2I builder image.
+    Several options exist for creating S2I builder images:
+    <!--ZG: Why would you want to do this? FIXED. Expanded explanation.-->
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        Create your own S2I builder image from scratch.
+        In scenarios where your application cannot use the S2I builder images provided by the Container Catalog as-is, you can build a custom S2I builder image that customizes the build process to suit your application's needs.
+      </para>
+      <para>
+        OpenShift provides the <command>s2i</command> command-line tool that helps you bootstrap the build environment for creating custom S2I builder images.
+        It is available in the <package>source-to-image</package> package from the RHSCL Yum repositories (<systemitem>rhel-server-rhscl-7-rpms</systemitem>).
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Fork an existing S2I builder image.
+        Rather than starting from scratch, you can use the Dockerfiles for the existing builder images in the Container Catalog, which are available at <ulink url="https://github.com/sclorg/?q=s2i"/>, and customize them to suit your needs.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Extend an existing S2I builder image.
+        You can also extend an existing builder image by creating a child image and then adding or replacing content from the existing builder image.
+      </para>
+    </listitem>
+  </itemizedlist>
+
+  <para>
+    A good tutorial that walks through building a custom S2I builder image is available at <ulink url="https://blog.openshift.com/create-s2i-builder-image/"/>.
+  </para>
+
+  <note role="References">
+    <para>
+      <ulink url="https://access.redhat.com/containers">Red&nbsp;Hat Container Catalog</ulink>
+    </para>
+    <para>
+      Dockerfiles for images that are part of the Red&nbsp;Hat Software Collections library are available at <ulink url="https://github.com/sclorg?q=-container"/>
+    </para>
+    <para>
+      Further information about container images that Red&nbsp;Hat supports for use with OpenShift is in the <citetitle>Creating Images</citetitle> chapter of the <emphasis>Images</emphasis> guide for Red&nbsp;Hat OpenShift Container Platform&nbsp;4.2; at <ulink url="https://access.redhat.com/documentation/en-us/openshift_container_platform/4.2/html/images/creating_images"/>
+    </para>
+  </note>
+</section>

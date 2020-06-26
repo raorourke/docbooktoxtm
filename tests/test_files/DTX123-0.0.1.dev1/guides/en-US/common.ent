@@ -1,0 +1,100 @@
+<!ENTITY PRODUCT "GLS">
+<!ENTITY BOOKID "ExampleBook-Publican">
+<!ENTITY YEAR "2020">
+
+<!-- For referring to the hard disk of a physical system -->
+<!ENTITY hd "sd">
+<!ENTITY sd "sd">
+<!-- For referring to the hard disk of a virtual system -->
+<!ENTITY vd "vd">
+<!ENTITY xvd "xvd">
+
+<!-- Documentation -->
+<!ENTITY GDUG "GNOME Desktop User Guide">
+<!ENTITY MSWN "Windows">
+
+
+<!-- "See appendix..." instructions -->
+<!ENTITY APXV "Instructions for this task may vary depending on your classroom environment. See the 'Working with Virtual Machines' appendix or ask your instructor.">
+
+<!-- Example machines  -->
+<!ENTITY ex_srv1 "server1">
+<!ENTITY ex_srv12 "server12">
+<!ENTITY ex_dsk1 "desktop1">
+<!ENTITY ex_dsk12 "desktop12">
+<!ENTITY ex_rmt1 "remote1">
+<!ENTITY ex_rmt12 "remote12">
+<!-- Leave out FQDN unless we really need them
+<!ENTITY ex_srv1fqdn "server1.example.com">
+<!ENTITY ex_srv12fqdn "server12.example.com">
+<!ENTITY ex_dsk1fqdn "desktop1.example.com">
+<!ENTITY ex_dsk12fqdn "desktop12.example.com">
+<!ENTITY ex_rmt1 "remote1.remote.test">
+<!ENTITY ex_rmt12 "remote12.remote.test">
+-->
+<!-- Example IP addresses  -->
+<!ENTITY ex_srv_ip1 "192.168.0.101">
+<!ENTITY ex_dsk_ip1 "192.168.0.1">
+
+
+<!-- host/IPs/fqdn combos -->
+<!-- physical -->
+<!-- foundation -->
+<!ENTITY fnd "foundation<replaceable>X</replaceable>">
+<!ENTITY fndfqdn "foundation<replaceable>X</replaceable>.ilt.example.com">
+<!ENTITY fndIP "172.25.254.<replaceable>X</replaceable>">
+<!ENTITY ksk "kiosk">
+
+<!-- instructor -->
+<!-- classroom  -->
+<!ENTITY cla "classroom">
+<!ENTITY clafqdn "classroom.example.com">
+<!ENTITY claIP "172.25.254.254">
+<!ENTITY con "content">
+<!ENTITY confqdn "content.example.com">
+<!ENTITY conIP "172.25.254.254">
+<!ENTITY mat "materials">
+<!ENTITY matfqdn "materials.example.com">
+<!ENTITY matIP "172.25.254.254">
+<!ENTITY clastuIP "172.25.252.254">
+
+<!-- student/demo -->
+<!-- Users -->
+<!ENTITY stu "student">
+
+<!-- bastion  -->
+<!ENTITY bast "bastion">
+<!ENTITY bastfqdn "bastion.lab.example.com">
+<!ENTITY bastpubIP "172.25.250.254">
+<!ENTITY bastclafqdn "bastion<replaceable>X</replaceable>.example.com">
+<!ENTITY bastclaIP "172.25.252.<replaceable>X</replaceable>">
+<!-- workstation  -->
+<!ENTITY work "workstation">
+<!ENTITY workfqdn "workstation.lab.example.com">
+<!ENTITY workpubIP "172.25.250.9">
+<!-- servera -->
+<!ENTITY srva "servera">
+<!ENTITY srvafqdn "servera.lab.example.com">
+<!ENTITY srvapubIP "172.25.250.10">
+<!-- serverb -->
+<!ENTITY srvb "serverb">
+<!ENTITY srvbfqdn "serverb.lab.example.com">
+<!ENTITY srvbpubIP "172.25.250.11">
+<!-- serverc -->
+<!ENTITY srvc "serverc">
+<!ENTITY srvcfqdn "serverc.lab.example.com">
+<!ENTITY srvcpubIP "172.25.250.12">
+<!-- serverd -->
+<!ENTITY srvd "serverd">
+<!ENTITY srvdfqdn "serverd.lab.example.com">
+<!ENTITY srvdpubIP "172.25.250.13">
+<!-- servere -->
+<!ENTITY srve "servere">
+<!ENTITY srvefqdn "servere.lab.example.com">
+<!ENTITY srvepubIP "172.25.250.14">
+
+<!-- Networks -->
+<!ENTITY pubrng "172.25.250.0/24">
+<!ENTITY clarng "172.25.252.0/24">
+<!ENTITY fndrng "172.25.254.0/24">
+

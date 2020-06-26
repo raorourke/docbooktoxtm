@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="one-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <table frame="all">
+    <title>title</title>
+    <tgroup cols="2">
+      <colspec colname="c1" colnum="1" colwidth="1*"/>
+      <colspec colname="c2" colnum="2" colwidth="4.5*"/>
+      <thead>
+        <row>
+          <entry>Term</entry>
+          <entry>Definition</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>Node</entry>
+          <entry> A server that hosts applications in a Kubernetes cluster. </entry>
+        </row>
+        <row>
+          <entry>Master Node</entry>
+          <entry>
+            A node server that manages the <literal>control plane</literal> in a Kubernetes cluster.
+            Master nodes provide basic cluster services such as APIs or controllers.
+          </entry>
+        </row>
+        <row>
+          <entry>Worker Node</entry>
+          <entry>
+            Also named <literal>Compute Node</literal>, worker nodes execute workloads for the cluster.
+            Application pods are scheduled onto worker nodes.
+          </entry>
+        </row>
+        <row>
+          <entry>Resource</entry>
+          <entry>
+            Resources are any kind of component definition managed by Kubernetes.
+            Resources contain the configuration of the managed component (for example, the role assigned to a node), and the current state of the component (for example, if the node is available).
+          </entry>
+        </row>
+        <row>
+          <entry>Controller</entry>
+          <entry>
+            A controller is a Kubernetes process that watches resources and makes changes attempting to move the current state towards the desired state.
+          </entry>
+        </row>
+        <row>
+          <entry>Label</entry>
+          <entry>
+            A key-value pair that can be assigned to any Kubernetes resource.
+            Selectors use labels to filter eligible resources for scheduling and other operations.
+          </entry>
+        </row>
+        <row>
+          <entry>Namespace</entry>
+          <entry>
+            A scope for Kubernetes resources and processes, so that resources with the same name can be used in different boundaries.
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <table frame="all">
+    <title>title</title>
+    <tgroup cols="2">
+      <colspec colname="c1" colnum="1" colwidth="1*"/>
+      <colspec colname="c2" colnum="2" colwidth="4.5*"/>
+      <thead>
+        <row>
+          <entry>Term</entry>
+          <entry>Definition</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>Infra Node</entry>
+          <entry>
+            A node server containing infrastructure services like monitoring, logging, or external routing.
+          </entry>
+        </row>
+        <row>
+          <entry>Console</entry>
+          <entry>
+            A web UI provided by the RHOCP cluster that allows developers and administrators to interact with cluster resources.
+          </entry>
+        </row>
+        <row>
+          <entry>Project</entry>
+          <entry>
+            OpenShift's extension of Kubernetes' namespaces.
+            Allows the definition of user access control (UAC) to resources.
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>para</para>
+  <mediaobject id="openshift-arch-OpenShift_Software_Stack">
+    <imageobject>
+      <imagedata fileref="images/openshift-arch-stack.png" width="90%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>OpenShift component stack</caption>
+  </mediaobject>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <mediaobject id="Testing-Containerized-Kubernetes-Arch-SoftwareStack">
+    <imageobject>
+      <imagedata fileref="images/openshift-arch-overview-2.png" width="90%" scalefit="1" align="center"/>
+    </imageobject>
+    <caption>
+      OpenShift and Kubernetes architecture
+    </caption>
+  </mediaobject>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <variablelist>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>term</term>
+      <listitem>
+        <para>para</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

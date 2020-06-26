@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section role="Test" id="review">
+  <title>title</title>
+  <task role="Lab" id="publishing-review-lab">
+    <title>title</title>
+    <tasksummary>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <note>
+        <para>para</para>
+      </note>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+    </tasksummary>
+    <taskprerequisites>
+      <para>para</para>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+      <para>para</para>
+      <screen>screen</screen>
+    </taskprerequisites>
+    <procedure>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>para</para>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+          <para>para</para>
+        </listitem>
+        <listitem>
+          <para>para</para>
+        </listitem>
+      </itemizedlist>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <step>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+        </substeps>
+      </step>
+      <step>
+        <para>para</para>
+        <para>para</para>
+        <screen>screen</screen>
+      </step>
+      <step>
+        <para>para</para>
+        <substeps role="solution">
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <screen>screen</screen>
+          </step>
+          <step>
+            <para>para</para>
+            <para>para</para>
+            <mediaobject id="publishing-review-lab-practice-quay-io-login">
+              <imageobject>
+                <imagedata fileref="images/publishing/quay-io-login.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="publishing-review-lab-practice-quay-io-repositories">
+              <imageobject>
+                <imagedata fileref="images/publishing/quay-io-repositories-php-info.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="publishing-review-lab-practice-quay-io-delete">
+              <imageobject>
+                <imagedata fileref="images/publishing/quay-io-delete.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+            </mediaobject>
+          </step>
+          <step>
+            <para>para</para>
+            <mediaobject id="publishing-review-lab-practice-quay-io-confirm">
+              <imageobject>
+                <imagedata fileref="images/publishing/quay-io-confirm.png" width="100%" scalefit="1" align="center"/>
+              </imageobject>
+            </mediaobject>
+          </step>
+        </substeps>
+      </step>
+    </procedure>
+    <taskrelated>
+      <formalpara>
+        <title>title</title>
+        <para>para</para>
+      </formalpara>
+      <screen>screen</screen>
+    </taskrelated>
+  </task>
+  <para>para</para>
+</section>

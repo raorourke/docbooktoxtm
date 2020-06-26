@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="four-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <!-- TechEditor: Is "for Exercises in This Course" even necessary? FL: removed -->
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <orderedlist>
+    <listitem>
+      <!-- TechEditor: This is written as a prerequisite, not a step. Steps should be written as "do this, do that" and not "you should have already done..." FL: done -->
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+  </orderedlist>
+  <formalpara>
+    <title>title</title>
+    <!-- TechEditor: What's the difference between this and the previous explanation?
+      FL: in previous, the exercise was done, so there were no local uncomitted changes. Now there may be uncomitted changes.
+      You talk about using git stash to save your local changes but then you delete local and remote.
+      We use stash not to save, but to discard. Yes it is not accurate but the stack nature of stashed changes makes them hard to manage, and it provides a shorter command than reset
+      FL: an old version used stash and it didn't work as expected. Removing all mentions of stash -->
+    <para>para</para>
+  </formalpara>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+  </orderedlist>
+  <formalpara>
+    <title>title</title>
+    <para>para</para>
+  </formalpara>
+  <para>para</para>
+  <para>para</para>
+  <orderedlist>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+      <screen>screen</screen>
+      <para>para</para>
+    </listitem>
+  </orderedlist>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

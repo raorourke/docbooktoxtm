@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--UPDATED March 6, 2015: Including the new <invpartnumber> and <pubdate> tags changes the behavior of the file: <invpartnumber> causes <invpartnumber> to be the SKU, <title> to be the written course title, and <subtitle> to change on the cover page.
+
+The <pubsnumber> which we've been using for the publication date is now used for the SVN number.
+The xi:include magic in the Book_Info.xml is used to include a file which flamel automatically updates with the number, but any number can be manually hard coded.
+
+If you render a course without the new tags, everything is rendered as before.-->
+<bookinfo>
+  <!--New tag for course number-->
+  <invpartnumber>DTX123</invpartnumber>
+  <!--New tag for course title-->
+  <title>title</title>
+  <!--Renders correct subtitle based on flamel for ilt or ROLE-->
+  <subtitle>Student Workbook</subtitle>
+  <productname class="trade">DTX</productname>
+  <productnumber>0.0.1-dev0</productnumber>
+  <edition>1</edition>
+  <!--This date used to be in pubsnumber-->
+  <pubdate>20200625</pubdate>
+  <!--During development, this should be uncommented.-->
+  <!-- <pubsnumber>
+      <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+                  href="pubsnum.xml"
+                  xpointer="xpointer(//pubsnumber/node())"/>
+   </pubsnumber> -->
+  <!--At release, comment out the above line, uncomment the below
+    line, and set pubsnumber to the release YYYYMMDD -->
+  <pubsnumber>20200625</pubsnumber>
+  <!-- Everything below is the same as before. -->
+  <authorgroup>
+    <author>
+      <firstname>Ryan</firstname>
+      <surname>O'Rourke</surname>
+    </author>
+  </authorgroup>
+  <abstract>
+    <para>para</para>
+  </abstract>
+  <!--
+  <abstract>
+    <para>Contributors: Ryan O'Rourke</para>
+  </abstract>
+-->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="Common_Content/Legal_Notice.xml"/>
+</bookinfo>

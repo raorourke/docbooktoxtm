@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+%common_entities;
+]>
+<section id="designing-dockerfile">
+  <title>Building Container Images with Advanced Dockerfile Instructions</title>
+<!-- TechEditor: This title uses "instructions" but the GE and narrative use "directives." Need to be consistent.
+FL: NOCHANGE I see no 'directive' anywhere. If you fixed, thanks a lot. -->
+  <bridgehead>Objectives</bridgehead>
+  <para>
+    After completing this section, you should be able to:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+       Build containerized applications with the Red&nbsp;Hat Universal Base Image.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Build a container image with advanced Dockerfile instructions.
+      </para>
+    </listitem>
+  </itemizedlist>
+
+  <bridgehead>
+    Introducing the Red&nbsp;Hat Universal Base Image
+  </bridgehead>
+  <para>
+    The Red&nbsp;Hat Universal Base Image (<firstterm>UBI</firstterm>) aims to be a high-quality, flexible base container image for building containerized applications.
+    The goal of the Red&nbsp;Hat Universal Base Image is to allow users to build and deploy containerized applications using a highly supportable, enterprise-grade container base image that is lightweight and performant.
+    You can run containers built using the Universal Base Image on Red&nbsp;Hat platforms as well as non-Red&nbsp;Hat platforms.
+    <!--ZG: It is also more lightweight than rhel base image, right? I see you have added that info below, but worth mentioning here as well FIXED-->
+  </para>
+
+  <para>
+    Red&nbsp;Hat derives the Red&nbsp;Hat Universal Base Image from Red&nbsp;Hat Enterprise&nbsp;Linux (RHEL).
+    It does differ from the existing RHEL&nbsp;7 base images, most notably the fact that it can be redistributed under the terms of the Red&nbsp;Hat Universal Base Image End User License Agreement (EULA) that allows Red&nbsp;Hat's partners, customers, and community members to standardize on well-curated enterprise software and tools to deliver value through the addition of third-party content.
+  </para>
+
+  <para>
+    The support plan is for the Universal Base Image to follow the same life cycle and support dates as the underlying RHEL content.
+    When run on a subscribed RHEL or OpenShift node, it follows the same support policy as the underlying RHEL content.
+    Red&nbsp;Hat maintains a Universal Base Image for RHEL&nbsp;7, which maps to RHEL&nbsp;7 content, and another UBI for RHEL&nbsp;8, which maps to RHEL&nbsp;8 content.
+  </para>
+
+  <para>
+    Red&nbsp;Hat recommends using the Universal Base Image as the base container image for new applications.
+    Red&nbsp;Hat commits to continue to support earlier RHEL base images for the duration of the support life cycle of the RHEL release.
+  </para>
+
+  <para>
+    The Red&nbsp;Hat Universal Base Image consists of:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        A set of three base images (<systemitem>ubi</systemitem>, <systemitem>ubi-minimal</systemitem>, and <systemitem>ubi-init</systemitem>).
+        These mirror what is provided for building containers with RHEL&nbsp;7 base images.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        A set of language runtime images (<systemitem>java</systemitem>, <systemitem>php</systemitem>, <systemitem>python</systemitem>, <systemitem>ruby</systemitem>, <systemitem>nodejs</systemitem>).
+        <!-- TechEditor: [xml] Be consistent with DocBook elements. Are these actual image names? If so, they should carry <systemitem> tags. If you're referring to the languages, use the correct case. RA: updated-->
+        These runtime images enable developers to start developing applications with the confidence that a Red&nbsp;Hat built and supported container image provides.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        A set of associated Yum repositories and channels that include RPM packages and updates.
+        These allow you to add application dependencies and rebuild container images as needed.
+      </para>
+    </listitem>
+  </itemizedlist>
+
+  <formalpara>
+    <title>Types of Universal Base Images</title>
+    <para>
+      The Red&nbsp;Hat Universal Base Image provides three main base images:
+    </para>
+  </formalpara>
+
+  <variablelist>
+    <varlistentry>
+      <term>ubi</term>
+      <listitem>
+        <para>
+          A standard base image built on enterprise-grade packages from RHEL.
+          Good for most application use cases.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>ubi-minimal</term>
+    <listitem>
+      <para>
+        A minimal base image built using <command>microdnf</command>, a scaled down version of the <command>dnf</command> utility.
+        <!-- TechEditor: [xml] Be consistent with DocBook elements. Both microdnf and dnf are commands and packages. Use either <command> or <package> as appropriate, not <code>. -->
+        This provides the smallest container image.
+      </para>
+    </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>ubi-init</term>
+      <listitem>
+        <para>
+          This image allows you to easily run multiple services, such as web servers, application servers, and databases, all in a single container.
+          It allows you to use the knowledge built into systemd unit files without having to determine how to start the service.
+        </para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <formalpara>
+    <title>
+      Advantages of the Red&nbsp;Hat Universal Base Image
+    </title>
+    <para>
+      Using the Red&nbsp;Hat Universal Base Image as the base image for your containerized applications has several advantages:
+    </para>
+  </formalpara>
+
+  <itemizedlist>
+    <listitem>
+      <para>
+        <emphasis role="bold">Minimal size:</emphasis> The Universal Base Image is a relatively minimal (approximately 90-200&nbsp;MB) base container image with fast startup times.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        <emphasis role="bold">Security:</emphasis> Provenance is a huge concern when using container base images.
+        You must use a trusted image, from a trusted source.
+        Language runtimes, web servers, and core libraries such as OpenSSL have an impact on security when moved into production.
+        The Universal Base Image receives timely security updates from Red&nbsp;Hat security teams.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        <emphasis role="bold">Performance:</emphasis> The base images are tested, tuned, and certified by a Red&nbsp;Hat internal performance engineering team.
+        <!-- TechEditor: "enterprise-grade performance engineering team"? What are you really trying to say? RA: updated-->
+        These are proven container images used extensively in some of the world's most compute-intensive, I/O intensive, and fault sensitive workloads.
+        <!-- TechEditor: [slang] Avoid slang and colloquial language. The meaning can be lost on ESL students and might be difficult to translate. "bits"? RA:updated -->
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        <emphasis role="bold">ISV, vendor certification, and partner support:</emphasis> The Universal Base Image inherits the broad ecosystem of RHEL partners, ISVs, and third-party vendors supporting thousands of applications.
+        The Universal Base Image makes it easy for these partners to build, deploy, and certify their applications and allows them to deploy the resulting containerized application on both Red&nbsp;Hat platforms such as RHEL and OpenShift, as well as non-Red&nbsp;Hat container platforms.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        <emphasis role="bold">Build once, deploy onto many different hosts:</emphasis> The Red&nbsp;Hat Universal Base Image can be built and deployed anywhere: on OpenShift/RHEL or any other container host (Fedora, Debian, Ubuntu, and more).
+        <!-- TechEditor: I would avoid saying "anywhere" because somebody will probably find somewhere where it doesn't work. :-\ RA: updated -->
+      </para>
+    </listitem>
+  </itemizedlist>
+
+  <bridgehead>Advanced Dockerfile Instructions</bridgehead>
+  <para>
+    A <firstterm>Dockerfile</firstterm> automates the building of container images.
+    A Dockerfile is a text file that contains a set of instructions about how to build the container image.
+    The instructions are executed one by one in sequential order.
+    This section reviews some of the basic Dockerfile instructions and then discusses some more advanced instructions, including practical ways to use them when building container images for deployment in OpenShift.
+  </para>
+  <formalpara>
+    <title>The RUN Instruction</title>
+    <para>
+      The <code>RUN</code> instruction executes commands in a new layer on top of the current image and then commits the results.
+      The container build process then uses the committed result in the next step in the Dockerfile.
+      The container build process uses <filename>/bin/sh</filename> to execute commands.
+    </para>
+  </formalpara>
+  <mediaobject id="designing-dockerfile-layers">
+    <imageobject>
+      <imagedata fileref="images/designing/persistent-layer.png" scalefit="1" width="100%" align="center"/>
+    </imageobject>
+    <caption>Layers in a container image</caption>
+  </mediaobject>
+  <para>
+    Each instruction in a Dockerfile results in a new layer for the final container image.
+    Therefore, having too many instructions in a Dockerfile creates too many layers, resulting in images that are unnecessarily large.
+    For example, consider the following <code>RUN</code> instruction in a Dockerfile:
+  </para>
+<screen>RUN yum --disablerepo=* --enablerepo="rhel-7-server-rpms"
+RUN yum update
+RUN yum install -y httpd
+RUN yum clean all -y</screen>
+  <para>
+    The previous example is not a good practice when creating container images, because it creates four layers for a single purpose.
+    When creating Dockerfiles, Red&nbsp;Hat recommends that you always minimize the number of layers.
+    You can achieve the same objective using the <command>&amp;&amp;</command> command separator to execute multiple commands within a single <code>RUN</code> instruction:
+  </para>
+<screen>RUN yum --disablerepo=* --enablerepo="rhel-7-server-rpms" &amp;&amp; \
+    yum update &amp;&amp; \
+    yum install -y httpd &amp;&amp; \
+    yum clean all -y</screen>
+  <para>
+    The updated example creates only one layer and the readability is not compromised.
+  </para>
+
+  <note>
+    <para>
+      In Docker 1.10 and later, only the <code>RUN</code>, <code>COPY</code>, and <code>ADD</code> instructions create layers.
+      Other instructions create temporary intermediate images and do not directly increase the size of the image.
+    </para>
+  </note>
+
+  <formalpara>
+    <title>The LABEL Instruction</title>
+    <para>
+      The <code>LABEL</code> instruction defines image metadata.
+      Labels are key-value pairs attached to an image.
+      The <code>LABEL</code> instruction typically adds descriptive metadata to the image, such as versions, a short description, and other details that provide information to users of the image.
+    </para>
+  </formalpara>
+  <para>
+    When building images for OpenShift, prefix the label name with <code>io.openshift</code> to distinguish between OpenShift and Kubernetes related metadata.
+    The OpenShift tooling can parse specific labels and perform specific actions based on the presence of these labels.
+    The table below lists some of the most commonly used tags:
+  </para>
+  <table frame="all">
+    <title>OpenShift Supported Labels</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="2.0*"/>
+      <thead>
+        <row>
+          <entry>Label Name</entry>
+          <!-- TechEditor: The title reads "Labels" but here you call them variables? Which is correct? RA: updated-->
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            <code>io.openshift.tags</code>
+          </entry>
+          <entry>
+            <para>
+              This label contains a list of comma-separated tags.
+              Tags categorize container images into broad areas of functionality.
+              Tags help UI and generation tools to suggest relevant container images during the application creation process.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <code>io.k8s.description</code>
+          </entry>
+          <entry>
+            <para>
+              This label provides consumers of the container image more detailed information about the service or functionality that the image provides.
+              <!-- TechEditor: Recommend s/be used to give the container image consumers/provide/ RA; updated-->
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>
+            <code>io.openshift.expose-services</code>
+          </entry>
+          <entry>
+            <para>
+              This label contains a list of service ports that match the <code>EXPOSE</code> instructions in the Dockerfile and provides more descriptive information about what actual service is provided to consumers.
+            </para>
+            <para>
+              The format is <code>PORT[/PROTO]:NAME</code> where <code>[/PROTO]</code> is optional and it defaults to <code>tcp</code> if not specified.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>
+    For a full list of all the OpenShift-specific labels, their descriptions, and example usage, refer to the references at the end of this section.
+  </para>
+  <formalpara>
+    <title>The WORKDIR Instruction</title>
+    <para>
+      The <code>WORKDIR</code> instruction sets the working directory for any following <code>RUN</code>, <code>CMD</code>, <code>ENTRYPOINT</code>, <code>COPY</code>, or <code>ADD</code> instructions in a Dockerfile.
+    </para>
+  </formalpara>
+  <para>
+    Red&nbsp;Hat recommends using absolute paths in <code>WORKDIR</code> instructions.
+    Use <code>WORKDIR</code> instead of multiple <code>RUN</code> instructions where you change directories and then run some commands.
+    This approach ensures better maintainability in the long run and is easier to troubleshoot.
+  </para>
+  <formalpara>
+    <title>The ENV Instruction</title>
+    <para>
+      The <code>ENV</code> instruction defines environment variables that will be available to the container.
+      You can declare multiple <code>ENV</code> instructions within the Dockerfile.
+      You can use the <command>env</command> command inside the container to view each of the environment variables.
+    </para>
+  </formalpara>
+  <para>
+    It is good practice to use <code>ENV</code> instructions to define file and folder paths instead of hard-coding them in the Dockerfile instructions.
+    It is useful to store information such as software version numbers, and also to append directories to the <code>PATH</code> environment variable.
+  </para>
+
+  <para>
+    The layering concept also applies to instructions such as <code>ENV</code> and <code>LABEL</code>.
+    To specify multiple <code>LABEL</code> or <code>ENV</code> instructions, Red&nbsp;Hat recommends that you use only one instruction for all labels and environment variables, and separate each key-value pair with an equal sign (=):
+  </para>
+<screen>LABEL version="2.0" \
+      description="This is an example container image" \
+      creationDate="01-09-2017"</screen>
+<screen>ENV MYSQL_DATABASE_USER="my_database_user" \
+    MYSQL_DATABASE="my_database"</screen>
+
+  <formalpara>
+    <title>The USER Instruction</title>
+    <para>
+      Red&nbsp;Hat recommends that you run the image as a non-root user for security reasons.
+      To reduce the number of layers, avoid using the <code>USER</code> instruction too many times in a Dockerfile.
+      The security implications that are specific to running containers as a non-root user are discussed later in this section.
+    </para>
+  </formalpara>
+  <warning>
+    <para>
+      OpenShift, by default, does not honor the <code>USER</code> instruction set by the container image.
+      For security reasons, OpenShift uses a random userid other than the root userid (0) to run containers.
+    </para>
+  </warning>
+  <formalpara>
+    <title>The VOLUME Instruction</title>
+    <para>
+      The <code>VOLUME</code> instruction creates a mount point inside the container and indicates to image consumers that externally mounted volumes from the host machine or other containers can bind to this mount point.
+    </para>
+  </formalpara>
+  <para>
+    Red&nbsp;Hat recommends using <code>VOLUME</code> instructions for persistent data.
+    OpenShift can mount network-attached storage to the node running the container, and if the container moves to a new node then the storage is reattached to that node.
+    By using the volume for all persistent storage needs, you preserve the content even if the container is restarted or moved.
+  </para>
+  <para>
+    Furthermore, explicitly defining volumes in your Dockerfile makes it easy for image consumers to understand what volumes they can define when running your image.
+  </para>
+
+  <bridgehead>Building Images with the ONBUILD Instruction</bridgehead>
+  <para>
+    The <code>ONBUILD</code> instruction registers <firstterm>triggers</firstterm> in the container image.
+    A Dockerfile uses <code>ONBUILD</code> to declare instructions that are executed only when building a child image.
+  </para>
+  <para>
+    The <code>ONBUILD</code> instruction is useful to support easy customization of a container image for common use cases, such as preloading data or providing custom configuration to an application.
+    The parent image provides commands that are common to all downstream child images.
+    The child image only provides the data and configuration files.
+    The Dockerfile for the child image could be as simple as having just the <code>FROM</code> instruction that references the parent image.
+  </para>
+  <note>
+    <para>
+      The <code>ONBUILD</code> instruction is not included in the OCI specification, and therefore is not supported by default when you build containers with Podman or Buildah.
+      Use the <option>--format docker</option> option in order to enable support for the <code>ONBUILD</code> instruction.
+    </para>
+  </note>
+  <para>
+    For example, assume you are building a Node.js parent image that you want all developers in your organization to use as a base when they build applications with the following requirements:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        Enforce certain standards, such as copying the JavaScript sources to the application folder, so that they are interpreted by the Node.js engine.
+        <!-- TechEditor: [xml] Be consistent with DocBook elements. In the previous para you wrote <code>Node.js</code> but here you use no tags at all. Which is correct? Does the first case refer to an image name? If so, in earlier cases you used all lowercase. RA: updated-->
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Execute the <command>npm install</command> command, which fetches all dependencies described in the <filename>package.json</filename> file.
+      </para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    You cannot embed these requirements as instructions in the parent Dockerfile because you do not have the application source code, and each application may have different dependencies listed in their <filename>package.json</filename> file.
+  </para>
+  <para>
+    Declare <code>ONBUILD</code> instructions in the parent Dockerfile.
+    The parent Dockerfile is shown below:
+  </para>
+<screen>FROM registry.access.redhat.com/rhscl/nodejs-6-rhel7
+EXPOSE 3000
+# Mandate that all Node.js apps use /usr/src/app as the main folder (APP_ROOT).
+RUN mkdir -p /opt/app-root/
+WORKDIR /opt/app-root
+
+# Copy the package.json to APP_ROOT
+<code>ONBUILD</code> COPY package.json /opt/app-root
+
+# Install the dependencies
+<code>ONBUILD</code> RUN npm install
+
+# Copy the app source code to APP_ROOT
+<code>ONBUILD</code> COPY src /opt/app-root
+
+# Start node server on port 3000
+CMD [ "npm", "start" ]</screen>
+  <para>
+    Assuming you built the parent container image and called it <code>mynodejs-base</code>, a child Dockerfile for an application that uses the parent image appears as follows:
+  </para>
+<screen>FROM <code>mynodejs-base</code>
+RUN echo "Started Node.js server..."</screen>
+  <para>
+    When the build process for the child image starts, it triggers the execution of the three <code>ONBUILD</code> instructions defined in the parent image, before invoking the <code>RUN</code> instruction in the child Dockerfile.
+  </para>
+
+  <bridgehead>OpenShift Considerations for the USER Instruction</bridgehead>
+  <para>
+    By default, OpenShift runs containers using an arbitrarily assigned userid.
+    This approach mitigates the risk of processes running in the container getting escalated privileges on the host machine due to security vulnerabilities in the container engine.
+  </para>
+  <formalpara>
+    <title>Adapting Dockerfiles for OpenShift</title>
+    <para>
+      When you write or change a Dockerfile that builds an image to run on an OpenShift cluster, you need to address the following:
+    </para>
+  </formalpara>
+  <itemizedlist>
+    <listitem>
+      <para>
+        Directories and files that are read from or written to by processes in the container should be owned by the <code>root</code> group and have group read or group write permission.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        Files that are executable should have group execute permissions.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        The processes running in the container must not listen on privileged ports (that is, ports below 1024), because they are not running as privileged users.
+      </para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    Adding the following RUN instruction to your Dockerfile sets the directory and file permissions to allow users in the <code>root</code> group to access them in the container:
+  </para>
+<screen>RUN chgrp -R 0 <replaceable>directory</replaceable> &amp;&amp; \
+    chmod -R g=u <replaceable>directory</replaceable></screen>
+  <para>
+    The user account that runs the container is always a member of the <code>root</code> group, hence the container can read and write to this directory.
+    The <code>root</code> group does not have any special permissions (unlike the <systemitem>root</systemitem> user) which minimizes security risks with this configuration.
+  </para>
+  <para>
+    The <option>g=u</option> argument from the <command>chmod</command> command makes the group permissions equal to the owner user permissions, which by default are read and write.
+    You can use the <option>g+rwX</option> argument with the same results.
+  </para>
+  <formalpara>
+    <title>Running Containers as root Using Security Context Constraints (SCC)</title>
+    <para>
+      In certain cases, you may not have access to Dockerfiles for certain images.
+      You may need to run the image as the <systemitem>root</systemitem> user.
+      In this scenario, you need to configure OpenShift to allow containers to run as <systemitem>root</systemitem>.
+    </para>
+  </formalpara>
+  <para>
+    OpenShift provides <firstterm>Security Context Constraints (SCCs)</firstterm>, which control the actions that a pod can perform and which resources it can access.
+    OpenShift ships with a number of built-in SCCs.
+    All containers created by OpenShift use the SCC named <code>restricted</code> by default, which ignores the userid set by the container image, and assigns a random userid to containers.
+  </para>
+  <para>
+    To allow containers to use a fixed userid, such as 0 (the <systemitem>root</systemitem> user), you need to use the <firstterm>anyuid</firstterm> SCC.
+    To do so, you first need to create a <firstterm>service account</firstterm>.
+    A service account is the OpenShift identity for a pod.
+    All pods from a project run under a default service account, unless the pod, or its deployment configuration, is configured otherwise.
+  </para>
+  <para>
+    If you have an application that requires a capability not granted by the restricted SCC, then create a new, specific service account, add it to the appropriate SCC, and change the deployment configuration that creates the application pods to use the new service account.
+  </para>
+  <para>
+    The following steps detail how to allow containers to run as the <systemitem>root</systemitem> user in an OpenShift project:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+        Create a new service account:
+      </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc create serviceaccount <replaceable>myserviceaccount</replaceable></userinput></screen>
+    </listitem>
+    <listitem>
+      <para>
+        Modify the deployment configuration for the application to use the new service account.
+        Use the <command>oc patch</command> command to do this:
+      </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc patch dc/<replaceable>demo-app</replaceable> --patch \</userinput>
+<prompt>&gt; </prompt><userinput>'{"spec":{"template":{"spec":{"serviceAccountName": "<replaceable>myserviceaccount</replaceable>"}}}}'</userinput></screen>
+      <note>
+        <para>
+          For details on how to use the <command>oc patch</command> command, see <ulink url="https://access.redhat.com/articles/3319751">OpenShift admins guide to oc patch</ulink>.
+          Run the <command>oc patch -h</command> command to display usage.
+        </para>
+      </note>
+    </listitem>
+    <listitem>
+      <para>
+        Add the <systemitem>myserviceaccount</systemitem> service account to the <code>anyuid</code> SCC to run using a fixed userid in the container:
+      </para>
+<screen><prompt>[user@host ~]$ </prompt><userinput>oc adm policy add-scc-to-user anyuid -z <replaceable>myserviceaccount</replaceable></userinput></screen>
+    </listitem>
+  </itemizedlist>
+
+  <!-- Template for a reference that does not link to Red&nbsp;Hat Documentation. -->
+  <note role="References">
+    <para>
+      <ulink url="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices">Best practices for writing Dockerfiles</ulink>
+    </para>
+    <para>
+      Further information about creating images is available in the <citetitle>Creating Images</citetitle> chapter of the <emphasis>Images</emphasis> guide of the OpenShift Container Platform product documentation at <ulink url="https://access.redhat.com/documentation/en-us/openshift_container_platform/4.2/html/images/creating_images"/>
+    </para>
+  </note>
+</section>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="seven-section">
+  <title>title</title>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <mediaobject id="openshift-s2i-openshift-dc-and-bc-3">
+    <imageobject>
+      <imagedata fileref="images/openshift-dc-and-bc-3.png" align="center" scalefit="1" width="95%"/>
+    </imageobject>
+    <caption>Deployment Configuration and dependent resources</caption>
+  </mediaobject>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <note>
+    <para>para</para>
+    <screen>screen</screen>
+  </note>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <important>
+    <para>para</para>
+  </important>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <informaltable frame="all">
+    <tgroup cols="2">
+      <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+      <colspec colname="c2" colnum="2" colwidth="2.0*"/>
+      <thead>
+        <row>
+          <entry namest="c1" nameend="c1">Language</entry>
+          <entry namest="c2" nameend="c2">Files</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>Ruby</entry>
+          <entry><filename>Rakefile</filename><filename>Gemfile</filename>
+            ,
+            <filename>config.ru</filename>
+          </entry>
+        </row>
+        <row>
+          <entry>Java EE</entry>
+          <entry>
+            <filename>pom.xml</filename>
+          </entry>
+        </row>
+        <row>
+          <entry>Node.js</entry>
+          <entry>
+            <filename>app.json</filename>
+            <filename>package.json</filename>
+          </entry>
+        </row>
+        <row>
+          <entry>PHP</entry>
+          <entry>
+            <filename>index.php</filename>
+            <filename>composer.json</filename>
+          </entry>
+        </row>
+        <row>
+          <entry>Python</entry>
+          <entry>
+            <filename>requirements.txt</filename>
+            <filename>config.py</filename>
+          </entry>
+        </row>
+        <row>
+          <entry>Perl</entry>
+          <entry>
+            <filename>index.pl</filename>
+            <filename>cpanfile</filename>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </informaltable>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen lang="json">screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <itemizedlist>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+    <listitem>
+      <para>para</para>
+    </listitem>
+  </itemizedlist>
+  <screen>screen</screen>
+  <para>para</para>
+  <para>para</para>
+  <screen>screen</screen>
+  <note>
+    <para>para</para>
+  </note>
+  <para>para</para>
+  <screen>screen</screen>
+  <para>para</para>
+  <screen>screen</screen>
+  <important>
+    <para>para</para>
+  </important>
+  <para>para</para>
+  <screen>screen</screen>
+  <screen>screen</screen>
+  <bridgehead>bridgehead</bridgehead>
+  <para>para</para>
+  <para>para</para>
+  <para>para</para>
+  <note role="References">
+    <para>para</para>
+    <para>para</para>
+  </note>
+</section>

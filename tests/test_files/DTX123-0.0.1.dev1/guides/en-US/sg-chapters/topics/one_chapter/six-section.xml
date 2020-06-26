@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % common_entities SYSTEM "../../../common.ent">
+]>
+<section id="six-section">
+  <title>title</title>
+  <task role="MultChoice" id="technology-openshift-quiz-multiple-choice">
+    <title>title</title>
+    <tasksummary>
+      <para>para</para>
+    </tasksummary>
+    <procedure>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="technology-openshift-quiz-multichoicequestion1">
+            <!-- Question should have id that is short version of topic -->
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="technology-openshift-quiz-multichoicequestion2">
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-check" id="technology-openshift-quiz-multichoicequestion3">
+            <question>
+              <para>para</para>
+            </question>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+      <step>
+        <qandaset>
+          <qandaentry role="multi-radio" id="technology-openshift-quiz-multichoicequestion4">
+            <question>
+              <para>para</para>
+            </question>
+            <answer>
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer role="solution">
+              <para>para</para>
+            </answer>
+            <answer>
+              <para>para</para>
+            </answer>
+          </qandaentry>
+        </qandaset>
+      </step>
+    </procedure>
+  </task>
+</section>
