@@ -45,7 +45,7 @@ def get_book_info(zip_fname: IO,
     with zipfile.ZipFile(zip_fname, 'r') as f_zip:
         book_info_file = f_zip.open(
             os.path.join(
-                f"{f_zip.namelist()[0].split('/', 1)[0]}",
+                f"{f_zip.namelist()[0].split('/', 1)[0]}",q
                 path
             ), 'r'
         )
