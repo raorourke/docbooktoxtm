@@ -25,9 +25,10 @@ def resource(target_fname: Path = typer.Argument(...)) -> FileName:
 
 
 @app.command(help='Restores target files exported from XTM to original source file structure.')
-def unsource(course: Union[str, Path] = typer.Argument(...), release_tag: Optional[str] = typer.Option(
-    None, '-r', '--release-tag', help='optional GitHub release tag'
-),
+def unsource(course: str = typer.Argument(...),
+             release_tag: Optional[str] = typer.Option(
+                 None, '-r', '--release-tag', help='optional GitHub release tag'
+             ),
              ) -> FileName:
     """
     This function reorganizes the XML source files so that XTM will parse them
