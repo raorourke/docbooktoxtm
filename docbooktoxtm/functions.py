@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-#
-#from __future__ import annotations
 
 import os
 import shutil
@@ -45,7 +43,7 @@ def get_book_info(zip_fname: IO,
     with zipfile.ZipFile(zip_fname, 'r') as f_zip:
         book_info_file = f_zip.open(
             os.path.join(
-                f"{f_zip.namelist()[0].split('/', 1)[0]}",q
+                f"{f_zip.namelist()[0].split('/', 1)[0]}",
                 path
             ), 'r'
         )
@@ -64,7 +62,7 @@ def zipdir(path: Path,
 def lists_to_tuple(*args: list) -> tuple:
     new_list = []
     for arg in args:
-        new_list = new_list + arg
+        new_list += arg
     return tuple(new_list)
 
 
@@ -383,7 +381,11 @@ def get_zip(course: str,
     releases = [
         release
         for release in repo.get_releases()
-        if release_tag in release.target_commitish
+        if (
+                release_tag in release.target_commitish
+                or
+                release_tag in release.tag_name
+        )
     ] if release_tag else list(repo.get_releases())
     if len(releases) == 1:
         release = releases[0]

@@ -1,8 +1,8 @@
+from os.path import isfile
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
 
 import typer
-from os.path import isfile
 
 from docbooktoxtm.functions import target_from_xtm, source_to_xtm, BookInfo, get_book_info, get_zip, FileName
 
@@ -42,7 +42,7 @@ def unsource(course: str = typer.Argument(...),
     """
     source_file = course if isfile(course) else get_zip(course, release_tag)
     unsourced_fname = source_to_xtm(source_file)
-    typer.echo("Source file structure restructured successfully!")
+    typer.echo(f"Source file ({source_file}) structure restructured successfully!")
     typer.echo(f"Unsourced file name: {unsourced_fname}")
 
 
