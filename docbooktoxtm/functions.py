@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import shutil
 import zipfile
 from pathlib import Path
@@ -20,7 +21,7 @@ HEADERS: dict = {'Authorization': f"token {GITHUB_TOKEN}"}
 DEFAULT_TARGET = 'en-US'
 DEFAULT_TARGET_DIR = os.path.join('.', DEFAULT_TARGET)
 
-FileName = TypeVar('FileName', IO, Path)
+FileName = TypeVar('FileName', str, IO, Path)
 
 SUBTITLE_INDEX = {
     'Teilnehmerarbeitsbuch': 'de-DE',
@@ -48,7 +49,7 @@ def get_book_info(zip_fname: IO,
             ), 'r'
         )
         book = xmltodict.parse(book_info_file.read()).get('bookinfo')
-        return {attr: value.get('#text') if '#text' in value else value for attr, value in book.items()}
+    return {attr: value.get('#text') if '#text' in value else value for attr, value in book.items()}
 
 
 def zipdir(path: Path,
@@ -107,8 +108,10 @@ class BookInfo(BaseModel):
         self.target = get_book_language(self.subtitle)
         self.course = self.invpartnumber
         self.release_tag = f"{self.productname}{self.productnumber}" if (
-                self.productname and self.productnumber
-        ) else None
+                (self.productname and self.productnumber)
+                and
+                bool(re.search(r'^[A-Z]+$', self.productname))
+        ) else self.productnumber
 
 
 def get_intro_names(fname: FileName,
