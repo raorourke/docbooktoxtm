@@ -76,7 +76,7 @@ class BookInfo(BaseModel):
     invpartnumber: str = None
     productnumber: str = None
     pubdate: str = None
-    pubsnumber: str = None
+    pubsnumber: Any = None
     subtitle: str = None
     title: str = None
     target: str = None
@@ -146,6 +146,7 @@ class Book(BookInfo):
                  target_zip: Optional[str] = None
                  ):
         book_info = self._xmltodict(target_zip) if target_zip else self._xmltodict(source_zip)
+        book_info = self.__validate_book_info(book_info)
         attributes = self.__get_attributes(source_zip)
         super().__init__(source_zip=source_zip, target_zip=target_zip, **attributes, **book_info)
         files = [BookFile('00-introduction', i, file) for i, file in enumerate(self.intro, start=1)]
@@ -156,6 +157,25 @@ class Book(BookInfo):
             (file.source_path(self.source_root), file.target_path(self.target_root)) for file in self.files)
         if target_zip:
             self.clean = self.__get_clean_flist()
+
+    def __validate_book_info(self, info):
+        pubdate = info.get('pubdate')
+        pubsnumber = info.get('pubsnumber')
+        if isinstance(pubdate, str) and not isinstance(pubsnumber, str):
+            pubsnumber = pubdate
+        if isinstance(pubsnumber, str) and not isinstance(pubdate, str):
+            pubdate = pubsnumber
+        if isinstance(pubsnumber, str) and isinstance(pubdate, str):
+            pubdate = int(pubdate)
+            pubsnumber = int(pubsnumber)
+            currentdate = str(max(pubdate, pubsnumber))
+            pubdate = currentdate
+            pubsnumber = currentdate
+        info.update({
+            'pubdate': pubdate,
+            'pubsnumber': pubsnumber
+        })
+        return info
 
     def __get_clean_flist(self):
         with zipfile.ZipFile(self.target_zip, 'r') as f_zip:
