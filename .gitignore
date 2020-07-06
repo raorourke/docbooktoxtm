@@ -129,5 +129,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Config info
-config.py
+# Test file repo
+tests/DTX123*/
