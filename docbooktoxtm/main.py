@@ -25,7 +25,7 @@ def configure_log(wd: str) -> None:
     log.addHandler(fh)
 
 @app.command(help='Restructures source file structure for more efficient parsing in XTM.')
-def resource(target_fname: str = typer.Argument(...)) -> None:
+def resource(target_fname: str = typer.Argument(..., help='name of target .zip package')) -> None:
     """
     This function restores the XML source files to their original structure, as
     well as restores any files that had been removed from scope during prep.
@@ -43,7 +43,7 @@ def resource(target_fname: str = typer.Argument(...)) -> None:
 
 
 @app.command(help='Restores target files exported from XTM to original source file structure.')
-def unsource(course: str = typer.Argument(...),
+def unsource(course: str = typer.Argument(..., help='course name or name of source .zip package'),
              release_tag: Optional[str] = typer.Option(
                  None, '-r', '--release-tag', help='optional GitHub release tag'
              ),
