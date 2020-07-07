@@ -111,7 +111,7 @@ class BookInfo(BaseModel):
                 if len(filtered_bi_files) == 1:
                     bi_file = f_zip.open(filtered_bi_files[0], 'r')
             else:
-                raise ValueError
+                raise ValueError(f"No 'Book_Info.xml' file found in {zip_fname}.")
             book = xmltodict.parse(bi_file.read()).get('bookinfo')
         return {attr: value.get('#text') if '#text' in value else value for attr, value in book.items()}
 
@@ -152,7 +152,7 @@ class Book(BookInfo):
                  ):
         book_info = self._xmltodict(target_zip) if target_zip else self._xmltodict(source_zip)
         book_info = self.__validate_book_info(book_info)
-        attributes = self.__get_attributes(source_zip)
+        attributes = self.__get_attributes(book_info.get('course'), source_zip)
         super().__init__(source_zip=source_zip, target_zip=target_zip, wd=os.getcwd(), **attributes, **book_info)
         files = [BookFile('00-introduction', i, file) for i, file in enumerate(self.intro, start=1)]
         files += self.__get_chapter_file_list()
@@ -217,7 +217,7 @@ class Book(BookInfo):
         return sorted(tuple(clean))
 
     @staticmethod
-    def __get_attributes(source_zip):
+    def __get_attributes(course, source_zip):
         def get_book(zipf: zipfile.ZipFile, fname: str, source_root: str):
             namelist = [file for file in zipf.namelist() if file[-1] != '/']
             root_file = zipf.open(os.path.join(source_root, fname))
@@ -236,7 +236,8 @@ class Book(BookInfo):
             return file_list
 
         with zipfile.ZipFile(source_zip, 'r') as f_zip:
-            sg = [file for file in f_zip.namelist() if re.search(r'^.*/guides/en-US/.*-SG\.xml$', file)]
+            root_file_pattern = f"^.*/guides/en-US/{course}-SG\.xml$"
+            sg = [file for file in f_zip.namelist() if re.search(root_file_pattern, file)]
             source_root, mapf = os.path.split(sg[0])
             book_tree = get_book(f_zip, mapf, source_root)
             intro = tuple(file for file in book_tree if 'sg-chapters' not in file)
@@ -326,14 +327,16 @@ class Book(BookInfo):
 
     def unsource(self):
         sfdir = self.unzip_source()
+        tfdir = self.target_root
         for current, new in self.flist:
             if not os.path.exists(os.path.dirname(new)):
                 os.makedirs(os.path.dirname(new))
             shutil.move(current, new)
+        shutil.rmtree(sfdir)
         zip_fname = f"{self.course}-{self.pubsnumber}_{self.target}.zip"
         with zipfile.ZipFile(zip_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
-            zipdir(sfdir, f_zip)
-        shutil.rmtree(sfdir)
+            zipdir(tfdir, f_zip)
+        shutil.rmtree(tfdir)
         return zip_fname
 
     def __call__(self):
