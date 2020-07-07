@@ -49,12 +49,12 @@ class BookFile:
         self.path = os.path.dirname(file_path)
 
     def source_path(self, source_root):
-        return os.path.join(source_root, self.path, self.name)
+        return os.path.join(*source_root.split('/'), *self.path.split('/'), self.name)
 
     def target_path(self, target_root=DEFAULT_TARGET_ROOT):
         if self.path == 'Common':
             return os.path.join(target_root, self.chapter, f"{self.count}-{self.name}")
-        return os.path.join(target_root, self.chapter, self.path, f"{self.count}-{self.name}")
+        return os.path.join(*target_root.split('/'), self.chapter, *self.path.split('/'), f"{self.count}-{self.name}")
 
 
 SUBTITLE_INDEX = {
@@ -172,8 +172,8 @@ class Book(BookInfo):
         with zipfile.ZipFile(self.target_zip, 'r') as f_zip:
             flist = [f for f in f_zip.namelist() if f[-1] != '/']
             if flist[0].split('/', 1)[0] != 'en-US':
-                return tuple(os.path.join('en-US', f) for f in flist)
-            return tuple(flist)
+                return tuple(os.path.join('en-US', *f.split('/')) for f in flist)
+            return tuple(os.path.join(*f.split('/')) for f in flist)
 
     @staticmethod
     def __validate_book_info(info):
@@ -223,13 +223,13 @@ class Book(BookInfo):
     def __get_attributes(course, source_zip):
         def get_book(zipf: zipfile.ZipFile, fname: str, source_root: str):
             namelist = [file for file in zipf.namelist() if file[-1] != '/']
-            root_file = zipf.open(os.path.join(source_root, fname))
+            root_file = zipf.open('/'.join((source_root, fname)))
             parser = etree.XMLParser(recover=True)
             root = etree.parse(root_file, parser=parser).getroot()
             children = [file for child in root if (
                     (file := child.attrib.get('href'))
                     and
-                    os.path.join(source_root, file) in namelist
+                    '/'.join((source_root, file)) in namelist
             )
                         ]
             file_list = []
@@ -264,13 +264,13 @@ class Book(BookInfo):
         with zipfile.ZipFile(self.source_zip) as f_zip:
             for i, chapter in enumerate(self.chapters, start=1):
                 chapter_root, chapter_fname = os.path.split(chapter)
-                chapter_open = f_zip.open(os.path.join(self.source_root, chapter))
+                chapter_open = f_zip.open('/'.join((self.source_root, chapter)))
                 chapter_index = f"{i:02d}-{chapter_fname.split('.', 1)[0]}"
                 root = etree.parse(chapter_open, parser=etree.XMLParser(recover=True)).getroot()
                 sections = [section for child in root if (section := child.attrib.get('href'))]
                 chapter_file = BookFile(chapter_index, i, chapter)
                 chapter_files.append(chapter_file)
-                chapter_files += [BookFile(chapter_index, j, os.path.join(chapter_root, section)) for j, section in
+                chapter_files += [BookFile(chapter_index, j, '/'.join((chapter_root, section))) for j, section in
                                   enumerate(sections, start=1)]
         return chapter_files
 
@@ -280,13 +280,13 @@ class Book(BookInfo):
         with zipfile.ZipFile(self.source_zip) as f_zip:
             for i, appendix in enumerate(self.appendices, start=1):
                 appendix_root = os.path.dirname(appendix)
-                appendix_open = f_zip.open(os.path.join(self.source_root, appendix))
+                appendix_open = f_zip.open('/'.join((self.source_root, appendix)))
                 root = etree.parse(appendix_open, parser=etree.XMLParser(recover=True)).getroot()
                 sections = [section for child in root if (section := child.attrib.get('href'))]
                 appendix_file = BookFile('99-appendix', i, appendix)
                 appendix_files.append(appendix_file)
                 for section in sections:
-                    appendix_files.append(BookFile('99-appendix', j, os.path.join(appendix_root, section)))
+                    appendix_files.append(BookFile('99-appendix', j, '/'.join((appendix_root, section))))
                     j += 1
         return appendix_files
 
@@ -312,6 +312,7 @@ class Book(BookInfo):
         tfdir = self.unzip_target()
         for current, new in self.clean:
             if not os.path.exists(os.path.dirname(new)):
+                logging.debug(f"mkdir -p {new}")
                 os.makedirs(os.path.dirname(new))
             logging.debug(f"cp {current} {new}")
             shutil.move(current, new)
@@ -332,9 +333,12 @@ class Book(BookInfo):
     def unsource(self):
         sfdir = self.unzip_source()
         tfdir = self.target_root
+        os.mkdir(tfdir)
         for current, new in self.flist:
             if not os.path.exists(os.path.dirname(new)):
+                logging.debug(f"mkdir -p {new}")
                 os.makedirs(os.path.dirname(new))
+            logging.debug(f"cp {current} {new}")
             shutil.move(current, new)
         shutil.rmtree(sfdir)
         zip_fname = f"{self.course}-{self.pubsnumber}_{self.target}.zip"
