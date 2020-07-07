@@ -152,7 +152,10 @@ class Book(BookInfo):
                  ):
         book_info = self._xmltodict(target_zip) if target_zip else self._xmltodict(source_zip)
         book_info = self.__validate_book_info(book_info)
-        attributes = self.__get_attributes(book_info.get('course'), source_zip)
+        logging.debug(f"Book info extracted from {source_zip}.")
+        for key, value in book_info.items():
+            logging.debug(f"{key}: {value}")
+        attributes = self.__get_attributes(book_info.get('invpartnumber'), source_zip)
         super().__init__(source_zip=source_zip, target_zip=target_zip, wd=os.getcwd(), **attributes, **book_info)
         files = [BookFile('00-introduction', i, file) for i, file in enumerate(self.intro, start=1)]
         files += self.__get_chapter_file_list()
@@ -310,11 +313,12 @@ class Book(BookInfo):
         for current, new in self.clean:
             if not os.path.exists(os.path.dirname(new)):
                 os.makedirs(os.path.dirname(new))
+            logging.debug(f"cp {current} {new}")
             shutil.move(current, new)
         shutil.rmtree(tfdir)
         for root, dirs, _ in os.walk(os.path.join(sfdir, 'guides')):
             for d in dirs:
-                if d != 'en-US' and d in SUBTITLE_INDEX:
+                if d != 'en-US' and d in tuple(SUBTITLE_INDEX.values()):
                     shutil.rmtree(os.path.join(root, d))
         if self.target != 'en-US':
             shutil.copytree(os.path.join(sfdir, 'guides', 'en-US'), os.path.join(sfdir, 'guides', self.target))
