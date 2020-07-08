@@ -30,4 +30,4 @@ if PLATFORM == 'Windows':
         cmd_command = f"{DEFAULT_CONFIG_FILE} && call echo %github_token%"
         process = Popen(cmd_command, stdout=PIPE)
         output, error = process.communicate()
-        GITHUB_TOKEN = output.decode()
+        GITHUB_TOKEN = output.decode()[:-2]
