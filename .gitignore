@@ -131,3 +131,5 @@ dmypy.json
 
 # Test file repo
 tests/DTX123*/
+
+gui.py

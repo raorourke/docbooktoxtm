@@ -6,7 +6,7 @@ import zipfile
 from os import PathLike
 from subprocess import Popen, DEVNULL
 from typing import Iterable, Tuple, Union, Any, Optional
-
+from docbooktoxtm.config import PLATFORM
 import xmltodict
 from fuzzywuzzy import process, fuzz
 from lxml import etree
@@ -304,7 +304,8 @@ class Book(BookInfo):
             else:
                 target_zip.extractall()
         os.remove(self.target_zip)
-        ppxml(self.target_root)
+        if PLATFORM == 'Linux':
+            ppxml(self.target_root)
         return self.target_root
 
     def resource(self):

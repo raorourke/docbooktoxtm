@@ -1,28 +1,14 @@
 from typing import Optional
 import os
-import sys
 import typer
-import logging
 
 from docbooktoxtm.bookclasses import BookInfo, Book
 from docbooktoxtm.functions import get_zip
+from docbooktoxtm.logconfig import configure_log
 
 app = typer.Typer(help='Utility for prepping DocBook XML packages for use as XTM source files.')
 
-def configure_log(wd: str) -> None:
-    logfile = os.path.join(wd, 'events.log')
-    log = logging.getLogger('')
-    log.setLevel(logging.DEBUG)
-    log_format = "%(asctime)s [%(levelname)s] : %(message)s"
-    date_format = "%a %d %b %Y %H:%M:%S"
-    formatter = logging.Formatter(log_format, date_format)
-    ch = logging.StreamHandler(sys.stderr)
-    ch.setFormatter(formatter)
-    ch.setLevel(logging.WARNING)
-    log.addHandler(ch)
-    fh = logging.FileHandler(logfile)
-    fh.setFormatter(formatter)
-    log.addHandler(fh)
+
 
 @app.command(help='Restructures source file structure for more efficient parsing in XTM.')
 def resource(target_fname: str = typer.Argument(..., help='name of target .zip package')) -> None:
@@ -61,7 +47,7 @@ def unsource(course: str = typer.Argument(..., help='course name or name of sour
     source_fname = course if os.path.isfile(course) else get_zip(course, release_tag)
     book = Book(source_fname)
     unsourced_fname = book()
-    typer.echo(f"Source file ({source_fname}) structure restructured successfully!")
+    typer.echo(f"Source file ({source_fname}) restructured successfully!")
     typer.echo(f"Unsourced file name: {unsourced_fname}")
 
 
