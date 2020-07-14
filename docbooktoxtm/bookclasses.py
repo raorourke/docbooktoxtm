@@ -68,7 +68,8 @@ SUBTITLE_INDEX = {
     '学员练习册': 'zh-CN',
     'Libro de trabajo del estudiante': 'es-ES',
     'छात्र-छात्रा की वर्कबुक': 'hi-IN',
-    'Student Workbook': 'en-US'
+    'Student Workbook': 'en-US',
+    'Příručka pro studenty': 'cs-CZ'
 }
 
 
