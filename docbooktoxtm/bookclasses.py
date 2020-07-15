@@ -4,7 +4,7 @@ import re
 import shutil
 import zipfile
 from os import PathLike
-from subprocess import Popen, DEVNULL
+from subprocess import Popen, DEVNULL, PIPE
 from typing import Iterable, Tuple, Union, Any, Optional
 from docbooktoxtm.config import PLATFORM
 import xmltodict
@@ -20,17 +20,21 @@ FileList = Iterable[PathPair]
 
 
 def ppxml(path: PathLike) -> None:
+    logging.debug("Running xmllint on files.")
     for root, _, files in os.walk(path):
         for file in files:
             file = os.path.join(root, file)
             cmd1 = f'mv "{file}" "{file}.bak" 2>&1'
             cmd2 = f'xmllint --format --recover "{file}.bak" > "{file}" 2>&1'
             cmd3 = f'rm -f "{file}.bak" 2>&1'
-            pattern = r'/^\..*\.xml\.bak.*parser error.*not defined$/,+2d'
+            pattern = r'/^.*xml.bak.*parser error.*not defined$/,+2d'
             cmd4 = f'sed "{pattern}" -i {file}'
-            final = Popen(f"{cmd1}; {cmd2}; {cmd3}; {cmd4}", shell=True, stdin=DEVNULL,
-                          stdout=DEVNULL, stderr=DEVNULL, close_fds=True)
-            final.communicate()
+            final = Popen(f"{cmd1}; {cmd2}; {cmd3}; {cmd4}", shell=True, stdin=PIPE,
+                          stdout=PIPE, stderr=PIPE, close_fds=True)
+            output, error = final.communicate()
+            logging.debug(f"{file=}")
+            logging.debug(f"{output=}")
+            logging.debug(f"{error=}")
 
 
 def zipdir(path: PathLike,
