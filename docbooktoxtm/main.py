@@ -21,7 +21,7 @@ def main(version: bool = typer.Option(
         typer.echo('Try "docbooktoxtm --help" for help.')
 
 
-@app.command(help='Restructures source file structure for more efficient parsing in XTM.')
+@app.command(help='Reorganizes files for more efficient parsing in XTM.')
 def resource(target_fname: str = typer.Argument(..., help='name of target .zip package')) -> None:
     """
     This function restores the XML source files to their original structure, as
@@ -39,7 +39,7 @@ def resource(target_fname: str = typer.Argument(..., help='name of target .zip p
     typer.echo(f"Resourced file name: {resourced_fname}")
 
 
-@app.command(help='Restores target files exported from XTM to original source file structure.')
+@app.command(help='Restores original file structure of target files from XTM.')
 def unsource(course: str = typer.Argument(..., help='course name or name of source .zip package'),
              release_tag: Optional[str] = typer.Option(
                  None, '-r', '--release-tag', help='optional GitHub release tag'
