@@ -2,4 +2,4 @@ from docbooktoxtm import __version__
 
 
 def test_version():
-    assert__version__ == '1.0.6'
+    assert__version__ == '1.0.7.dev0'
