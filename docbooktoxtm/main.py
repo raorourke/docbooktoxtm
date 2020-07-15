@@ -1,6 +1,7 @@
 from typing import Optional
 import os
 import typer
+from docbooktoxtm import __version__
 
 from docbooktoxtm.bookclasses import BookInfo, Book
 from docbooktoxtm.functions import get_zip
@@ -8,6 +9,16 @@ from docbooktoxtm.logconfig import configure_log
 
 app = typer.Typer(help='Utility for prepping DocBook XML packages for use as XTM source files.')
 
+
+@app.callback(invoke_without_command=True)
+def main(version: bool = typer.Option(
+        None, '-V', '-v', '--version', help='show current version'
+    )
+    ) -> None:
+    if version:
+        typer.echo(f"docbooktoxtm {__version__}")
+    else:
+        typer.echo('Try "docbooktoxtm --help" for help.')
 
 
 @app.command(help='Restructures source file structure for more efficient parsing in XTM.')
