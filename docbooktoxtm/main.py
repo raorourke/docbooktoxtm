@@ -12,7 +12,7 @@ app = typer.Typer(help='Utility for prepping DocBook XML packages for use as XTM
 
 @app.callback(invoke_without_command=True)
 def main(version: bool = typer.Option(
-        None, '-V', '-v', '--version', help='show current version'
+        None, '-v', '-V', '--version', help='Show current version'
     )
     ) -> None:
     if version:
