@@ -1,7 +1,6 @@
-import sys
 import os
 import platform
-from subprocess import Popen, DEVNULL, PIPE
+from subprocess import Popen, PIPE
 
 PLATFORM = platform.system()
 HOME_DIR = os.path.expanduser('~')
@@ -21,7 +20,7 @@ if PLATFORM == 'Linux':
         sh_command = f"source {DEFAULT_CONFIG_FILE} && echo $github_token"
         process = Popen(sh_command, shell=True, stdout=PIPE)
         output, error = process.communicate()
-        GITHUB_TOKEN = output.decode()
+        GITHUB_TOKEN = f"{output.decode().strip()}"
         if GITHUB_TOKEN is None:
             USE_ENVIRONMENT_VARIABLES = 0
 if PLATFORM == 'Windows':
@@ -30,4 +29,4 @@ if PLATFORM == 'Windows':
         cmd_command = f"{DEFAULT_CONFIG_FILE} && call echo %github_token%"
         process = Popen(cmd_command, stdout=PIPE)
         output, error = process.communicate()
-        GITHUB_TOKEN = output.decode()[:-2]
+        GITHUB_TOKEN = f"{output.decode().strip()}"

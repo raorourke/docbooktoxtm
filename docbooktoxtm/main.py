@@ -1,8 +1,9 @@
-from typing import Optional
 import os
-import typer
-from docbooktoxtm import __version__
+from typing import Optional
 
+import typer
+
+from docbooktoxtm import __version__
 from docbooktoxtm.bookclasses import BookInfo, Book
 from docbooktoxtm.functions import get_zip
 from docbooktoxtm.logconfig import configure_log
@@ -11,13 +12,14 @@ app = typer.Typer(help='Utility for prepping DocBook XML packages for use as XTM
 
 
 @app.callback(invoke_without_command=True)
-def main(version: bool = typer.Option(
-        None, '-v', '-V', '--version', help='Show current version'
-    )
-    ) -> None:
+def main(ctx: typer.Context,
+         version: bool = typer.Option(
+    None, '-v', '-V', '--version', help='Show current version'
+)
+) -> None:
     if version:
         typer.echo(f"docbooktoxtm {__version__}")
-    else:
+    elif ctx.invoked_subcommand is None:
         typer.echo('Try "docbooktoxtm --help" for help.')
 
 

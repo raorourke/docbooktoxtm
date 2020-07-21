@@ -4,13 +4,15 @@ import re
 import shutil
 import zipfile
 from os import PathLike
-from subprocess import Popen, DEVNULL, PIPE
+from subprocess import Popen, PIPE
 from typing import Iterable, Tuple, Union, Any, Optional
-from docbooktoxtm.config import PLATFORM
+
 import xmltodict
 from fuzzywuzzy import process, fuzz
 from lxml import etree
 from pydantic import BaseModel, DirectoryPath
+
+from docbooktoxtm.config import PLATFORM
 
 DEFAULT_SOURCE_ROOT = os.path.join('guides', 'en-US')
 DEFAULT_TARGET_ROOT = 'en-US'
@@ -211,7 +213,7 @@ class Book(BookInfo):
                 logging.info(f"File matched as expected: {tf} -> {fdict.get(tf)}")
             else:
                 bests = process.extractBests(tf, (tarf for tarf in fdict if (
-                            os.path.basename(fdict.get(tarf)) in tf and fdict.get(tarf) not in matches)))
+                        os.path.basename(fdict.get(tarf)) in tf and fdict.get(tarf) not in matches)))
                 if bests:
                     clean.append((tf, fdict.get(bests[0][0])))
                     matches.append(fdict.get(bests[0][0]))
@@ -229,7 +231,7 @@ class Book(BookInfo):
         def get_book(zipf: zipfile.ZipFile, fname: str, source_root: str):
             namelist = [file for file in zipf.namelist() if file[-1] != '/']
             root_file = zipf.open('/'.join((source_root, fname)))
-            parser = etree.XMLParser(recover=True)
+            parser = etree.XMLParser(recover=True, resolve_entities=False)
             root = etree.parse(root_file, parser=parser).getroot()
             children = [file for child in root if (
                     (file := child.attrib.get('href'))
@@ -271,7 +273,8 @@ class Book(BookInfo):
                 chapter_root, chapter_fname = os.path.split(chapter)
                 chapter_open = f_zip.open('/'.join((self.source_root, chapter)))
                 chapter_index = f"{i:02d}-{chapter_fname.split('.', 1)[0]}"
-                root = etree.parse(chapter_open, parser=etree.XMLParser(recover=True)).getroot()
+                root = etree.parse(chapter_open,
+                                   parser=etree.XMLParser(recover=True, resolve_entities=False)).getroot()
                 sections = [section for child in root if (section := child.attrib.get('href'))]
                 chapter_file = BookFile(chapter_index, i, chapter)
                 chapter_files.append(chapter_file)
@@ -286,7 +289,8 @@ class Book(BookInfo):
             for i, appendix in enumerate(self.appendices, start=1):
                 appendix_root = os.path.dirname(appendix)
                 appendix_open = f_zip.open('/'.join((self.source_root, appendix)))
-                root = etree.parse(appendix_open, parser=etree.XMLParser(recover=True)).getroot()
+                root = etree.parse(appendix_open,
+                                   parser=etree.XMLParser(recover=True, resolve_entities=False)).getroot()
                 sections = [section for child in root if (section := child.attrib.get('href'))]
                 appendix_file = BookFile('99-appendix', i, appendix)
                 appendix_files.append(appendix_file)

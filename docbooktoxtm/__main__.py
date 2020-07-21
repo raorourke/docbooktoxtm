@@ -1,3 +1,3 @@
 from docbooktoxtm.main import app
 
-app(prog_name="docbooktoxtm-typer")
+app(prog_name="docbooktoxtm")
