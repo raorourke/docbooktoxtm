@@ -273,13 +273,36 @@ class Book(BookInfo):
                 chapter_root, chapter_fname = os.path.split(chapter)
                 chapter_open = f_zip.open('/'.join((self.source_root, chapter)))
                 chapter_index = f"{i:02d}-{chapter_fname.split('.', 1)[0]}"
-                root = etree.parse(chapter_open,
-                                   parser=etree.XMLParser(recover=True, resolve_entities=False)).getroot()
-                sections = [section for child in root if (section := child.attrib.get('href'))]
-                chapter_file = BookFile(chapter_index, i, chapter)
-                chapter_files.append(chapter_file)
-                chapter_files += [BookFile(chapter_index, j, '/'.join((chapter_root, section))) for j, section in
-                                  enumerate(sections, start=1)]
+                root = etree.parse(
+                    chapter_open,
+                    parser=etree.XMLParser(recover=True, resolve_entities=False)
+                ).getroot()
+                root_sections = [section for child in root if (section := child.attrib.get('href'))]
+                sections = []
+                for section in root_sections:
+                    sections.append(section)
+                    section_root, section_fname = os.path.split(section)
+                    section_open = f_zip.open('/'.join((self.source_root, chapter_root, section)))
+                    root = etree.parse(
+                        section_open,
+                        parser=etree.XMLParser(recover=True, resolve_entities=False)
+                    ).getroot()
+                    sections += list(
+                        set(
+                            '/'.join((section_root, content_section))
+                            for child in root if (content_section := child.attrib.get('href'))
+                        )
+                    )
+                chapter_files.append(
+                    BookFile(chapter_index, i, chapter)
+                )
+                chapter_files += [
+                    BookFile(
+                        chapter_index,
+                        j,
+                        '/'.join((chapter_root, section))
+                    ) for j, section in enumerate(sections, start=1)
+                ]
         return chapter_files
 
     def __get_appendix_file_list(self):
