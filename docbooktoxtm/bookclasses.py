@@ -16,14 +16,14 @@ from pydantic import BaseModel, DirectoryPath
 from docbooktoxtm.config import PLATFORM
 
 DEFAULT_SOURCE_ROOT = os.path.join('guides', 'en-US')
-DEFAULT_TARGET_ROOT = 'en-US'
+DEFAULT_TARGET_ROOT = Path('en-US')
 
 PathPair = Tuple[DirectoryPath, DirectoryPath]
 FileList = Iterable[PathPair]
 
 
 def ppxml(
-        path: PathLike
+        path: Path
 ) -> None:
     logging.debug("Running xmllint on files.")
     for root, _, files in os.walk(path):
@@ -49,33 +49,83 @@ def ppxml(
 
 
 def zipdir(
-        path: PathLike,
+        path: Path,
         f_zip: zipfile.ZipFile
 ) -> None:
-    for root, _, files in os.walk(path):
-        for file in files:
-            f_zip.write(os.path.join(root, file))
-
+    for path_obj in path.iterdir():
+        if path_obj.is_dir():
+            f_zip.write(f"{path_obj}")
+            zipdir(path_obj, f_zip)
+        if path_obj.is_file():
+            f_zip.write(f"{path_obj}")
 
 class BookFile:
     def __init__(
             self,
             chapter: str,
             count: int,
-            file_path: Path
+            file_path: Path,
+            target_root: Path = DEFAULT_TARGET_ROOT,
+            target_override: Path = None
     ):
         self.chapter = chapter
         self.count = f"{count:02d}"
-        self.name = os.path.basename(file_path)
-        self.path = os.path.dirname(file_path)
+        self.path = file_path
+        self.target_root = target_root
+        self.subdir = Path('/'.join(file_path.parts[file_path.parts.index('en-US')+1:-1]))
+        self.target_override = target_override
 
-    def source_path(self, source_root: Path):
-        return os.path.join(*source_root.split('/'), *self.path.split('/'), self.name)
+    @classmethod
+    def from_BookFile(cls, book_file, target_override):
+        return cls(
+            book_file.chapter,
+            int(book_file.count),
+            book_file.path,
+            book_file.target_root,
+            target_override
+        )
 
-    def target_path(self, target_root=DEFAULT_TARGET_ROOT):
-        if self.path == 'Common':
-            return os.path.join(target_root, self.chapter, f"{self.count}-{self.name}")
-        return os.path.join(*target_root.split('/'), self.chapter, *self.path.split('/'), f"{self.count}-{self.name}")
+    @property
+    def source_path(self):
+        return Path.cwd() / self.path
+
+    @property
+    def target_path(self):
+        if self.target_override:
+            return Path.cwd() / self.target_override
+        if self.chapter == '00-introduction':
+            return Path.cwd() / self.target_root / self.chapter / self.name
+        return Path.cwd() / self.target_root / self.chapter / self.subdir / self.name
+
+    @property
+    def basename(self):
+        return self.path.name
+
+    @property
+    def name(self):
+        return f"{self.count}-{self.path.name}"
+
+    @property
+    def parts(self):
+        return self.path.parts[:-1]
+
+    @property
+    def parent(self):
+        return self.path.parent
+
+    def unsource(self):
+        try:
+            self.source_path.rename(self.target_path)
+        except FileNotFoundError:
+            self.target_path.parent.mkdir(parents=True, exist_ok=True)
+            self.source_path.rename(self.target_path)
+
+    def resource(self):
+        try:
+            self.target_path.rename(self.source_path)
+        except FileNotFoundError:
+            self.source_path.parent.mkdir(parents=True, exist_ok=True)
+            self.target_path.rename(self.source_path)
 
 
 SUBTITLE_INDEX = {
@@ -157,14 +207,15 @@ class Book(BookInfo):
     target_zip: Optional[str] = None
     wd: str
     mapf: str
-    source_root: str
-    target_root: str = DEFAULT_TARGET_ROOT
+    source_root: Path
+    target_root: Path = DEFAULT_TARGET_ROOT
     intro: tuple
     appendices: tuple
     chapters: tuple
     files: Optional[tuple] = None
     flist: Optional[Union[tuple, list]] = None
     clean: Optional[Union[tuple, list]] = None
+    path_clean: Optional[Union[tuple, list]] = None
     target_actuals: Optional[Union[tuple, list]] = None
     sublog: Optional[dict] = None
 
@@ -179,23 +230,25 @@ class Book(BookInfo):
             logging.debug(f"{key}: {value}")
         attributes = self.__get_attributes(book_info.get('invpartnumber'), source_zip)
         super().__init__(source_zip=source_zip, target_zip=target_zip, wd=os.getcwd(), **attributes, **book_info)
-        files = [BookFile('00-introduction', i, file) for i, file in enumerate(self.intro, start=1)]
+        files = [
+            BookFile('00-introduction', i, file)
+            for i, file in enumerate(self.intro, start=1)
+        ]
         files += self.__get_chapter_file_list()
         files += self.__get_appendix_file_list()
         self.files = tuple(files)
         self.flist = tuple(
-            (file.source_path(self.source_root), file.target_path(self.target_root)) for file in self.files
+            (file.source_path, file.target_path) for file in self.files
         )
         if target_zip:
             self.target_actuals = self.__get_target_actuals()
-            self.clean = self.__get_clean_flist()
 
     def __get_target_actuals(self):
         with zipfile.ZipFile(self.target_zip, 'r') as f_zip:
             flist = [f for f in f_zip.namelist() if f[-1] != '/']
             if flist[0].split('/', 1)[0] != 'en-US':
-                return tuple(os.path.join('en-US', *f.split('/')) for f in flist)
-            return tuple(os.path.join(*f.split('/')) for f in flist)
+                return tuple(Path(f"en-US/{f}") for f in flist)
+            return tuple(Path(f) for f in flist)
 
     @staticmethod
     def __validate_book_info(info):
@@ -227,8 +280,15 @@ class Book(BookInfo):
                 matches.append(fdict.get(tf))
                 logging.info(f"File matched as expected: {tf} -> {fdict.get(tf)}")
             else:
-                bests = process.extractBests(tf, (tarf for tarf in fdict if (
-                        os.path.basename(fdict.get(tarf)) in tf and fdict.get(tarf) not in matches)))
+                bests = process.extractBests(
+                    tf,
+                    (
+                        tarf for tarf in fdict if (
+                            os.path.basename(fdict.get(tarf)) in tf
+                            and fdict.get(tarf) not in matches
+                        )
+                    )
+                )
                 if bests:
                     clean.append((tf, fdict.get(bests[0][0])))
                     matches.append(fdict.get(bests[0][0]))
@@ -240,6 +300,28 @@ class Book(BookInfo):
         for sf in unmatched_sf:
             logging.warning(f"Source file not found in target files: {sf}")
         return sorted(tuple(clean))
+
+    def __path_clean(self):
+        clean = []
+        for f in self.files:
+            if f.target_path.exists():
+                clean.append(f)
+            else:
+                bests = process.extractBests(
+                    f.name,
+                    (
+                        f"{tf}"
+                        for tf in self.target_actuals
+                        if (
+                            f.basename in f"{tf}"
+                            and f.chapter in f"{tf}"
+                        )
+                    )
+                )
+                if bests:
+                    best = BookFile.from_BookFile(f, bests[0][0])
+                    clean.append(best)
+        self.path_clean = clean
 
     @staticmethod
     def __get_attributes(course, source_zip):
@@ -265,9 +347,24 @@ class Book(BookInfo):
             sg = [file for file in f_zip.namelist() if re.search(root_file_pattern, file)]
             source_root, mapf = os.path.split(sg[0])
             book_tree = get_book(f_zip, mapf, source_root)
-            intro = tuple(file for file in book_tree if 'sg-chapters' not in file)
-            appendices = tuple(file for file in book_tree if 'appendix' in file)
-            chapters = tuple(file for file in book_tree if ('sg-chapters' in file and file not in appendices))
+            intro = tuple(
+                Path(f"{source_root}/{file}")
+                for file in book_tree
+                if 'sg-chapters' not in file
+            )
+            appendices = tuple(
+                Path(f"{source_root}/{file}")
+                for file in book_tree
+                if 'appendix' in file
+            )
+            chapters = tuple(
+                Path(f"{source_root}/{file}")
+                for file in book_tree
+                if (
+                        'sg-chapters' in file
+                        and 'appendix' not in file
+                )
+            )
 
         return {
             'mapf': mapf,
@@ -285,26 +382,28 @@ class Book(BookInfo):
         chapter_files = []
         with zipfile.ZipFile(self.source_zip) as f_zip:
             for i, chapter in enumerate(self.chapters, start=1):
-                chapter_root, chapter_fname = os.path.split(chapter)
-                chapter_open = f_zip.open('/'.join((self.source_root, chapter)))
-                chapter_index = f"{i:02d}-{chapter_fname.split('.', 1)[0]}"
+                chapter_open = f_zip.open(f"{chapter}")
+                chapter_index = f"{i:02d}-{chapter.stem}"
                 root = etree.parse(
                     chapter_open,
                     parser=etree.XMLParser(recover=True, resolve_entities=False)
                 ).getroot()
-                root_sections = [section for child in root if (section := child.attrib.get('href'))]
+                root_sections = tuple(
+                    chapter.parent / section
+                    for child in root
+                    if (section := child.attrib.get('href'))
+                )
                 sections = []
                 for section in root_sections:
                     sections.append(section)
-                    section_root, section_fname = os.path.split(section)
-                    section_open = f_zip.open('/'.join((self.source_root, chapter_root, section)))
+                    section_open = f_zip.open(f"{section}")
                     root = etree.parse(
                         section_open,
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
                     if (content_files := list(
                         set(
-                            '/'.join((section_root, content_section))
+                            section.parent / content_section
                             for child in root if (
                                     (content_section := child.attrib.get('href'))
                                     and '..' not in content_section
@@ -319,7 +418,7 @@ class Book(BookInfo):
                     BookFile(
                         chapter_index,
                         j,
-                        '/'.join((chapter_root, section))
+                        section
                     ) for j, section in enumerate(sections, start=1)
                 ]
         return chapter_files
@@ -329,24 +428,30 @@ class Book(BookInfo):
         j = 1
         with zipfile.ZipFile(self.source_zip) as f_zip:
             for i, appendix in enumerate(self.appendices, start=1):
-                appendix_root = os.path.dirname(appendix)
-                appendix_open = f_zip.open('/'.join((self.source_root, appendix)))
-                root = etree.parse(appendix_open,
-                                   parser=etree.XMLParser(recover=True, resolve_entities=False)).getroot()
-                appendices = [section for child in root if (section := child.attrib.get('href'))]
+                appendix_open = f_zip.open(f"{appendix}")
+                root = etree.parse(
+                    appendix_open,
+                    parser=etree.XMLParser(recover=True, resolve_entities=False)
+                ).getroot()
+                appendices = [
+                    appendix.parent / section
+                    for child in root
+                    if (section := child.attrib.get('href'))
+                ]
                 appendix_file = BookFile('99-appendix', i, appendix)
                 appendix_files.append(appendix_file)
                 for appendix_section in appendices:
-                    appendix_files.append(BookFile('99-appendix', j, '/'.join((appendix_root, appendix_section))))
+                    appendix_files.append(
+                        BookFile('99-appendix', j, appendix_section)
+                    )
                     j += 1
-                    appendix_section_root, appendix_section_fname = os.path.split(appendix_section)
-                    appendix_section_open = f_zip.open('/'.join((self.source_root, appendix_root, appendix_section)))
+                    appendix_section_open = f_zip.open(f"{appendix_section}")
                     root = etree.parse(
                         appendix_section_open,
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
                     if (content_files := set(
-                        '/'.join((appendix_section_root, content_section))
+                        appendix_section.parent / content_section
                         for child in root if (
                                 (content_section := child.attrib.get('href'))
                                 and '..' not in content_section
@@ -355,7 +460,7 @@ class Book(BookInfo):
                         for content_file in content_files:
                             appendix_files.append(
                                 BookFile(
-                                    '99-appendix', j, '/'.join((appendix_root, content_file))
+                                    '99-appendix', j, content_file
                                 )
                             )
                             j += 1
@@ -363,39 +468,42 @@ class Book(BookInfo):
 
     def unzip_source(self):
         with zipfile.ZipFile(self.source_zip, 'r') as source_zip:
-            source_root = source_zip.namelist()[0].split('/')[0]
+            source_root = Path(source_zip.namelist()[0].split('/')[0])
             source_zip.extractall()
         os.remove(self.source_zip)
+        for path in Path(f"{source_root}/guides").iterdir():
+            if path.is_dir() and path.name != 'en-US':
+                shutil.rmtree(path)
         return source_root
 
-    def unzip_target(self):
+    def unzip_target(self, format=False):
         with zipfile.ZipFile(self.target_zip, 'r') as target_zip:
-            if target_zip.namelist()[0].split('/')[0] != self.target_root:
+            if target_zip.namelist()[0].split('/')[0] != f"{self.target_root}":
                 target_zip.extractall(self.target_root)
             else:
                 target_zip.extractall()
         os.remove(self.target_zip)
-        if PLATFORM == 'Linux':
+        if PLATFORM == 'Linux' and format:
             ppxml(self.target_root)
         return self.target_root
 
     def resource(self):
         sfdir = self.unzip_source()
-        tfdir = self.unzip_target()
-        for current, new in self.clean:
-            if not os.path.exists(os.path.dirname(new)):
-                logging.debug(f"mkdir -p {new}")
-                os.makedirs(os.path.dirname(new))
-            logging.debug(f"cp {current} {new}")
-            shutil.move(current, new)
+        tfdir = self.unzip_target(format=True)
+        self.__path_clean()
+        if len(self.files) != len(self.path_clean):
+            expected = tuple(f.path for f in self.files)
+            actual = tuple(f.path for f in self.path_clean)
+            if len(self.files) > len(self.path_clean):
+                missing_files = set(f for f in expected if f not in actual)
+                for missing_file in missing_files:
+                    logging.warning(f"Source file not found in target files: {missing_file}")
+        for f in self.path_clean:
+            f.resource()
         shutil.rmtree(tfdir)
-        for root, dirs, _ in os.walk(os.path.join(sfdir, 'guides')):
-            for d in dirs:
-                if d != 'en-US' and d in tuple(SUBTITLE_INDEX.values()):
-                    shutil.rmtree(os.path.join(root, d))
         if self.target != 'en-US':
-            shutil.copytree(os.path.join(sfdir, 'guides', 'en-US'), os.path.join(sfdir, 'guides', self.target))
-            shutil.rmtree(os.path.join(sfdir, 'guides', 'en-US'))
+            shutil.copytree(sfdir / 'guides' / 'en-US', sfdir / 'guides' / self.target)
+            shutil.rmtree(sfdir / 'guides' / 'en-US')
         zip_fname = f"{self.course}-{self.pubsnumber}_{self.target}.zip"
         with zipfile.ZipFile(zip_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
             zipdir(sfdir, f_zip)
@@ -405,13 +513,8 @@ class Book(BookInfo):
     def unsource(self):
         sfdir = self.unzip_source()
         tfdir = self.target_root
-        os.mkdir(tfdir)
-        for current, new in self.flist:
-            if not os.path.exists(os.path.dirname(new)):
-                logging.debug(f"mkdir -p {new}")
-                os.makedirs(os.path.dirname(new))
-            logging.debug(f"cp {current} {new}")
-            shutil.move(current, new)
+        for f in self.files:
+            f.unsource()
         shutil.rmtree(sfdir)
         zip_fname = f"{self.course}-{self.pubsnumber}_{self.target}.zip"
         with zipfile.ZipFile(zip_fname, 'w', zipfile.ZIP_DEFLATED) as f_zip:
