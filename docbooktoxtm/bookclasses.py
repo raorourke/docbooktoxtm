@@ -3,6 +3,7 @@ import os
 import re
 import shutil
 import zipfile
+from pathlib import Path
 from os import PathLike
 from subprocess import Popen, PIPE
 from typing import Iterable, Tuple, Union, Any, Optional
@@ -21,7 +22,9 @@ PathPair = Tuple[DirectoryPath, DirectoryPath]
 FileList = Iterable[PathPair]
 
 
-def ppxml(path: PathLike) -> None:
+def ppxml(
+        path: PathLike
+) -> None:
     logging.debug("Running xmllint on files.")
     for root, _, files in os.walk(path):
         for file in files:
@@ -31,30 +34,42 @@ def ppxml(path: PathLike) -> None:
             cmd3 = f'rm -f "{file}.bak" 2>&1'
             pattern = r'/^.*xml.bak.*parser error.*not defined$/,+2d'
             cmd4 = f'sed "{pattern}" -i {file}'
-            final = Popen(f"{cmd1}; {cmd2}; {cmd3}; {cmd4}", shell=True, stdin=PIPE,
-                          stdout=PIPE, stderr=PIPE, close_fds=True)
+            final = Popen(
+                f"{cmd1}; {cmd2}; {cmd3}; {cmd4}",
+                shell=True,
+                stdin=PIPE,
+                stdout=PIPE,
+                stderr=PIPE,
+                close_fds=True
+            )
             output, error = final.communicate()
             logging.debug(f"{file=}")
             logging.debug(f"{output=}")
             logging.debug(f"{error=}")
 
 
-def zipdir(path: PathLike,
-           f_zip: zipfile.ZipFile
-           ) -> None:
+def zipdir(
+        path: PathLike,
+        f_zip: zipfile.ZipFile
+) -> None:
     for root, _, files in os.walk(path):
         for file in files:
             f_zip.write(os.path.join(root, file))
 
 
 class BookFile:
-    def __init__(self, chapter, count, file_path):
+    def __init__(
+            self,
+            chapter: str,
+            count: int,
+            file_path: Path
+    ):
         self.chapter = chapter
         self.count = f"{count:02d}"
         self.name = os.path.basename(file_path)
         self.path = os.path.dirname(file_path)
 
-    def source_path(self, source_root):
+    def source_path(self, source_root: Path):
         return os.path.join(*source_root.split('/'), *self.path.split('/'), self.name)
 
     def target_path(self, target_root=DEFAULT_TARGET_ROOT):
@@ -233,12 +248,12 @@ class Book(BookInfo):
             root_file = zipf.open('/'.join((source_root, fname)))
             parser = etree.XMLParser(recover=True, resolve_entities=False)
             root = etree.parse(root_file, parser=parser).getroot()
-            children = [file for child in root if (
-                    (file := child.attrib.get('href'))
-                    and
-                    '/'.join((source_root, file)) in namelist
-            )
-                        ]
+            children = [
+                file for child in root if (
+                        (file := child.attrib.get('href'))
+                        and '/'.join((source_root, file)) in namelist
+                )
+            ]
             file_list = []
             for child in children:
                 file_list.append(child)
@@ -287,12 +302,16 @@ class Book(BookInfo):
                         section_open,
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
-                    sections += list(
+                    if (content_files := list(
                         set(
                             '/'.join((section_root, content_section))
-                            for child in root if (content_section := child.attrib.get('href'))
+                            for child in root if (
+                                    (content_section := child.attrib.get('href'))
+                                    and '..' not in content_section
+                            )
                         )
-                    )
+                    )):
+                        sections += content_files
                 chapter_files.append(
                     BookFile(chapter_index, i, chapter)
                 )
@@ -314,12 +333,32 @@ class Book(BookInfo):
                 appendix_open = f_zip.open('/'.join((self.source_root, appendix)))
                 root = etree.parse(appendix_open,
                                    parser=etree.XMLParser(recover=True, resolve_entities=False)).getroot()
-                sections = [section for child in root if (section := child.attrib.get('href'))]
+                appendices = [section for child in root if (section := child.attrib.get('href'))]
                 appendix_file = BookFile('99-appendix', i, appendix)
                 appendix_files.append(appendix_file)
-                for section in sections:
-                    appendix_files.append(BookFile('99-appendix', j, '/'.join((appendix_root, section))))
+                for appendix_section in appendices:
+                    appendix_files.append(BookFile('99-appendix', j, '/'.join((appendix_root, appendix_section))))
                     j += 1
+                    appendix_section_root, appendix_section_fname = os.path.split(appendix_section)
+                    appendix_section_open = f_zip.open('/'.join((self.source_root, appendix_root, appendix_section)))
+                    root = etree.parse(
+                        appendix_section_open,
+                        parser=etree.XMLParser(recover=True, resolve_entities=False)
+                    ).getroot()
+                    if (content_files := set(
+                        '/'.join((appendix_section_root, content_section))
+                        for child in root if (
+                                (content_section := child.attrib.get('href'))
+                                and '..' not in content_section
+                        )
+                    )):
+                        for content_file in content_files:
+                            appendix_files.append(
+                                BookFile(
+                                    '99-appendix', j, '/'.join((appendix_root, content_file))
+                                )
+                            )
+                            j += 1
         return appendix_files
 
     def unzip_source(self):
