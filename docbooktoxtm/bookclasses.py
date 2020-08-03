@@ -468,8 +468,11 @@ class Book(BookInfo):
 
     def unzip_source(self):
         with zipfile.ZipFile(self.source_zip, 'r') as source_zip:
-            source_root = Path(source_zip.namelist()[0].split('/')[0])
-            source_zip.extractall()
+            zip_files = source_zip.namelist()
+            source_root = Path(zip_files[0].split('/')[0])
+            for zipf in zip_files:
+                if f"{source_root}/guides" in zipf:
+                    source_zip.extract(zipf)
         os.remove(self.source_zip)
         for path in Path(f"{source_root}/guides").iterdir():
             if path.is_dir() and path.name != 'en-US':
