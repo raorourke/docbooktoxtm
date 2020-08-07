@@ -4,7 +4,6 @@ import re
 import shutil
 import zipfile
 from pathlib import Path
-from os import PathLike
 from subprocess import Popen, PIPE
 from typing import Iterable, Tuple, Union, Any, Optional
 
@@ -59,6 +58,7 @@ def zipdir(
         if path_obj.is_file():
             f_zip.write(f"{path_obj}")
 
+
 class BookFile:
     def __init__(
             self,
@@ -72,7 +72,7 @@ class BookFile:
         self.count = f"{count:02d}"
         self.path = file_path
         self.target_root = target_root
-        self.subdir = Path('/'.join(file_path.parts[file_path.parts.index('en-US')+1:-1]))
+        self.subdir = Path('/'.join(file_path.parts[file_path.parts.index('en-US') + 1:-1]))
         self.target_override = target_override
 
     @classmethod
@@ -177,6 +177,8 @@ class BookInfo(BaseModel):
         with zipfile.ZipFile(zip_fname, 'r') as f_zip:
             bi_files = [file for file in f_zip.namelist() if 'Book_Info.xml' in file]
             if len(bi_files) == 1:
+                if '00-01' in bi_files[0]:
+                    raise TypeError
                 bi_file = f_zip.open(bi_files[0], 'r')
             elif len(bi_files) > 1:
                 filtered_bi_files = [file for file in bi_files if 'en-US' in file]
@@ -198,8 +200,37 @@ class BookInfo(BaseModel):
 
     @classmethod
     def from_zipf(cls, zipf):
-        info = cls._xmltodict(zipf)
-        return cls(**info)
+        try:
+            info = cls._xmltodict(zipf)
+            return cls(**info)
+        except TypeError:
+            root = DEFAULT_TARGET_ROOT
+            print(root)
+            with zipfile.ZipFile(zipf, 'r') as target_zip:
+                target_zip.extractall(f"{root}")
+            os.remove(zipf)
+            intro = root / '00-introduction'
+            for f in intro.iterdir():
+                if f.is_file():
+                    f.replace(f.with_name(f.name[3:]))
+            for chapter in root.iterdir():
+                if chapter.is_dir() and chapter.name[:2] != '00':
+                    chapter_index, chapter_name = chapter.name.split('-', 1)
+                    chapter_path = root / chapter.name / 'sg-chapters' / 'topics' / chapter_name
+                    chapter_path.mkdir(parents=True, exist_ok=True)
+                    for f in chapter.iterdir():
+                        if f.is_file():
+                            if f.name[:2] == '00':
+                                new_index = root / chapter.name / 'sg-chapters' / f"{chapter_index}-{f.name.split('-', 1)[1]}"
+                                f.rename(new_index)
+                            else:
+                                new_path = chapter_path / f.name
+                                f.rename(new_path)
+            with zipfile.ZipFile(zipf, 'w', zipfile.ZIP_DEFLATED) as f_zip:
+                zipdir(root, f_zip)
+            shutil.rmtree(f"{root}")
+            info = cls._xmltodict(zipf)
+            return cls(**info)
 
 
 class Book(BookInfo):
@@ -286,7 +317,7 @@ class Book(BookInfo):
                         tarf for tarf in fdict if (
                             os.path.basename(fdict.get(tarf)) in tf
                             and fdict.get(tarf) not in matches
-                        )
+                    )
                     )
                 )
                 if bests:
@@ -315,7 +346,7 @@ class Book(BookInfo):
                         if (
                             f.basename in f"{tf}"
                             and f.chapter in f"{tf}"
-                        )
+                    )
                     )
                 )
                 if bests:
@@ -402,13 +433,13 @@ class Book(BookInfo):
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
                     if (content_files := list(
-                        set(
-                            section.parent / content_section
-                            for child in root if (
-                                    (content_section := child.attrib.get('href'))
-                                    and '..' not in content_section
+                            set(
+                                section.parent / content_section
+                                for child in root if (
+                                        (content_section := child.attrib.get('href'))
+                                        and '..' not in content_section
+                                )
                             )
-                        )
                     )):
                         sections += content_files
                 chapter_files.append(
@@ -451,11 +482,11 @@ class Book(BookInfo):
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
                     if (content_files := set(
-                        appendix_section.parent / content_section
-                        for child in root if (
-                                (content_section := child.attrib.get('href'))
-                                and '..' not in content_section
-                        )
+                            appendix_section.parent / content_section
+                            for child in root if (
+                                    (content_section := child.attrib.get('href'))
+                                    and '..' not in content_section
+                            )
                     )):
                         for content_file in content_files:
                             appendix_files.append(
@@ -482,7 +513,7 @@ class Book(BookInfo):
     def unzip_target(self, format=False):
         with zipfile.ZipFile(self.target_zip, 'r') as target_zip:
             if target_zip.namelist()[0].split('/')[0] != f"{self.target_root}":
-                target_zip.extractall(self.target_root)
+                target_zip.extractall(f"{self.target_root}")
             else:
                 target_zip.extractall()
         os.remove(self.target_zip)
