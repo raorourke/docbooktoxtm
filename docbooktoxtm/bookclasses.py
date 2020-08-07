@@ -176,6 +176,8 @@ class BookInfo(BaseModel):
     def _xmltodict(zip_fname: str):
         with zipfile.ZipFile(zip_fname, 'r') as f_zip:
             bi_files = [file for file in f_zip.namelist() if 'Book_Info.xml' in file]
+            logging.info(f"{bi_files=}")
+            logging.info(f"{len(bi_files)=}")
             if len(bi_files) == 1:
                 if '00-01' in bi_files[0]:
                     raise TypeError
