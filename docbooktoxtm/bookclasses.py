@@ -303,37 +303,6 @@ class Book(BookInfo):
         })
         return info
 
-    def __get_clean_flist(self):
-        clean = []
-        matches = []
-        fdict = {tfname: sfname for sfname, tfname in self.flist}
-        for tf in self.target_actuals:
-            if tf in fdict:
-                clean.append((tf, fdict.get(tf)))
-                matches.append(fdict.get(tf))
-                logging.info(f"File matched as expected: {tf} -> {fdict.get(tf)}")
-            else:
-                bests = process.extractBests(
-                    tf,
-                    (
-                        tarf for tarf in fdict if (
-                            os.path.basename(fdict.get(tarf)) in tf
-                            and fdict.get(tarf) not in matches
-                    )
-                    )
-                )
-                if bests:
-                    clean.append((tf, fdict.get(bests[0][0])))
-                    matches.append(fdict.get(bests[0][0]))
-                    logging.info(f"Unexpected filename: {tf}")
-                    logging.info(f"Matched to source file: {tf} -> {fdict.get(bests[0][0])}")
-                else:
-                    logging.warning(f"Unmatched target file: {tf}")
-        unmatched_sf = tuple(sf for sf, tf in self.flist if sf not in matches)
-        for sf in unmatched_sf:
-            logging.warning(f"Source file not found in target files: {sf}")
-        return sorted(tuple(clean))
-
     def __path_clean(self):
         clean = []
         for f in self.files:
@@ -348,7 +317,7 @@ class Book(BookInfo):
                         if (
                             f.basename in f"{tf}"
                             and f.chapter in f"{tf}"
-                    )
+                        )
                     )
                 )
                 if bests:
@@ -412,6 +381,15 @@ class Book(BookInfo):
         }
 
     def __get_chapter_file_list(self):
+        def get_content_sections(root):
+            filelist = []
+            children = [child for child in root]
+            for child in children:
+                if file := child.attrib.get('href'):
+                    filelist.append(file)
+                filelist.extend(get_content_sections(child))
+            return set(filelist)
+
         chapter_files = []
         with zipfile.ZipFile(self.source_zip) as f_zip:
             for i, chapter in enumerate(self.chapters, start=1):
@@ -434,15 +412,13 @@ class Book(BookInfo):
                         section_open,
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
-                    if (content_files := list(
-                            set(
+                    if (
+                            content_files := set(
                                 section.parent / content_section
-                                for child in root if (
-                                        (content_section := child.attrib.get('href'))
-                                        and '..' not in content_section
-                                )
+                                for content_section in get_content_sections(root)
+                                if '..' not in content_section
                             )
-                    )):
+                    ):
                         sections += content_files
                 chapter_files.append(
                     BookFile(chapter_index, i, chapter)
@@ -457,6 +433,15 @@ class Book(BookInfo):
         return chapter_files
 
     def __get_appendix_file_list(self):
+        def get_content_sections(root):
+            filelist = []
+            children = [child for child in root]
+            for child in children:
+                if file := child.attrib.get('href'):
+                    filelist.append(file)
+                filelist.extend(get_content_sections(child))
+            return set(filelist)
+
         appendix_files = []
         j = 1
         with zipfile.ZipFile(self.source_zip) as f_zip:
@@ -483,13 +468,13 @@ class Book(BookInfo):
                         appendix_section_open,
                         parser=etree.XMLParser(recover=True, resolve_entities=False)
                     ).getroot()
-                    if (content_files := set(
-                            appendix_section.parent / content_section
-                            for child in root if (
-                                    (content_section := child.attrib.get('href'))
-                                    and '..' not in content_section
+                    if (
+                            content_files := set(
+                                appendix_section.parent / content_section
+                                for content_section in get_content_sections(root)
+                                if '..' not in content_section
                             )
-                    )):
+                    ):
                         for content_file in content_files:
                             appendix_files.append(
                                 BookFile(
@@ -531,7 +516,7 @@ class Book(BookInfo):
             expected = tuple(f.path for f in self.files)
             actual = tuple(f.path for f in self.path_clean)
             if len(self.files) > len(self.path_clean):
-                missing_files = set(f for f in expected if f not in actual)
+                missing_files = {f for f in expected if f not in actual}
                 for missing_file in missing_files:
                     logging.warning(f"Source file not found in target files: {missing_file}")
         for f in self.path_clean:
